@@ -6,5 +6,7 @@ public abstract class AbstractStep : MonoBehaviour
 {
     public Vector3 Movement { get; set; }
 
+   
+
     abstract public void MoveStep();
 }

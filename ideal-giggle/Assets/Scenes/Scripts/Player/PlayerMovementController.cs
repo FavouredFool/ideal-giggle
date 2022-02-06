@@ -9,9 +9,6 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]
     private AbstractStep[] _steps;
 
-    private PlayerInputController _playerInputController;
-
-
     public void Start()
     {
         gameObject.GetComponent<PlayerInputController>();
@@ -20,7 +17,7 @@ public class PlayerMovementController : MonoBehaviour
     public void MoveTo(Vector3 endPosition)
     {
         Vector3 activePosition = CoordinateHelper.DetermineGridCoordinate(transform.position);
-        Debug.Log($"StartPosition: {activePosition}, EndPosition: {endPosition}");
+        transform.position = activePosition;
 
         int loopCounter = 0;
         while (activePosition != endPosition)
@@ -37,6 +34,8 @@ public class PlayerMovementController : MonoBehaviour
             step = CalculateStep(activePosition, endPosition);
 
             step.MoveStep();
+
+            activePosition = transform.position;
         }
 
     }
