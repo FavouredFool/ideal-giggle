@@ -25,7 +25,7 @@ public class PlayerInputController : MonoBehaviour
 
             hit = CoordinateHelper.DetermineGridCoordinate(hit);
 
-            _playerMovement.MoveTo(hit);
+            _playerMovement.SetEndPosition(hit);
         }
     }
 

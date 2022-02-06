@@ -5,49 +5,47 @@ using System;
 
 public class PlayerMovementController : MonoBehaviour
 {
-
     [SerializeField]
-    private AbstractStep[] _steps;
+    private PlayerAnimationController _animationController;
 
-    public void Start()
+    private Vector3 _endPosition = Vector3.negativeInfinity;
+
+    private bool _isMoving = false;
+
+
+    public void Update()
     {
-        gameObject.GetComponent<PlayerInputController>();
+        if (_endPosition.Equals(Vector3.negativeInfinity))
+        {
+            return;
+        }
+
+        if (transform.position.Equals(_endPosition))
+        {
+            return;
+        }
+
+        if (_isMoving)
+        {
+            return;
+        }
+
+        MoveTo(_endPosition);
     }
 
     public void MoveTo(Vector3 endPosition)
     {
+        _isMoving = true;
+
         Vector3 activePosition = CoordinateHelper.DetermineGridCoordinate(transform.position);
         transform.position = activePosition;
 
-        int loopCounter = 0;
-        while (activePosition != endPosition)
-        {
-            if (loopCounter > 1000)
-            {
-                Debug.LogWarning("Endlosschleife entkommen");
-                break;
-            }
+        Vector3 movement = CalculateMovement(activePosition, endPosition);
 
-            loopCounter++;
-
-            AbstractStep step;
-            step = CalculateStep(activePosition, endPosition);
-
-            step.MoveStep();
-
-            activePosition = transform.position;
-        }
-
+        _animationController.MoveStep(movement);
     }
 
-    public AbstractStep CalculateStep(Vector3 activePosition, Vector3 endPosition)
-    {
-        AbstractStep step = _steps[0];
 
-        step.Movement = CalculateMovement(activePosition, endPosition);
-
-        return step;        
-    }
 
     public Vector3 CalculateMovement(Vector3 activePosition, Vector3 endPosition)
     {
@@ -82,5 +80,15 @@ public class PlayerMovementController : MonoBehaviour
         }
 
         return movementVector;
+    }
+
+    public void SetEndPosition(Vector3 endPosition)
+    {
+        _endPosition = endPosition;
+    }
+
+    public void SetIsMoving(bool isMoving)
+    {
+        _isMoving = isMoving;
     }
 }
