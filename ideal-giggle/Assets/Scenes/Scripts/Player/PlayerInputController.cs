@@ -31,8 +31,6 @@ public class PlayerInputController : MonoBehaviour
 
             hit = CalculateMovePosFromClickPos(hit);
 
-            Debug.Log($"Hit after position-Change: {hit}");
-
             _playerMovement.SetEndPosition(hit);
         }
     }

@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class PlayerMovementCalculator : MonoBehaviour
+public class StepGoalCalculator : MonoBehaviour
 {
 
-    public AbstractStep CalculateStep(Vector3 activePosition, Vector3 endPosition)
+    public Vector3 CalculateStepGoal(Vector3 activePosition, Vector3 endPosition)
     {
         int xActive = (int)activePosition.x;
         int xEnd = (int)endPosition.x;
@@ -28,7 +27,7 @@ public class PlayerMovementCalculator : MonoBehaviour
         }
         else
         {
-            if (UnityEngine.Random.Range(0, 2) == 0)
+            if (Random.Range(0, 2) == 0)
             {
                 movementVector.x = Mathf.Sign(xEnd - xActive);
             }
@@ -38,18 +37,10 @@ public class PlayerMovementCalculator : MonoBehaviour
             }
         }
 
-        AbstractStep step;
+        Vector3 stepGoal = activePosition + movementVector;
 
-        if (Random.Range(0, 2) == 0)
-        {
-            step = GetComponentInChildren<StraightStep>();
-        } else
-        {
-            step = GetComponentInChildren<StairStep>();
-        }
-        
-        step.SetStepMovement(movementVector);
-
-        return step;
+        return stepGoal;
     }
+
+
 }

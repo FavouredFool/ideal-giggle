@@ -193,7 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1296595107499641700, guid: 91ab784222ec876438dd8378a072a169, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1296595107499641700, guid: 91ab784222ec876438dd8378a072a169, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8954,7 +8954,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1296595107499641700, guid: 91ab784222ec876438dd8378a072a169, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1296595107499641700, guid: 91ab784222ec876438dd8378a072a169, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10087,6 +10087,14 @@ PrefabInstance:
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 810713284}
+    - target: {fileID: 341716127005054490, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _entityManager
+      value: 
+      objectReference: {fileID: 810713284}
+    - target: {fileID: 341716127005054490, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _stepGoalCalculator
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5760897009634157104, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: m_Name
       value: PlayerTarget
@@ -10101,7 +10109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5760897009634157107, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5760897009634157107, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10143,5 +10151,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6025138495081301373, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _entityManager
+      value: 
+      objectReference: {fileID: 810713284}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}

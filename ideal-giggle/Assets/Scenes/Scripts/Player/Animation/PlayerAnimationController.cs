@@ -11,7 +11,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private Vector3 _startLocalPosition;
 
-    private AbstractStep _step;
+    private Step _step;
 
     private bool _animationPlayed;
 
@@ -25,7 +25,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void Update()
     {
-        if (!_step)
+        if (_step == null)
         {
             return;
         }
@@ -42,7 +42,7 @@ public class PlayerAnimationController : MonoBehaviour
     }
 
 
-    public void MoveStep(AbstractStep step)
+    public void MoveStep(Step step)
     {
         _step = step;
 
@@ -54,7 +54,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void RotatePlayerTarget()
     {
-        float angle = Vector3.SignedAngle(Vector3.right, _step.GetStepMovement(), Vector3.up);
+        float angle = Vector3.SignedAngle(Vector3.right, _step.GetStepGoal() - _playerMovement.transform.position, Vector3.up);
 
         var rotation = new Vector3(0, angle, 0);
         _playerMovement.transform.eulerAngles = rotation;
@@ -79,7 +79,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlacePlayer()
     {
-        _playerMovement.transform.position += _step.GetStepMovement();
+        _playerMovement.transform.position = _step.GetStepGoal();
         transform.localPosition = _startLocalPosition;
 
         _playerMovement.SetIsMoving(false);

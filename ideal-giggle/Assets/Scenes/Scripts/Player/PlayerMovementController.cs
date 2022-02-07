@@ -8,7 +8,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]
     private PlayerAnimationController _animationController;
 
-    private PlayerMovementCalculator _movementCalculator;
+    private PlayerStepCalculator _movementCalculator;
 
     private Vector3 _endPosition = Vector3.negativeInfinity;
 
@@ -17,7 +17,7 @@ public class PlayerMovementController : MonoBehaviour
 
     public void Start()
     {
-        _movementCalculator = GetComponent<PlayerMovementCalculator>();
+        _movementCalculator = GetComponent<PlayerStepCalculator>();
     }
 
     public void Update()
@@ -42,7 +42,7 @@ public class PlayerMovementController : MonoBehaviour
 
     public void MoveTo(Vector3 endPosition)
     {
-        AbstractStep step;
+        Step step;
 
         _isMoving = true;
 

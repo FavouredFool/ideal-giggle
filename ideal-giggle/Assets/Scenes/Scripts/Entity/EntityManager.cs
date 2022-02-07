@@ -11,6 +11,23 @@ public class EntityManager : MonoBehaviour
         _entityList = new List<EntityController>(GetComponentsInChildren<EntityController>());
     }
 
+    public EntityController GetEntityFromCoordiantes(Vector3 coordinates)
+    {
+        EntityController entity = null;
+
+        foreach (EntityController activeEntity in _entityList)
+        {
+            if (!activeEntity.GetPosition().Equals(coordinates)) {
+                continue;
+            }
+            
+            entity = activeEntity;
+            break;
+        }
+
+        return entity;
+    }
+
 
     public List<EntityController> GetEntityList()
     {
