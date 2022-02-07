@@ -11,7 +11,8 @@ public class RayHelper : MonoBehaviour
 
         if (Physics.Raycast(inputRay, out RaycastHit hit))
         {
-            return hit.point;
+            // Additional 0.01f so it doesn't hit the exact side of a cube but rather a bit deeper inside.
+            return hit.point + inputRay.direction.normalized * 0.01f;
         }
         else
         {
