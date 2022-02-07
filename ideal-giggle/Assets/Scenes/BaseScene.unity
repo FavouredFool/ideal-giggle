@@ -10155,5 +10155,33 @@ PrefabInstance:
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 810713284}
+    - target: {fileID: 6025138495081301373, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: animationNames.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6025138495081301373, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: animationNames.Array.data[0]
+      value: BlockToBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 6025138495081301373, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: animationNames.Array.data[1]
+      value: BlockToStairUpwards
+      objectReference: {fileID: 0}
+    - target: {fileID: 6025138495081301373, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: animationNames.Array.data[2]
+      value: BlockToStairDownwards
+      objectReference: {fileID: 0}
+    - target: {fileID: 6025138495081301373, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: animationNames.Array.data[3]
+      value: StairToBlockUpwards
+      objectReference: {fileID: 0}
+    - target: {fileID: 6025138495081301373, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: animationNames.Array.data[4]
+      value: StairToBlockDownwards
+      objectReference: {fileID: 0}
+    - target: {fileID: 6025138495081301373, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: animationNames.Array.data[5]
+      value: StairToStairUpwards
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
