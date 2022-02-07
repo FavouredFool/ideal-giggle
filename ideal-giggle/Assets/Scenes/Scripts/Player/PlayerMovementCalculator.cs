@@ -6,8 +6,6 @@ using UnityEngine;
 public class PlayerMovementCalculator : MonoBehaviour
 {
 
-
-
     public AbstractStep CalculateStep(Vector3 activePosition, Vector3 endPosition)
     {
         int xActive = (int)activePosition.x;

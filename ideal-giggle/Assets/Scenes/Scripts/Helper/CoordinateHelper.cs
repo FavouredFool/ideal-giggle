@@ -8,11 +8,7 @@ public class CoordinateHelper : MonoBehaviour
     public static Vector3 DetermineGridCoordinate(Vector3 coordinate)
     {
 
-        Debug.Log($"None-Rounded Vector: {coordinate}");
-
         coordinate = RoundVector(coordinate);
-
-        Debug.Log($"Rounded Vector: {coordinate}");
 
         return coordinate;
 
@@ -26,5 +22,4 @@ public class CoordinateHelper : MonoBehaviour
 
         return coordinate;
     }
-
 }
