@@ -13,9 +13,11 @@ public class PlayerAnimationController : MonoBehaviour
 
     private Vector3 _movement;
 
+    private bool _animationPlayed;
+
     public void Start()
     {
-        _startLocalPosition = transform.localPosition;
+        _startLocalPosition = new Vector3(0, -0.25f, 0);
         _animator = GetComponent<Animator>();
     }
 
@@ -39,16 +41,35 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayAnimation()
     {
+        _animationPlayed = false;
         _animator.SetTrigger("StraightStep");
-
     }
 
-    public void PlacePlayer()
+    public void AnimationEnd_PlacePlayer()
     {
-        transform.localPosition = _startLocalPosition;
+        // Animations in an Animator will be played twice while transitioning.
+        // Therefore this guard is necessary.
+        if (_animationPlayed)
+        {
+            return;
+        }
+
+        _animator.SetTrigger("Still");
+
+        _animationPlayed = true;
+
         _playerMovement.transform.position += _movement;
-        
+
+        transform.localPosition = _startLocalPosition;
+        Debug.Log($"VisualPosition: {transform.position}");
+        Debug.Log($"VisualLocalPosition: {transform.localPosition}");
+
+        Debug.Log($"Position: {_playerMovement.transform.position}");
+
+        // Bug happens before setisMoving is turned back to false;
+        // -> No Doubling
+
         _playerMovement.SetIsMoving(false);
-        
+
     }
 }
