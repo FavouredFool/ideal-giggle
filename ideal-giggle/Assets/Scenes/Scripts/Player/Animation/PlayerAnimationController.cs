@@ -15,11 +15,29 @@ public class PlayerAnimationController : MonoBehaviour
 
     private bool _animationPlayed;
 
+    private bool _animationIsDone;
+
     public void Start()
     {
         _startLocalPosition = new Vector3(0, -0.25f, 0);
         _animator = GetComponent<Animator>();
     }
+
+    public void Update()
+    {
+        bool isCorrectAnimation = _animator.GetCurrentAnimatorStateInfo(0).IsName("StraightStep");
+        bool hasLooped = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
+
+        _animationIsDone = isCorrectAnimation && hasLooped && !_animationPlayed;
+
+        if (_animationIsDone)
+        {
+            Debug.Log(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            StartCoroutine(StopAnimation());
+        }
+
+    }
+
 
     public void MoveStep(Vector3 movement)
     {
@@ -45,31 +63,22 @@ public class PlayerAnimationController : MonoBehaviour
         _animator.SetTrigger("StraightStep");
     }
 
-    public void AnimationEnd_PlacePlayer()
+    public IEnumerator StopAnimation()
     {
-        // Animations in an Animator will be played twice while transitioning.
-        // Therefore this guard is necessary.
-        if (_animationPlayed)
-        {
-            return;
-        }
-
-        _animator.SetTrigger("Still");
-
         _animationPlayed = true;
+        _animator.SetTrigger("Still");
+        
+        // Warten bis Frame vorbei ist, damit Animation resetten kann und Würfel
+        // somit nicht nach vorne bugged.
+        yield return new WaitForEndOfFrame();
+        PlacePlayer();
+    }
 
+    public void PlacePlayer()
+    {
         _playerMovement.transform.position += _movement;
-
         transform.localPosition = _startLocalPosition;
-        Debug.Log($"VisualPosition: {transform.position}");
-        Debug.Log($"VisualLocalPosition: {transform.localPosition}");
-
-        Debug.Log($"Position: {_playerMovement.transform.position}");
-
-        // Bug happens before setisMoving is turned back to false;
-        // -> No Doubling
 
         _playerMovement.SetIsMoving(false);
-
     }
 }

@@ -775,12 +775,12 @@ AnimationClip:
       - serializedVersion: 3
         time: 2.5333333
         value: {x: 1, y: -0.25, z: 0}
-        inSlope: {x: 0.03334624, y: 0, z: 0}
-        outSlope: {x: 0.03334624, y: 0, z: 0}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: -6454.4995, y: 0, z: 0}
         tangentMode: 0
         weightedMode: 3
-        inWeight: {x: 0.15363109, y: 0.03409553, z: 0.33333334}
-        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+        inWeight: {x: 0.33333334, y: 0.03409553, z: 0.33333334}
+        outWeight: {x: 0.0050640153, y: 0.33333334, z: 0.33333334}
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -815,7 +815,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 4.4333334
+    m_StopTime: 2.5333333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -873,12 +873,12 @@ AnimationClip:
       - serializedVersion: 3
         time: 2.5333333
         value: 1
-        inSlope: 0.03334624
-        outSlope: 0.03334624
-        tangentMode: 0
+        inSlope: 0
+        outSlope: -6454.4995
+        tangentMode: 1
         weightedMode: 3
-        inWeight: 0.15363109
-        outWeight: 0.33333334
+        inWeight: 0.33333334
+        outWeight: 0.0050640153
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -3967,11 +3967,4 @@ AnimationClip:
     script: {fileID: 0}
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 4.4333334
-    functionName: AnimationEnd_PlacePlayer
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []
