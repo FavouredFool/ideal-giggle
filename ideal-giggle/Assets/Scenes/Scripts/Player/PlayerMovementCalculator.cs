@@ -8,7 +8,7 @@ public class PlayerMovementCalculator : MonoBehaviour
 
 
 
-    public Vector3 CalculateMovement(Vector3 activePosition, Vector3 endPosition)
+    public AbstractStep CalculateStep(Vector3 activePosition, Vector3 endPosition)
     {
         int xActive = (int)activePosition.x;
         int xEnd = (int)endPosition.x;
@@ -40,6 +40,18 @@ public class PlayerMovementCalculator : MonoBehaviour
             }
         }
 
-        return movementVector;
+        AbstractStep step;
+
+        if (Random.Range(0, 2) == 0)
+        {
+            step = GetComponentInChildren<StraightStep>();
+        } else
+        {
+            step = GetComponentInChildren<StairStep>();
+        }
+        
+        step.SetStepMovement(movementVector);
+
+        return step;
     }
 }

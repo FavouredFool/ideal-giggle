@@ -11,7 +11,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private Vector3 _startLocalPosition;
 
-    private Vector3 _movement;
+    private AbstractStep _step;
 
     private bool _animationPlayed;
 
@@ -25,23 +25,26 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void Update()
     {
-        bool isCorrectAnimation = _animator.GetCurrentAnimatorStateInfo(0).IsName("StraightStep");
+        if (!_step)
+        {
+            return;
+        }
+        bool isCorrectAnimation = _animator.GetCurrentAnimatorStateInfo(0).IsName(_step.GetAnimationName());
         bool hasLooped = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
 
         _animationIsDone = isCorrectAnimation && hasLooped && !_animationPlayed;
 
         if (_animationIsDone)
         {
-            Debug.Log(_animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
             StartCoroutine(StopAnimation());
         }
 
     }
 
 
-    public void MoveStep(Vector3 movement)
+    public void MoveStep(AbstractStep step)
     {
-        _movement = movement;
+        _step = step;
 
         // Muss sensitiv gegenüber den jeweiligen Bodenflächen sein.
 
@@ -51,7 +54,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void RotatePlayerTarget()
     {
-        float angle = Vector3.SignedAngle(Vector3.right, _movement, Vector3.up);
+        float angle = Vector3.SignedAngle(Vector3.right, _step.GetStepMovement(), Vector3.up);
 
         var rotation = new Vector3(0, angle, 0);
         _playerMovement.transform.eulerAngles = rotation;
@@ -60,7 +63,7 @@ public class PlayerAnimationController : MonoBehaviour
     public void PlayAnimation()
     {
         _animationPlayed = false;
-        _animator.SetTrigger("StraightStep");
+        _animator.SetTrigger(_step.GetAnimationName());
     }
 
     public IEnumerator StopAnimation()
@@ -76,7 +79,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlacePlayer()
     {
-        _playerMovement.transform.position += _movement;
+        _playerMovement.transform.position += _step.GetStepMovement();
         transform.localPosition = _startLocalPosition;
 
         _playerMovement.SetIsMoving(false);

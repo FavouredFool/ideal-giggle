@@ -42,13 +42,13 @@ public class PlayerMovementController : MonoBehaviour
 
     public void MoveTo(Vector3 endPosition)
     {
-        Vector3 movement;
+        AbstractStep step;
 
         _isMoving = true;
 
-        movement = _movementCalculator.CalculateMovement(transform.position, endPosition);
+        step = _movementCalculator.CalculateStep(transform.position, endPosition);
 
-        _animationController.MoveStep(movement);
+        _animationController.MoveStep(step);
     }
 
     public void SetEndPosition(Vector3 endPosition)
