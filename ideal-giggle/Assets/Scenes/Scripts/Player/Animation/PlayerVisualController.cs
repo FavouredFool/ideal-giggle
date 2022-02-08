@@ -16,14 +16,12 @@ public class PlayerVisualController : MonoBehaviour
         _startLocalPosition = transform.localPosition;
         _step = step;
 
-        StartCoroutine(PlayAnimation());
+        StartCoroutine(PlayCubeBehaviour());
     }
 
 
-    public IEnumerator PlayAnimation()
+    public IEnumerator PlayCubeBehaviour()
     {
-        Debug.Log(_step.GetCubeBehavior());
-
         Vector3 fromPosition = _playerMovement.transform.position;
         Vector3 toPosition = _step.GetStepGoal();
 

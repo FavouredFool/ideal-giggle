@@ -18,7 +18,6 @@ public class CubeBehaviourCalculator : MonoBehaviour
 
         ICubeBehaviour cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_BlockToBlock>();
 
-
         return cubeBehaviour;
     }
 

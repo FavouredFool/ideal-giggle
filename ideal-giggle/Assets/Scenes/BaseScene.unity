@@ -2369,6 +2369,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5760897010274260429, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
   m_PrefabInstance: {fileID: 5760897009155326293}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &426199587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426199586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c10a934436f44b64d9e3febcd48122b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cubeLength: 0.5
+  _rollSpeed: 4
 --- !u!114 &426199589 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4037893136254092438, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
@@ -2394,7 +2408,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cubeLength: 0.5
   _rollSpeed: 4
-  _waitInbetweenInSeconds: 0.1
 --- !u!1001 &450475394
 PrefabInstance:
   m_ObjectHideFlags: 0
