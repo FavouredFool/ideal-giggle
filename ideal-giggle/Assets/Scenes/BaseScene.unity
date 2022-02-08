@@ -2364,6 +2364,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2255086204446303347, guid: b91b72aeb58844944bfd28d692a926a7, type: 3}
   m_PrefabInstance: {fileID: 405751513}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &426199586 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5760897010274260429, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+  m_PrefabInstance: {fileID: 5760897009155326293}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &426199589 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4037893136254092438, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+  m_PrefabInstance: {fileID: 5760897009155326293}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426199586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6341473bc854e645afa487050e1eca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &426199592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426199586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3296bf02d5829c244ab43345f4d90e43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cubeLength: 0.5
+  _rollSpeed: 4
+  _waitInbetweenInSeconds: 0.1
 --- !u!1001 &450475394
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10083,6 +10114,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1707728603}
     m_Modifications:
+    - target: {fileID: -4579840251287570326, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _visualController
+      value: 
+      objectReference: {fileID: 426199589}
     - target: {fileID: -2767820811278810729, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: _entityManager
       value: 
@@ -10152,6 +10187,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6025138495081301373, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _playerVisual
+      value: 
+      objectReference: {fileID: 426199589}
+    - target: {fileID: 6025138495081301373, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 810713284}
@@ -10183,5 +10222,6 @@ PrefabInstance:
       propertyPath: animationNames.Array.data[5]
       value: StairToStairUpwards
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 57919494, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}

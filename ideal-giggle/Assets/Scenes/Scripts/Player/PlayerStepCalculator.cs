@@ -11,13 +11,13 @@ public class PlayerStepCalculator : MonoBehaviour
     private EntityManager _entityManager;
 
     private StepGoalCalculator _stepGoalCalculator;
-    private StepAnimationCalculator _stepAnimationCalculator;
+    private CubeBehaviourCalculator _cubeBehaviourCalculator;
 
 
     public void Start()
     {
         _stepGoalCalculator = GetComponent<StepGoalCalculator>();
-        _stepAnimationCalculator = GetComponent<StepAnimationCalculator>();
+        _cubeBehaviourCalculator = GetComponent<CubeBehaviourCalculator>();
     }
 
     public Step CalculateStep(Vector3 activePosition, Vector3 endPosition)
@@ -31,9 +31,9 @@ public class PlayerStepCalculator : MonoBehaviour
 
 
         // Calculate Animation to use
-        string animationName;
-        animationName = _stepAnimationCalculator.CalculateAnimation(activePosition, stepGoal);
-        activeStep.SetAnimationName(animationName);
+        ICubeBehaviour cubeBehaviour;
+        cubeBehaviour = _cubeBehaviourCalculator.CalculateCubeBehaviour(activePosition, stepGoal);
+        activeStep.SetCubeBehaviour(cubeBehaviour);
 
 
 

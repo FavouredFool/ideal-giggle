@@ -1,17 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static EntityHelper;
 
 public class Step
 {
-    private string _animationName;
+    private ICubeBehaviour _cubeBehaviour;
 
     private Vector3 _stepGoal;
-
-    private EntityType _entityTypeFrom;
-
-    private EntityType _entityTypeTo;
 
     public void SetStepGoal(Vector3 stepGoal)
     {
@@ -23,14 +18,14 @@ public class Step
         return _stepGoal;
     }
 
-    public string GetAnimationName()
+    public ICubeBehaviour GetCubeBehavior()
     {
-        return _animationName;
+        return _cubeBehaviour;
     }
 
-    public void SetAnimationName(string animationName)
+    public void SetCubeBehaviour(ICubeBehaviour cubeBehaviour)
     {
-        _animationName = animationName;
+        _cubeBehaviour = cubeBehaviour;
     }
 
 }

@@ -6,7 +6,7 @@ using System;
 public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField]
-    private PlayerAnimationController _animationController;
+    private PlayerVisualController _visualController;
 
     private PlayerStepCalculator _movementCalculator;
 
@@ -48,7 +48,7 @@ public class PlayerMovementController : MonoBehaviour
 
         step = _movementCalculator.CalculateStep(transform.position, endPosition);
 
-        _animationController.MoveStep(step);
+        _visualController.MoveStep(step);
     }
 
     public void SetEndPosition(Vector3 endPosition)
