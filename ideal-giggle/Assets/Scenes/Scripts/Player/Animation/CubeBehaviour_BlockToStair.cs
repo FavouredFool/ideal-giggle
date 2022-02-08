@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeBehaviour_BlockToStairs : MonoBehaviour, ICubeBehaviour
+public class CubeBehaviour_BlockToStair : MonoBehaviour, ICubeBehaviour
 {
 
     [SerializeField]
@@ -21,35 +21,28 @@ public class CubeBehaviour_BlockToStairs : MonoBehaviour, ICubeBehaviour
 
         if (_direction.y > 0)
         {
-            Debug.Log("higher");
+            yield return Rotate(180, Vector3.down);
 
-            yield return Rotate90Degrees();
-
-            yield return Rotate90Degrees();
+            yield return Rotate(90, Vector3.down);
 
         } else
         {
-            Debug.Log("lower");
+            yield return Rotate(90, Vector3.down);
 
-            yield return Rotate90Degrees();
-
-            yield return Rotate90Degrees();
-
-            yield return Rotate90Degrees();
+            yield return Rotate(180, Vector3.down);
         }
 
         
     }
 
-    public IEnumerator Rotate90Degrees()
+    public IEnumerator Rotate(float angle, Vector3 anchorAngle)
     {
-        
-        _anchor = transform.position + (Vector3.down + _direction) * _cubeLength / 2f;
+        _anchor = transform.position + (anchorAngle + _direction) * _cubeLength / 2f;
         _axis = Vector3.Cross(Vector3.up, _direction);
 
-        float remainingAngle = 90;
+        float remainingAngle = angle;
 
-        while(remainingAngle > 0)
+        while (remainingAngle > 0)
         {
             float rotationAngle = Mathf.Min(Time.deltaTime * _rollSpeed * 100, remainingAngle);
             transform.RotateAround(_anchor, _axis, rotationAngle);

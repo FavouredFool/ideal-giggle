@@ -24,7 +24,7 @@ public class EntityManager : MonoBehaviour
             entity = activeEntity;
             break;
         }
-
+        
         return entity;
     }
 

@@ -17,7 +17,7 @@ public class CoordinateHelper : MonoBehaviour
     public static Vector3 RoundVector(Vector3 coordinate)
     {
         coordinate.x = Mathf.Round(coordinate.x);
-        coordinate.y = Mathf.Ceil(coordinate.y);
+        coordinate.y = Mathf.Round(coordinate.y);
         coordinate.z = Mathf.Round(coordinate.z);
 
         return coordinate;

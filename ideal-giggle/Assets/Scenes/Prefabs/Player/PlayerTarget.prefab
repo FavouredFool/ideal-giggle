@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ce3f5d468b1734bbd52b8885933700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animationController: {fileID: 4037893136254092438}
+  _visualController: {fileID: 4037893136254092438}
 --- !u!114 &341716127005054490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,6 +88,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityManager: {fileID: 0}
+  _playerVisual: {fileID: 4037893136254092438}
 --- !u!114 &995190126873025134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,7 +113,8 @@ GameObject:
   - component: {fileID: 5760897010274260425}
   - component: {fileID: 5760897010274260430}
   - component: {fileID: 4037893136254092438}
-  - component: {fileID: 57919494}
+  - component: {fileID: 426199587}
+  - component: {fileID: 426199592}
   m_Layer: 0
   m_Name: PlayerVisual
   m_TagString: Untagged
@@ -196,22 +198,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerMovement: {fileID: -4579840251287570326}
---- !u!95 &57919494
-Animator:
-  serializedVersion: 3
+--- !u!114 &426199587
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5760897010274260429}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6a7e6f0fc875f9d44a542d26b578c98e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c10a934436f44b64d9e3febcd48122b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cubeLength: 0.5
+  _rollSpeed: 4
+--- !u!114 &426199592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5760897010274260429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3296bf02d5829c244ab43345f4d90e43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cubeLength: 0.5
+  _rollSpeed: 4

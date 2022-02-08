@@ -19,20 +19,19 @@ public class CubeBehaviour_BlockToBlock : MonoBehaviour, ICubeBehaviour
     {
         _direction = (toPosition - fromPosition).normalized;
 
-        yield return Rotate90Degrees();
+        yield return Rotate(90, Vector3.down);
 
-        yield return Rotate90Degrees();
+        yield return Rotate(90, Vector3.down);
     }
 
-    public IEnumerator Rotate90Degrees()
+    public IEnumerator Rotate(float angle, Vector3 anchorAngle)
     {
-        
-        _anchor = transform.position + (Vector3.down + _direction) * _cubeLength / 2f;
+        _anchor = transform.position + (anchorAngle + _direction) * _cubeLength / 2f;
         _axis = Vector3.Cross(Vector3.up, _direction);
 
-        float remainingAngle = 90;
+        float remainingAngle = angle;
 
-        while(remainingAngle > 0)
+        while (remainingAngle > 0)
         {
             float rotationAngle = Mathf.Min(Time.deltaTime * _rollSpeed * 100, remainingAngle);
             transform.RotateAround(_anchor, _axis, rotationAngle);

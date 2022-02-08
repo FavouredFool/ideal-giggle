@@ -8,16 +8,20 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]
     private PlayerVisualController _visualController;
 
-    private PlayerStepCalculator _movementCalculator;
+    private PlayerStepCalculator _stepCalculator;
 
     private Vector3 _endPosition = Vector3.negativeInfinity;
 
     private bool _isMoving = false;
 
+    public void Awake()
+    {
+        transform.position = CoordinateHelper.DetermineGridCoordinate(transform.position);
+    }
 
     public void Start()
     {
-        _movementCalculator = GetComponent<PlayerStepCalculator>();
+        _stepCalculator = GetComponent<PlayerStepCalculator>();
     }
 
     public void Update()
@@ -46,7 +50,7 @@ public class PlayerMovementController : MonoBehaviour
 
         _isMoving = true;
 
-        step = _movementCalculator.CalculateStep(transform.position, endPosition);
+        step = _stepCalculator.CalculateStep(transform.position, endPosition);
 
         _visualController.MoveStep(step);
     }
