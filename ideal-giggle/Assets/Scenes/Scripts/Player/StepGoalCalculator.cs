@@ -21,6 +21,7 @@ public class StepGoalCalculator : MonoBehaviour
 
     public Vector3 CalculateStepGoal(Vector3 activePosition, Vector3 endPosition)
     {
+        /*
         _activePosition = activePosition;
         _endPosition = endPosition;
         _movementVector = Vector3.zero;
@@ -68,8 +69,9 @@ public class StepGoalCalculator : MonoBehaviour
         {
             _stepGoal.y -= _heightDifference;
         }
+        */
 
-        return _stepGoal;
+        return endPosition;
     }
 
     public void FromCubeBehaviour()
@@ -80,8 +82,8 @@ public class StepGoalCalculator : MonoBehaviour
         EntityController entityFrom = _entityManager.GetEntityFromCoordiantes(_activePosition + (Vector3.down));
         EntityController entityTo = _entityManager.GetEntityFromCoordiantes(_stepGoal + (Vector3.down));
 
-        Debug.Log($"Entity: {entityFrom}");
-        foreach (EntityController activeReference in entityFrom.GetEntityReferences())
+        Debug.Log($"Entity: {entityTo}");
+        foreach (EntityController activeReference in entityTo.GetEntityReferences())
         {
             Debug.Log($"EntityReference: " + activeReference);
         }

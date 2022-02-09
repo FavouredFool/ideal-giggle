@@ -8,11 +8,17 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]
     private PlayerVisualController _visualController;
 
+    [SerializeField]
+    private EntityManager _entityManager;
+
     private PlayerStepCalculator _stepCalculator;
 
     private Vector3 _endPosition = Vector3.negativeInfinity;
 
     private bool _isMoving = false;
+
+    private EntityController _entityPlayerIsOn;
+    private EntityController _goalEntity;
 
     public void Awake()
     {
@@ -39,8 +45,12 @@ public class PlayerMovementController : MonoBehaviour
         if (_isMoving)
         {
             return;
-        } 
+        }
 
+        if (!ValidateEndPosition())
+        {
+            return;
+        }
         MoveTo(_endPosition);
     }
 
@@ -58,11 +68,20 @@ public class PlayerMovementController : MonoBehaviour
     public void SetEndPosition(Vector3 endPosition)
     {
         _endPosition = endPosition;
+
+        _entityPlayerIsOn = _entityManager.GetEntityFromCoordiantes(transform.position + Vector3.down);
+        _goalEntity = _entityManager.GetEntityFromCoordiantes(_endPosition + Vector3.down);
+
     }
 
     public void SetIsMoving(bool isMoving)
     {
         _isMoving = isMoving;
+    }
+
+    public bool ValidateEndPosition()
+    {
+        return _entityPlayerIsOn.GetEntityReferences().Contains(_goalEntity);
     }
 }
 

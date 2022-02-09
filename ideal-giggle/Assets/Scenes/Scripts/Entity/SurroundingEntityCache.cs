@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EntityHelper;
 
-public class EntityReferenceCalculator : MonoBehaviour
+public class SurroundingEntityCache : MonoBehaviour
 {
 
     private EntityManager _entityManager;
 
     private Vector3 _position;
-
-    private EntityController[] _entityReferences;
 
     private List<EntityController> _surroundingEntities;
 
@@ -33,7 +31,7 @@ public class EntityReferenceCalculator : MonoBehaviour
         foreach (EntityController entityController in _entityManager.GetEntityList())
         {
 
-            if (entityController.Equals(this))
+            if (entityController.GetPosition().Equals(transform.position))
             {
                 continue;
             }
@@ -64,9 +62,9 @@ public class EntityReferenceCalculator : MonoBehaviour
 
 
             bool xEdgeCheck = xInt != 0;
-            bool yEdgeCheck = yInt != 0;
+            bool zEdgeCheck = zInt != 0;
 
-            if (yEdgeCheck && xEdgeCheck)
+            if (zEdgeCheck && xEdgeCheck)
             {
                 continue;
             }

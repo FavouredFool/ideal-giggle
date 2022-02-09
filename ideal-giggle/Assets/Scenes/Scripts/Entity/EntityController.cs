@@ -10,21 +10,16 @@ public abstract class EntityController : MonoBehaviour
 
     protected List<EntityController> _entityCache;
 
-    protected EntityController[] _entityReferences = new EntityController[4];
+    protected List<EntityController> _entityReferences = new List<EntityController> { null, null, null, null };
 
-    protected EntityReferenceCalculator _entityReferenceCalculator;
+    protected SurroundingEntityCache _entityReferenceCalculator;
 
     protected Vector3 _position;
 
 
     public virtual void Awake()
     {
-        for (int i = 0; i < _entityReferences.Length; i++)
-        {
-            _entityReferences[i] = null;
-        }
-
-        _entityReferenceCalculator = GetComponent<EntityReferenceCalculator>();
+        _entityReferenceCalculator = GetComponent<SurroundingEntityCache>();
 
         transform.position = CoordinateHelper.DetermineGridCoordinate(transform.position);
         _position = transform.position;
@@ -38,7 +33,6 @@ public abstract class EntityController : MonoBehaviour
 
     public abstract void CalculateReferences();
 
-
     public Vector3 GetPosition()
     {
         return _position;
@@ -48,8 +42,7 @@ public abstract class EntityController : MonoBehaviour
     {
         return _entityType;
     }
-    
-    public EntityController[] GetEntityReferences()
+    public List<EntityController> GetEntityReferences()
     {
         return _entityReferences;
     }

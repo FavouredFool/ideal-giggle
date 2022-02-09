@@ -35,8 +35,6 @@ public class PlayerStepCalculator : MonoBehaviour
         cubeBehaviour = _cubeBehaviourCalculator.CalculateCubeBehaviour(activePosition, stepGoal);
         activeStep.SetCubeBehaviour(cubeBehaviour);
 
-
-
         return activeStep;
     }
 
