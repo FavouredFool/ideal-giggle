@@ -6,7 +6,7 @@ public class EntityManager : MonoBehaviour
 {
     private List<EntityController> _entityList;
 
-    public void Start()
+    public void Awake()
     {
         _entityList = new List<EntityController>(GetComponentsInChildren<EntityController>());
     }

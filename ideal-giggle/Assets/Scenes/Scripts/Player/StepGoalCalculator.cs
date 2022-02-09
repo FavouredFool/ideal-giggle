@@ -80,6 +80,14 @@ public class StepGoalCalculator : MonoBehaviour
         EntityController entityFrom = _entityManager.GetEntityFromCoordiantes(_activePosition + (Vector3.down));
         EntityController entityTo = _entityManager.GetEntityFromCoordiantes(_stepGoal + (Vector3.down));
 
+        Debug.Log($"Entity: {entityFrom}");
+        foreach (EntityController activeReference in entityFrom.GetEntityReferences())
+        {
+            Debug.Log($"EntityReference: " + activeReference);
+        }
+        Debug.Log("\n");
+        
+
         EntityType entityTypeFrom = EntityType.NONE;
         EntityType entityTypeTo = EntityType.NONE;
 
