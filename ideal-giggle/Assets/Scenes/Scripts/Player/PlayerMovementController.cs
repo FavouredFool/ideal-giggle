@@ -13,7 +13,11 @@ public class PlayerMovementController : MonoBehaviour
 
     private PlayerStepCalculator _stepCalculator;
 
+    private PlayerPathCalculator _pathCalculator;
+
     private Vector3 _endPosition = Vector3.negativeInfinity;
+
+    private List<AbstractEntityController> _playerMovementPath;
 
     private bool _isMoving = false;
 
@@ -30,6 +34,7 @@ public class PlayerMovementController : MonoBehaviour
     public void Start()
     {
         _stepCalculator = GetComponent<PlayerStepCalculator>();
+        _pathCalculator = GetComponent<PlayerPathCalculator>();
     }
 
     public void Update()
@@ -49,20 +54,16 @@ public class PlayerMovementController : MonoBehaviour
             return;
         }
 
-        if (!ValidateEndPosition())
-        {
-            return;
-        }
-        MoveTo(_endPosition);
+        MoveAlongPath(_playerMovementPath);
     }
 
-    public void MoveTo(Vector3 endPosition)
+    public void MoveAlongPath(List<AbstractEntityController> movementPath)
     {
         Step step;
 
         _isMoving = true;
 
-        step = _stepCalculator.CalculateStep(transform.position, endPosition);
+        step = _stepCalculator.CalculateStep(transform.position, movementPath);
 
         _visualController.MoveStep(step);
     }
@@ -70,20 +71,18 @@ public class PlayerMovementController : MonoBehaviour
     public void SetEndPosition(Vector3 endPosition)
     {
         _endPosition = endPosition;
+        Vector3 startPosition = transform.position;
 
         _entityPlayerIsOn = _entityManager.GetEntityFromCoordiantes(transform.position + Vector3.down);
         _goalEntity = _entityManager.GetEntityFromCoordiantes(_endPosition + Vector3.down);
+
+        _playerMovementPath = _pathCalculator.CalculatePath(_entityPlayerIsOn, _goalEntity);
 
     }
 
     public void SetIsMoving(bool isMoving)
     {
         _isMoving = isMoving;
-    }
-
-    public bool ValidateEndPosition()
-    {
-        return _entityPlayerIsOn.GetEntityReferences().Contains(_goalEntity);
     }
 
     public AbstractEntityController GetGroundEntity()

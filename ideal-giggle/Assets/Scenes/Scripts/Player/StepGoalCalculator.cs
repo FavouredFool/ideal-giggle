@@ -19,7 +19,7 @@ public class StepGoalCalculator : MonoBehaviour
 
 
 
-    public AbstractEntityController CalculateStepGoalEntity(AbstractEntityController activeEntity, AbstractEntityController endEntity)
+    public AbstractEntityController CalculateStepGoalEntity(AbstractEntityController activeEntity, List<AbstractEntityController> playerMovementPath)
     {
         /*
         _activePosition = activePosition;
@@ -71,24 +71,32 @@ public class StepGoalCalculator : MonoBehaviour
         }
         */
 
+        AbstractEntityController endEntity = null;
+
+        for (int i = 0; i < playerMovementPath.Count; i++)
+        {
+            if (!playerMovementPath[i].Equals(activeEntity))
+            {
+                continue;
+            }
+
+            if (playerMovementPath[i+1].Equals(null)) {
+                Debug.LogWarning($"FEHLER: Das gesuchte Path-Item ist null");
+                break;
+            }
+
+            endEntity = playerMovementPath[i + 1];
+        }
+
+
         return endEntity;
     }
 
     public void FromCubeBehaviour()
     {
-        Debug.Log($"ActivePosition: {_activePosition}");
-        Debug.Log($"StepGoal: {_stepGoal}");
 
         AbstractEntityController entityFrom = _entityManager.GetEntityFromCoordiantes(_activePosition + (Vector3.down));
         AbstractEntityController entityTo = _entityManager.GetEntityFromCoordiantes(_stepGoal + (Vector3.down));
-
-        Debug.Log($"Entity: {entityTo}");
-        foreach (AbstractEntityController activeReference in entityTo.GetEntityReferences())
-        {
-            Debug.Log($"EntityReference: " + activeReference);
-        }
-        Debug.Log("\n");
-        
 
         EntityType entityTypeFrom = EntityType.NONE;
         EntityType entityTypeTo = EntityType.NONE;
