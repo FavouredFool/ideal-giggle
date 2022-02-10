@@ -5,12 +5,14 @@ using UnityEngine;
 public class PlayerPathCalculator : MonoBehaviour
 {
 
-    public int radius = 5;
+    public int _radius = 5;
 
     private List<AbstractEntityController> _newList;
 
     private AbstractEntityController _startEntity;
     private AbstractEntityController _endEntity;
+
+    private int _counter = 0;
 
     public void Start()
     {
@@ -20,6 +22,7 @@ public class PlayerPathCalculator : MonoBehaviour
 
     public List<AbstractEntityController> CalculatePath(AbstractEntityController startEntity, AbstractEntityController endEntity)
     {
+        _counter = 0;
         _startEntity = startEntity;
         _endEntity = endEntity;
 
@@ -29,6 +32,7 @@ public class PlayerPathCalculator : MonoBehaviour
         
         _newList = ReferenceNextEntity(startEntity, new List<AbstractEntityController>());
 
+        /*
         if (_newList != null)
         {
             foreach (AbstractEntityController pathEntity in _newList)
@@ -39,6 +43,9 @@ public class PlayerPathCalculator : MonoBehaviour
         {
             Debug.Log("Path is null");
         }
+        */
+
+        Debug.Log($"COUNTER: {_counter}");
         
 
         return _newList;
@@ -46,7 +53,9 @@ public class PlayerPathCalculator : MonoBehaviour
 
     private List<AbstractEntityController> ReferenceNextEntity(AbstractEntityController activeEntity, List<AbstractEntityController> seenEntities)
     {
+        _counter++;
         AbstractEntityController referenceEntity;
+        List<AbstractEntityController> bestPath = null;
         Vector3 posDifference;
 
         seenEntities.Add(activeEntity);
@@ -66,7 +75,7 @@ public class PlayerPathCalculator : MonoBehaviour
             }
 
             posDifference = _startEntity.GetPosition() - referenceEntity.GetPosition();
-            if (Mathf.Abs(posDifference.x) > radius || Mathf.Abs(posDifference.y) > radius || Mathf.Abs(posDifference.z) > radius)
+            if (Mathf.Abs(posDifference.x) > _radius || Mathf.Abs(posDifference.y) > _radius || Mathf.Abs(posDifference.z) > _radius)
             {
                 continue;
             }
@@ -82,11 +91,17 @@ public class PlayerPathCalculator : MonoBehaviour
 
             if (returnedPath != null)
             {
-                return returnedPath;
+                if (bestPath == null)
+                {
+                    bestPath = returnedPath;
+                } else if (bestPath.Count > returnedPath.Count)
+                {
+                    bestPath = returnedPath;
+                }
             }
         }
 
         // Go back out without sending anything back
-        return null;
+        return bestPath;
     }
 }
