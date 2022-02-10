@@ -24,15 +24,17 @@ public class PlayerStepCalculator : MonoBehaviour
     {
         var activeStep = new Step();
 
-        // Calculate Stepgoal
-        Vector3 stepGoal;
-        stepGoal = _stepGoalCalculator.CalculateStepGoal(activePosition, endPosition);
-        activeStep.SetStepGoal(stepGoal);
+        AbstractEntityController activeEntity = _entityManager.GetEntityFromCoordiantes(activePosition + Vector3.down);
+        AbstractEntityController endEntity = _entityManager.GetEntityFromCoordiantes(endPosition + Vector3.down); ;
 
+        // Calculate Stepgoal
+        AbstractEntityController stepGoal;
+        stepGoal = _stepGoalCalculator.CalculateStepGoalEntity(activeEntity, endEntity);
+        activeStep.SetStepGoalEntity(stepGoal);
 
         // Calculate Animation to use
-        ICubeBehaviour cubeBehaviour;
-        cubeBehaviour = _cubeBehaviourCalculator.CalculateCubeBehaviour(activePosition, stepGoal);
+        AbstractCubeBehaviour cubeBehaviour;
+        cubeBehaviour = _cubeBehaviourCalculator.CalculateCubeBehaviour(activeEntity, stepGoal);
         activeStep.SetCubeBehaviour(cubeBehaviour);
 
         return activeStep;

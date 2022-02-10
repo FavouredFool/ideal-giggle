@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class EntityManager : MonoBehaviour
 {
-    private List<EntityController> _entityList;
+    private List<AbstractEntityController> _entityList;
 
     public void Awake()
     {
-        _entityList = new List<EntityController>(GetComponentsInChildren<EntityController>());
+        _entityList = new List<AbstractEntityController>(GetComponentsInChildren<AbstractEntityController>());
     }
 
-    public EntityController GetEntityFromCoordiantes(Vector3 coordinates)
+    public AbstractEntityController GetEntityFromCoordiantes(Vector3 coordinates)
     {
-        EntityController entity = null;
+        AbstractEntityController entity = null;
 
-        foreach (EntityController activeEntity in _entityList)
+        foreach (AbstractEntityController activeEntity in _entityList)
         {
             if (!activeEntity.GetPosition().Equals(coordinates)) {
                 continue;
@@ -29,7 +29,7 @@ public class EntityManager : MonoBehaviour
     }
 
 
-    public List<EntityController> GetEntityList()
+    public List<AbstractEntityController> GetEntityList()
     {
         return _entityList;
     }

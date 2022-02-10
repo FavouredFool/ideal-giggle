@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeBehaviour_BlockToStair : AbstractCubeBehaviour
+public class CubeBehaviour_StairToStairEven : AbstractCubeBehaviour
 {
 
     [SerializeField]
@@ -22,18 +22,8 @@ public class CubeBehaviour_BlockToStair : AbstractCubeBehaviour
 
         _direction = new Vector3(xDirection, 0, zDirection).normalized;
 
-        if (!_isRevered)
-        {
-            yield return Rotate(90, Vector3.down);
-            yield return Rotate(180, Vector3.down);
-
-        } else
-        {
-            yield return Rotate(90, Vector3.down);
-            yield return Rotate(180, Vector3.up);
-        }
-
-        
+        yield return Rotate(180, Vector3.up);
+        yield return Rotate(180, Vector3.down);
     }
 
     public IEnumerator Rotate(float angle, Vector3 anchorAngle)

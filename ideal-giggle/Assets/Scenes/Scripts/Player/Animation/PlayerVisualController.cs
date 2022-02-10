@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static EntityHelper;
 
 public class PlayerVisualController : MonoBehaviour
 {
     [SerializeField]
     private PlayerMovementController _playerMovement;
 
-    private Vector3 _startLocalPosition;
+    private Vector3 _blockLocalPosition;
+    private Vector3 _stairLocalPosition;
 
     private Step _step;
 
     public void MoveStep(Step step)
     {
-        _startLocalPosition = transform.localPosition;
+        _blockLocalPosition = new Vector3(0, -0.25f, 0);
+        _stairLocalPosition = new Vector3(0, -0.75f, 0);
         _step = step;
 
         StartCoroutine(PlayCubeBehaviour());
@@ -23,7 +26,7 @@ public class PlayerVisualController : MonoBehaviour
     public IEnumerator PlayCubeBehaviour()
     {
         Vector3 fromPosition = _playerMovement.transform.position;
-        Vector3 toPosition = _step.GetStepGoal();
+        Vector3 toPosition = _step.GetStepGoalEntity().GetPosition() + Vector3.up;
 
         yield return _step.GetCubeBehavior().MoveCubeVisual(fromPosition, toPosition);
         PlacePlayer();
@@ -32,9 +35,16 @@ public class PlayerVisualController : MonoBehaviour
 
     public void PlacePlayer()
     {
-        _playerMovement.transform.position = _step.GetStepGoal();
-        transform.localPosition = _startLocalPosition;
-
+        _playerMovement.transform.position = _step.GetStepGoalEntity().GetPosition() + Vector3.up;
         _playerMovement.SetIsMoving(false);
+        _playerMovement.SetGroundEntity(_step.GetStepGoalEntity());
+
+        if (_playerMovement.GetGroundEntity().GetEntityType().Equals(EntityType.STAIR))
+        {
+            transform.localPosition = _stairLocalPosition;
+        } else
+        {
+            transform.localPosition = _blockLocalPosition;
+        }
     }
 }

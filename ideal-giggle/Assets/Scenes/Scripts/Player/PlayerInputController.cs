@@ -42,7 +42,7 @@ public class PlayerInputController : MonoBehaviour
 
         var differentY = new List<Vector3>();
 
-        foreach (EntityController entity in _entityManager.GetEntityList())
+        foreach (AbstractEntityController entity in _entityManager.GetEntityList())
         {
             if (entity.GetPosition().x.Equals(hit.x) && entity.GetPosition().z.Equals(hit.z))
             {

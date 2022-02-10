@@ -19,7 +19,7 @@ public class StepGoalCalculator : MonoBehaviour
 
 
 
-    public Vector3 CalculateStepGoal(Vector3 activePosition, Vector3 endPosition)
+    public AbstractEntityController CalculateStepGoalEntity(AbstractEntityController activeEntity, AbstractEntityController endEntity)
     {
         /*
         _activePosition = activePosition;
@@ -71,7 +71,7 @@ public class StepGoalCalculator : MonoBehaviour
         }
         */
 
-        return endPosition;
+        return endEntity;
     }
 
     public void FromCubeBehaviour()
@@ -79,11 +79,11 @@ public class StepGoalCalculator : MonoBehaviour
         Debug.Log($"ActivePosition: {_activePosition}");
         Debug.Log($"StepGoal: {_stepGoal}");
 
-        EntityController entityFrom = _entityManager.GetEntityFromCoordiantes(_activePosition + (Vector3.down));
-        EntityController entityTo = _entityManager.GetEntityFromCoordiantes(_stepGoal + (Vector3.down));
+        AbstractEntityController entityFrom = _entityManager.GetEntityFromCoordiantes(_activePosition + (Vector3.down));
+        AbstractEntityController entityTo = _entityManager.GetEntityFromCoordiantes(_stepGoal + (Vector3.down));
 
         Debug.Log($"Entity: {entityTo}");
-        foreach (EntityController activeReference in entityTo.GetEntityReferences())
+        foreach (AbstractEntityController activeReference in entityTo.GetEntityReferences())
         {
             Debug.Log($"EntityReference: " + activeReference);
         }

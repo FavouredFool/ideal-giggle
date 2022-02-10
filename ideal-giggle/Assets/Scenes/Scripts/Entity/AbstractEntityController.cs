@@ -4,13 +4,13 @@ using System;
 using UnityEngine;
 using static EntityHelper;
 
-public abstract class EntityController : MonoBehaviour
+public abstract class AbstractEntityController : MonoBehaviour
 {
     protected EntityType _entityType;
 
-    protected List<EntityController> _entityCache;
+    protected List<AbstractEntityController> _entityCache;
 
-    protected List<EntityController> _entityReferences = new List<EntityController> { null, null, null, null };
+    protected List<AbstractEntityController> _entityReferences = new List<AbstractEntityController> { null, null, null, null };
 
     protected SurroundingEntityCache _entityReferenceCalculator;
 
@@ -42,7 +42,7 @@ public abstract class EntityController : MonoBehaviour
     {
         return _entityType;
     }
-    public List<EntityController> GetEntityReferences()
+    public List<AbstractEntityController> GetEntityReferences()
     {
         return _entityReferences;
     }

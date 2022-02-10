@@ -12,26 +12,13 @@ public class CubeBehaviourCalculator : MonoBehaviour
     [SerializeField]
     private PlayerVisualController _playerVisual;
 
-    public ICubeBehaviour CalculateCubeBehaviour(Vector3 activePosition, Vector3 stepGoal)
+    public AbstractCubeBehaviour CalculateCubeBehaviour(AbstractEntityController activeEntity, AbstractEntityController stepGoalEntity)
     {
-        EntityController entityFrom = _entityManager.GetEntityFromCoordiantes(activePosition + Vector3.down);
-        EntityController entityTo = _entityManager.GetEntityFromCoordiantes(stepGoal + Vector3.down);
+        EntityType entityTypeFrom = activeEntity.GetEntityType();
+        EntityType entityTypeTo = stepGoalEntity.GetEntityType();
 
-        EntityType entityTypeFrom = EntityType.NONE;
-        EntityType entityTypeTo = EntityType.NONE;
-
-
-        if (entityFrom)
-        {
-            entityTypeFrom = entityFrom.GetEntityType();
-        }
-        if (entityTo)
-        {
-            entityTypeTo = entityTo.GetEntityType();
-        }
-        
-
-        ICubeBehaviour cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_BlockToBlock>();
+        AbstractCubeBehaviour cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_BlockToBlock>();
+        bool isReverted = false;
 
         switch (entityTypeFrom)
         {
@@ -44,6 +31,16 @@ public class CubeBehaviourCalculator : MonoBehaviour
                         break;
                     case (EntityType.STAIR):
                         cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_BlockToStair>();
+
+                        isReverted = activeEntity.GetPosition().y < stepGoalEntity.GetPosition().y;
+                        if (isReverted)
+                        {
+                            cubeBehaviour.SetIsRevered(true);
+                        } else
+                        {
+                            cubeBehaviour.SetIsRevered(false);
+                        }
+
                         break;
                     default:
                         Debug.LogWarning($"FEHLER: entityTypeTo ist: {entityTypeTo}");
@@ -56,8 +53,38 @@ public class CubeBehaviourCalculator : MonoBehaviour
                 switch (entityTypeTo)
                 {
                     case (EntityType.BLOCK):
+                        cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_StairToBlock>();
+
+                        isReverted = activeEntity.GetPosition().y > stepGoalEntity.GetPosition().y;
+                        if (isReverted)
+                        {
+                            cubeBehaviour.SetIsRevered(true);
+                        }
+                        else
+                        {
+                            cubeBehaviour.SetIsRevered(false);
+                        }
                         break;
+
                     case (EntityType.STAIR):
+                        if (activeEntity.GetPosition().y == stepGoalEntity.GetPosition().y)
+                        {
+                            cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_StairToStairEven>();
+                        } else
+                        {
+                            cubeBehaviour = _playerVisual.GetComponent <CubeBehaviour_StairToStairUneven>();
+
+                            isReverted = activeEntity.GetPosition().y > stepGoalEntity.GetPosition().y;
+                            if (isReverted)
+                            {
+                                cubeBehaviour.SetIsRevered(true);
+                            }
+                            else
+                            {
+                                cubeBehaviour.SetIsRevered(false);
+                            }
+                        }
+
                         break;
                     default:
                         Debug.LogWarning($"FEHLER: entityTypeTo ist: {entityTypeTo}");

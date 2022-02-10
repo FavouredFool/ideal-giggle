@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static EntityHelper;
 
-public class BlockController : EntityController
+public class BlockController : AbstractEntityController
 {
 
     bool _transitionIsSet = false;
@@ -72,7 +72,7 @@ public class BlockController : EntityController
 
     public void EvaluateUpperRow(int index)
     {
-        foreach (EntityController activeEntity in _entityCache)
+        foreach (AbstractEntityController activeEntity in _entityCache)
         {
             if (!(activeEntity.GetPosition().Equals(_position + _referenceDirection + Vector3.up)))
             {
@@ -85,6 +85,30 @@ public class BlockController : EntityController
             {
                 case EntityType.STAIR:
                     Debug.LogWarning("CHECK, OB BEIDE STAIRS KORREKT GEDREHT SIND, FEHLT");
+
+                    // Check ob Treppe bedeckt ist, oder über dem Spieler ein Block ist
+
+                    bool foundCeil = false;
+                    foreach (AbstractEntityController ceilingEntity in _entityCache)
+                    {
+                        if (ceilingEntity.GetPosition().Equals(_position + (Vector3.up *2))) {
+                            foundCeil = true;
+                            break;
+                        }
+
+                        if (ceilingEntity.GetPosition().Equals(_position + _referenceDirection + (Vector3.up * 2)))
+                        {
+                            foundCeil = true;
+                            break;
+                        }
+                    }
+
+                    if (foundCeil)
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
                     _entityReferences[index] = activeEntity;
                     break;
                 default:
@@ -98,7 +122,7 @@ public class BlockController : EntityController
 
     public void EvaluateMiddleRow(int index)
     {
-        foreach (EntityController activeEntity in _entityCache)
+        foreach (AbstractEntityController activeEntity in _entityCache)
         {
             if (!activeEntity.GetPosition().Equals(_position + _referenceDirection))
             {

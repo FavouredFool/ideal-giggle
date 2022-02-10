@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeBehaviour_BlockToBlock : MonoBehaviour, ICubeBehaviour
+public class CubeBehaviour_BlockToBlock : AbstractCubeBehaviour
 {
 
     [SerializeField]
@@ -15,7 +15,7 @@ public class CubeBehaviour_BlockToBlock : MonoBehaviour, ICubeBehaviour
     private Vector3 _anchor;
     private Vector3 _axis;
 
-    public IEnumerator MoveCubeVisual(Vector3 fromPosition, Vector3 toPosition)
+    public override IEnumerator MoveCubeVisual(Vector3 fromPosition, Vector3 toPosition)
     {
         _direction = (toPosition - fromPosition).normalized;
 

@@ -17,8 +17,10 @@ public class PlayerMovementController : MonoBehaviour
 
     private bool _isMoving = false;
 
-    private EntityController _entityPlayerIsOn;
-    private EntityController _goalEntity;
+    private AbstractEntityController _entityPlayerIsOn;
+    private AbstractEntityController _goalEntity;
+
+    private AbstractEntityController _groundEntity;
 
     public void Awake()
     {
@@ -82,6 +84,16 @@ public class PlayerMovementController : MonoBehaviour
     public bool ValidateEndPosition()
     {
         return _entityPlayerIsOn.GetEntityReferences().Contains(_goalEntity);
+    }
+
+    public AbstractEntityController GetGroundEntity()
+    {
+        return _groundEntity;
+    }
+
+    public void SetGroundEntity(AbstractEntityController groundEntity)
+    {
+        _groundEntity = groundEntity;
     }
 }
 

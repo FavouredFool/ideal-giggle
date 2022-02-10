@@ -10,25 +10,25 @@ public class SurroundingEntityCache : MonoBehaviour
 
     private Vector3 _position;
 
-    private List<EntityController> _surroundingEntities;
+    private List<AbstractEntityController> _surroundingEntities;
 
     public void Awake()
     {
         _entityManager = GetComponentInParent<EntityManager>();
     }
 
-    public List<EntityController> CacheSurroundingEntityReferences(Vector3 position)
+    public List<AbstractEntityController> CacheSurroundingEntityReferences(Vector3 position)
     {
         _position = position;
         _surroundingEntities = CacheSurroundingEntities();
         return _surroundingEntities;
     }
 
-    private List<EntityController> CacheSurroundingEntities()
+    private List<AbstractEntityController> CacheSurroundingEntities()
     {
-        List<EntityController> surroundingEntities = new List<EntityController>();
+        List<AbstractEntityController> surroundingEntities = new List<AbstractEntityController>();
 
-        foreach (EntityController entityController in _entityManager.GetEntityList())
+        foreach (AbstractEntityController entityController in _entityManager.GetEntityList())
         {
 
             if (entityController.GetPosition().Equals(transform.position))
@@ -37,7 +37,7 @@ public class SurroundingEntityCache : MonoBehaviour
             }
 
             int yInt = (int)entityController.GetPosition().y - (int)_position.y;
-            bool yCheck = -1 <= yInt && yInt <= 1;
+            bool yCheck = -1 <= yInt && yInt <= 2;
 
             if (!yCheck)
             {

@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class Step
 {
-    private ICubeBehaviour _cubeBehaviour;
+    private AbstractCubeBehaviour _cubeBehaviour;
 
-    private Vector3 _stepGoal;
+    private AbstractEntityController _stepGoalEntity;
 
-    public void SetStepGoal(Vector3 stepGoal)
+    public void SetStepGoalEntity(AbstractEntityController stepGoalEntity)
     {
-        _stepGoal = stepGoal;
+        _stepGoalEntity = stepGoalEntity;
     }
 
-    public Vector3 GetStepGoal()
+    public AbstractEntityController GetStepGoalEntity()
     {
-        return _stepGoal;
+        return _stepGoalEntity;
     }
 
-    public ICubeBehaviour GetCubeBehavior()
+    public AbstractCubeBehaviour GetCubeBehavior()
     {
         return _cubeBehaviour;
     }
 
-    public void SetCubeBehaviour(ICubeBehaviour cubeBehaviour)
+    public void SetCubeBehaviour(AbstractCubeBehaviour cubeBehaviour)
     {
         _cubeBehaviour = cubeBehaviour;
     }
