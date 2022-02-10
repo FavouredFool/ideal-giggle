@@ -54,6 +54,11 @@ public class PlayerMovementController : MonoBehaviour
             return;
         }
 
+        if (_playerMovementPath == null)
+        {
+            return;
+        }
+
         MoveAlongPath(_playerMovementPath);
     }
 

@@ -19,14 +19,20 @@ public class PlayerVisualController : MonoBehaviour
         _stairLocalPosition = new Vector3(0, -0.75f, 0);
         _step = step;
 
-        StartCoroutine(PlayCubeBehaviour());
+        Vector3 fromPosition = _playerMovement.transform.position;
+
+        _playerMovement.transform.position = _step.GetStepGoalEntity().GetPosition() + Vector3.up;
+
+        transform.position = fromPosition;
+
+        StartCoroutine(PlayCubeBehaviour(fromPosition));
     }
 
 
-    public IEnumerator PlayCubeBehaviour()
+    public IEnumerator PlayCubeBehaviour(Vector3 fromPosition)
     {
-        Vector3 fromPosition = _playerMovement.transform.position;
-        Vector3 toPosition = _step.GetStepGoalEntity().GetPosition() + Vector3.up;
+        //Vector3 fromPosition = _playerMovement.transform.position;
+        Vector3 toPosition = _playerMovement.transform.position;
 
         yield return _step.GetCubeBehavior().MoveCubeVisual(fromPosition, toPosition);
         PlacePlayer();
@@ -35,7 +41,7 @@ public class PlayerVisualController : MonoBehaviour
 
     public void PlacePlayer()
     {
-        _playerMovement.transform.position = _step.GetStepGoalEntity().GetPosition() + Vector3.up;
+        
         _playerMovement.SetIsMoving(false);
         _playerMovement.SetGroundEntity(_step.GetStepGoalEntity());
 

@@ -43,12 +43,18 @@ public class CubeBehaviour_BlockToStair : AbstractCubeBehaviour
 
         float remainingAngle = angle;
 
-        while (remainingAngle > 0)
+        int loopcounter = 0;
+        while (remainingAngle > 0 || loopcounter > 1000)
         {
+            loopcounter++;
             float rotationAngle = Mathf.Min(Time.deltaTime * _rollSpeed * 100, remainingAngle);
             transform.RotateAround(_anchor, _axis, rotationAngle);
             remainingAngle -= rotationAngle;
             yield return null;
+        }
+        if (loopcounter > 1000)
+        {
+            Debug.LogWarning("Endlosschleife erzeugt");
         }
     }
 }
