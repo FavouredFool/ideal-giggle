@@ -5,6 +5,7 @@ using System;
 
 public class PlayerMovementController : MonoBehaviour
 {
+    [Header("Dependencies")]
     [SerializeField]
     private PlayerVisualController _visualController;
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerInputController : MonoBehaviour
 {
+    [Header("Dependencies")]
     [SerializeField]
     private EntityManager _entityManager;
 
@@ -43,7 +44,6 @@ public class PlayerInputController : MonoBehaviour
     public Vector3 CalculateMovePosFromClickPos(Vector3 hit)
     {
         // When you click the side of a square, the click should register at the top of the whole square-stack
-
         var differentY = new List<Vector3>();
 
         foreach (AbstractEntityController entity in _entityManager.GetEntityList())

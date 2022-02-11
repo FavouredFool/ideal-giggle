@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static EntityHelper;
 
 public class PlayerVisualController : MonoBehaviour
 {
+    [Header("Dependencies")]
     [SerializeField]
     private PlayerMovementController _playerMovement;
 
@@ -24,16 +23,13 @@ public class PlayerVisualController : MonoBehaviour
         _playerMovement.SetGroundEntity(goalEntity);
         transform.position = startPosition + startEntity.GetVisualPosition();
 
-        StartCoroutine(PlayCubeBehaviour(startPosition));
+        StartCoroutine(PlayCubeBehaviour(startPosition, endPosition));
     }
 
 
-    public IEnumerator PlayCubeBehaviour(Vector3 fromPosition)
+    public IEnumerator PlayCubeBehaviour(Vector3 startPosition, Vector3 endPosition)
     {
-        //Vector3 fromPosition = _playerMovement.transform.position;
-        Vector3 toPosition = _playerMovement.transform.position;
-
-        yield return _step.GetCubeBehavior().MoveCubeVisual(fromPosition, toPosition);
+        yield return _step.GetCubeBehavior().MoveCubeVisual(startPosition, endPosition);
         EndAnimation();
     }
 

@@ -3,6 +3,8 @@ using static EntityHelper;
 
 public class CubeBehaviourCalculator : MonoBehaviour
 {
+
+    [Header("Dependencies")]
     [SerializeField]
     private PlayerVisualController _playerVisual;
 

@@ -5,6 +5,7 @@ using System.Linq;
 
 public class PlayerPathCalculator : MonoBehaviour
 {
+    [Header("Dependencies")]
     [SerializeField]
     private EntityManager _entityManager;
 

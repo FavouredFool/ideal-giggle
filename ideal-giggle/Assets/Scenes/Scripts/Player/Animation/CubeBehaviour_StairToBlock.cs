@@ -7,7 +7,6 @@ public class CubeBehaviour_StairToBlock : AbstractCubeBehaviour
     {
         if (!_isReversed)
         {
-            Debug.Log("DOWNDOWNDOWNBYTHERIVER");
             yield return Rotate(180, Vector3.down);
             yield return Rotate(90, Vector3.down);
         }
