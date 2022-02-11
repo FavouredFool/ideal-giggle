@@ -13,6 +13,7 @@ public class BlockController : AbstractEntityController
     {
         base.Awake();
         _entityType = EntityType.BLOCK;
+        _visualPosition = new Vector3(0, -0.25f, 0);
     }
 
     public override void CalculateReferences()

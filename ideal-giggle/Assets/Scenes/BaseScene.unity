@@ -10784,6 +10784,26 @@ PrefabInstance:
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 810713284}
+    - target: {fileID: 426199587, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _rollSpeed
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 426199592, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _rollSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629877486, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _rollSpeed
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629877490, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _rollSpeed
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629877491, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _rollSpeed
+      value: 4.5
+      objectReference: {fileID: 0}
     - target: {fileID: 341716127005054490, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: _entityManager
       value: 

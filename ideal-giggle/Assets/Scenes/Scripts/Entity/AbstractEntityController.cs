@@ -16,6 +16,8 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     protected Vector3 _position;
 
+    protected Vector3 _visualPosition;
+
     // PathfinderStuff:
     public AbstractEntityController Connection { get; private set; }
     public float G { get; private set; }
@@ -82,6 +84,16 @@ public abstract class AbstractEntityController : MonoBehaviour
         {
             renderers[i].material = material;
         }
+    }
+
+    public Vector3 GetVisualPosition()
+    {
+        return _visualPosition;
+    }
+
+    public Vector3 GetAdjacentPosition(Vector3 addedVector)
+    {
+        return GetPosition() + addedVector;
     }
 
 }

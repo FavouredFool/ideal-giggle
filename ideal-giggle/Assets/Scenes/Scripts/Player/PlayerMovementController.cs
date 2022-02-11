@@ -36,6 +36,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         _stepCalculator = GetComponent<PlayerStepCalculator>();
         _pathCalculator = GetComponent<PlayerPathCalculator>();
+        _groundEntity = _entityManager.GetEntityFromCoordiantes(transform.position + Vector3.down);
     }
 
     public void Update()

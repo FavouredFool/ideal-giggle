@@ -13,6 +13,7 @@ public class StairController : AbstractEntityController
     {
         base.Awake();
         _entityType = EntityType.STAIR;
+        _visualPosition = new Vector3(0, -0.75f, 0);
     }
 
     public override void CalculateReferences()
