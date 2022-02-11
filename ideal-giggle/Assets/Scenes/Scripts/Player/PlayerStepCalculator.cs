@@ -25,7 +25,6 @@ public class PlayerStepCalculator : MonoBehaviour
         var activeStep = new Step();
 
         AbstractEntityController activeEntity = _entityManager.GetEntityFromCoordiantes(activePosition + Vector3.down);
-        //AbstractEntityController endEntity = _entityManager.GetEntityFromCoordiantes(endPosition + Vector3.down); ;
 
         // Calculate Stepgoal
         AbstractEntityController stepGoal;

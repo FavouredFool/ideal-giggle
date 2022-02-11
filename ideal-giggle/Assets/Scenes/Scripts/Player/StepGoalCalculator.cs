@@ -21,56 +21,6 @@ public class StepGoalCalculator : MonoBehaviour
 
     public AbstractEntityController CalculateStepGoalEntity(AbstractEntityController activeEntity, List<AbstractEntityController> playerMovementPath)
     {
-        /*
-        _activePosition = activePosition;
-        _endPosition = endPosition;
-        _movementVector = Vector3.zero;
-
-
-        int xActive = (int)_activePosition.x;
-        int xEnd = (int)_endPosition.x;
-        int zActive = (int)_activePosition.z;
-        int zEnd = (int)_endPosition.z;
-
-        int distX = Mathf.Abs(xActive - xEnd);
-        int distZ = Mathf.Abs(zActive - zEnd);
-
-        
-
-        if (distX > distZ)
-        {
-            _movementVector.x = Mathf.Sign(xEnd - xActive);
-        }
-        else if (distZ > distX)
-        {
-            _movementVector.z = Mathf.Sign(zEnd - zActive);
-        }
-        else
-        {
-            if (Random.Range(0, 2) == 0)
-            {
-                _movementVector.x = Mathf.Sign(xEnd - xActive);
-            }
-            else
-            {
-                _movementVector.z = Mathf.Sign(zEnd - zActive);
-            }
-        }
-
-        _stepGoal = _activePosition + _movementVector;
-
-        FromCubeBehaviour();
-
-        if (_activePosition.y < _endPosition.y)
-        {
-            _stepGoal.y += _heightDifference;
-        }
-        else if (_activePosition.y > _endPosition.y)
-        {
-            _stepGoal.y -= _heightDifference;
-        }
-        */
-
         AbstractEntityController endEntity = null;
 
         for (int i = 0; i < playerMovementPath.Count; i++)

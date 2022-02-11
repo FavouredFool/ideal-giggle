@@ -74,5 +74,15 @@ public abstract class AbstractEntityController : MonoBehaviour
         H = h;
     }
 
+    public void ChangeMaterial(Material material)
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+
+        for(int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material = material;
+        }
+    }
+
 }
 

@@ -20,6 +20,7 @@ public class PlayerMovementController : MonoBehaviour
     private List<AbstractEntityController> _playerMovementPath;
 
     private bool _isMoving = false;
+    private bool _pathCalculating = false;
 
     private AbstractEntityController _entityPlayerIsOn;
     private AbstractEntityController _goalEntity;
@@ -75,13 +76,29 @@ public class PlayerMovementController : MonoBehaviour
 
     public void SetEndPosition(Vector3 endPosition)
     {
+        if (_pathCalculating)
+        {
+            return;
+        }
+
         _endPosition = endPosition;
         Vector3 startPosition = transform.position;
 
         _entityPlayerIsOn = _entityManager.GetEntityFromCoordiantes(transform.position + Vector3.down);
         _goalEntity = _entityManager.GetEntityFromCoordiantes(_endPosition + Vector3.down);
 
-        _playerMovementPath = _pathCalculator.CalculatePathAstar(_entityPlayerIsOn, _goalEntity);
+        _playerMovementPath = null;
+        StartCoroutine(CalculatePath());
+    }
+
+    public IEnumerator CalculatePath()
+    {
+        _pathCalculating = true;
+        PathfinderCoroutine pc = new PathfinderCoroutine(this, _pathCalculator.CalculatePathAstar(_entityPlayerIsOn, _goalEntity));
+        yield return pc.coroutine;
+        _playerMovementPath = (List<AbstractEntityController>) pc.result;
+        _pathCalculating = false;
+        
     }
 
     public void SetIsMoving(bool isMoving)
@@ -100,4 +117,26 @@ public class PlayerMovementController : MonoBehaviour
     }
 }
 
+public class PathfinderCoroutine
+{
+    public Coroutine coroutine { get; private set; }
+    public object result;
+    private IEnumerator target;
+
+    public PathfinderCoroutine(MonoBehaviour owner, IEnumerator target)
+    {
+        this.target = target;
+        coroutine = owner.StartCoroutine(Run());
+    }
+
+    private IEnumerator Run()
+    {
+        while(target.MoveNext())
+        {
+            result = target.Current;
+            yield return result;
+        }
+    }
+
+}
 

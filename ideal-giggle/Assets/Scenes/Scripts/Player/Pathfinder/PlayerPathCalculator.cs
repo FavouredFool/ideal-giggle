@@ -7,28 +7,20 @@ public class PlayerPathCalculator : MonoBehaviour
 {
 
     public int _radius = 5;
-    public Material pathMaterial;
+    public Material pathFinalMaterial;
+    public Material pathCheckMaterial;
+    public Material startMaterial;
+    public Material pathCheckedMaterial;
 
     [SerializeField]
     private EntityManager _entityManager;
 
-    private List<AbstractEntityController> _newList;
 
-    private AbstractEntityController _startEntity;
-    private AbstractEntityController _endEntity;
-
-    private int _counter = 0;
-
-    public void Start()
-    {
-        _newList = new List<AbstractEntityController>();
-        
-    }
-
-    public List<AbstractEntityController> CalculatePathAstar(AbstractEntityController startEntity, AbstractEntityController endEntity)
+    public IEnumerator CalculatePathAstar(AbstractEntityController startEntity, AbstractEntityController endEntity)
     {
         foreach (AbstractEntityController entity in _entityManager.GetEntityList())
         {
+            entity.ChangeMaterial(startMaterial);
             entity.SetG(Vector3.Distance(entity.GetPosition(), startEntity.GetPosition()));
             entity.SetH(Vector3.Distance(entity.GetPosition(), endEntity.GetPosition()));
         }
@@ -38,6 +30,7 @@ public class PlayerPathCalculator : MonoBehaviour
 
         while(toSearch.Any())
         {
+            yield return null;
             AbstractEntityController current = toSearch[0];
 
             foreach(AbstractEntityController t in toSearch)
@@ -51,6 +44,8 @@ public class PlayerPathCalculator : MonoBehaviour
             processed.Add(current);
             toSearch.Remove(current);
 
+            current.ChangeMaterial(pathCheckedMaterial);
+
             if (current.Equals(endEntity))
             {
                 AbstractEntityController currentPathTile = endEntity;
@@ -59,17 +54,20 @@ public class PlayerPathCalculator : MonoBehaviour
 
                 while (currentPathTile != startEntity)
                 {
-                    Debug.Log(currentPathTile.Connection);
                     path.Add(currentPathTile);
+                    currentPathTile.ChangeMaterial(pathFinalMaterial);
                     currentPathTile = currentPathTile.Connection;
                     loopCount--;
                     if (loopCount < 0) throw new System.Exception();
+
+                    yield return new WaitForSeconds(0.05f);
                 }
 
                 path.Add(currentPathTile);
                 path.Reverse();
 
-                return path;
+                yield return path;
+                yield break;
             }
 
             foreach (var neighbor in current.GetEntityReferences())
@@ -94,87 +92,13 @@ public class PlayerPathCalculator : MonoBehaviour
 
                     if (!inSearch)
                     {
-                        neighbor.SetH(Vector3.Distance(neighbor.GetPosition(), startEntity.GetPosition()));
+                        neighbor.SetH(Vector3.Distance(neighbor.GetPosition(), endEntity.GetPosition()));
                         toSearch.Add(neighbor);
+                        neighbor.ChangeMaterial(pathCheckMaterial);
                     }
                 }
             }
         }
-
-        return null;
     }
 
-
-
-    public List<AbstractEntityController> CalculatePathBad(AbstractEntityController startEntity, AbstractEntityController endEntity)
-    {
-        _counter = 0;
-        _startEntity = startEntity;
-        _endEntity = endEntity;
-
-        _newList = new List<AbstractEntityController>();
-
-        // Try to get from StartEntity to EndEntity through references
-        
-        _newList = ReferenceNextEntity(startEntity, new List<AbstractEntityController>());
-
-        Debug.Log($"COUNTER: {_counter}");
-        
-
-        return _newList;
-    }
-
-    private List<AbstractEntityController> ReferenceNextEntity(AbstractEntityController activeEntity, List<AbstractEntityController> seenEntities)
-    {
-        _counter++;
-        AbstractEntityController referenceEntity;
-        List<AbstractEntityController> bestPath = null;
-        Vector3 posDifference;
-
-        seenEntities.Add(activeEntity);
-
-        if (activeEntity.Equals(_endEntity))
-        {
-            return seenEntities;
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            referenceEntity = activeEntity.GetEntityReferences()[i];
-
-            if (!referenceEntity)
-            {
-                continue;
-            }
-
-            posDifference = _startEntity.GetPosition() - referenceEntity.GetPosition();
-            if (Mathf.Abs(posDifference.x) > _radius || Mathf.Abs(posDifference.y) > _radius || Mathf.Abs(posDifference.z) > _radius)
-            {
-                continue;
-            }
-
-            if (seenEntities.Contains(referenceEntity))
-            {
-                continue;
-            }
-
-            
-            var seenEntitiesCopy = new List<AbstractEntityController>(seenEntities);
-            List<AbstractEntityController> returnedPath = ReferenceNextEntity(referenceEntity, seenEntitiesCopy);
-
-            if (returnedPath != null)
-            {
-                if (bestPath == null)
-                {
-                    bestPath = returnedPath;
-                } else if (bestPath.Count > returnedPath.Count)
-                {
-                    bestPath = returnedPath;
-                }
-            }
-        }
-
-        // Go back out without sending anything back
-        return bestPath;
-    }
 }
