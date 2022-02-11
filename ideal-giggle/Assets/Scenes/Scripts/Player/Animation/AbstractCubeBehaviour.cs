@@ -6,15 +6,12 @@ using System;
 public abstract class AbstractCubeBehaviour : MonoBehaviour
 {
     [SerializeField]
-    private float _cubeLength = 0.5f;
-
-    [SerializeField]
     private float _rollSpeed = 3f;
 
-    protected bool _isRevered = false;
-
+    protected float _cubeLength = 0.5f;
+    protected bool _isReversed = false;
     protected Vector3 _direction;
-
+   
     public IEnumerator MoveCubeVisual(Vector3 fromPosition, Vector3 toPosition)
     {
         int xDirection = (int)toPosition.x - (int)fromPosition.x;
@@ -36,7 +33,6 @@ public abstract class AbstractCubeBehaviour : MonoBehaviour
 
         while (remainingAngle > 0)
         {
-            Debug.Log(remainingAngle);
             float rotationAngle = Mathf.Min(Time.deltaTime * _rollSpeed * 100, remainingAngle);
             transform.RotateAround(anchor, axis, rotationAngle);
             remainingAngle -= rotationAngle;
@@ -51,14 +47,14 @@ public abstract class AbstractCubeBehaviour : MonoBehaviour
         transform.localPosition = new Vector3(xCorrected, yCorrected, zCorrected);
     }
 
-    public bool GetIsRevered()
+    public bool GetIsReversed()
     {
-        return _isRevered;
+        return _isReversed;
     }
 
-    public void SetIsRevered(bool isRevered)
+    public void SetIsReversed(bool isReversed)
     {
-        _isRevered = isRevered;
+        _isReversed = isReversed;
     }
 
     

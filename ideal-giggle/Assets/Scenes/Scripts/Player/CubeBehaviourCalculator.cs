@@ -1,103 +1,123 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static EntityHelper;
 
 public class CubeBehaviourCalculator : MonoBehaviour
 {
-
-    [SerializeField]
-    private EntityManager _entityManager;
-
     [SerializeField]
     private PlayerVisualController _playerVisual;
 
+    private AbstractEntityController _activeEntity;
+    private AbstractEntityController _goalEntity;
+
+    private EntityType _activeEntityType;
+    private EntityType _goalEntityType;
+
+    private bool _isReversed;
+    AbstractCubeBehaviour _cubeBehaviour = null;
+
     public AbstractCubeBehaviour CalculateCubeBehaviour(AbstractEntityController activeEntity, AbstractEntityController stepGoalEntity)
     {
-        EntityType entityTypeFrom = activeEntity.GetEntityType();
-        EntityType entityTypeTo = stepGoalEntity.GetEntityType();
+        _activeEntity = activeEntity;
+        _goalEntity = stepGoalEntity;
 
-        AbstractCubeBehaviour cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_BlockToBlock>();
-        bool isReverted = false;
+        _activeEntityType = _activeEntity.GetEntityType();
+        _goalEntityType = _goalEntity.GetEntityType();
 
-        switch (entityTypeFrom)
+        SwitchEntityType();
+
+        return _cubeBehaviour;
+    }
+
+    private void SwitchEntityType()
+    {
+        switch (_activeEntityType)
         {
             case EntityType.BLOCK:
-
-                switch (entityTypeTo)
-                {
-                    case (EntityType.BLOCK):
-                        cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_BlockToBlock>();
-                        break;
-                    case (EntityType.STAIR):
-                        cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_BlockToStair>();
-
-                        isReverted = activeEntity.GetPosition().y < stepGoalEntity.GetPosition().y;
-                        if (isReverted)
-                        {
-                            cubeBehaviour.SetIsRevered(true);
-                        } else
-                        {
-                            cubeBehaviour.SetIsRevered(false);
-                        }
-
-                        break;
-                    default:
-                        Debug.LogWarning($"FEHLER: entityTypeTo ist: {entityTypeTo}");
-                        break;
-                }
-            break;
+                SwitchBlockCase();
+                break;
 
             case EntityType.STAIR:
-
-                switch (entityTypeTo)
-                {
-                    case (EntityType.BLOCK):
-                        cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_StairToBlock>();
-
-                        isReverted = activeEntity.GetPosition().y > stepGoalEntity.GetPosition().y;
-                        if (isReverted)
-                        {
-                            cubeBehaviour.SetIsRevered(true);
-                        }
-                        else
-                        {
-                            cubeBehaviour.SetIsRevered(false);
-                        }
-                        break;
-
-                    case (EntityType.STAIR):
-                        if (activeEntity.GetPosition().y == stepGoalEntity.GetPosition().y)
-                        {
-                            cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_StairToStairEven>();
-                        } else
-                        {
-                            cubeBehaviour = _playerVisual.GetComponent <CubeBehaviour_StairToStairUneven>();
-
-                            isReverted = activeEntity.GetPosition().y > stepGoalEntity.GetPosition().y;
-                            if (isReverted)
-                            {
-                                cubeBehaviour.SetIsRevered(true);
-                            }
-                            else
-                            {
-                                cubeBehaviour.SetIsRevered(false);
-                            }
-                        }
-
-                        break;
-                    default:
-                        Debug.LogWarning($"FEHLER: entityTypeTo ist: {entityTypeTo}");
-                        break;
-                }
-            break;
+                SwitchStairCase();
+                break;
 
             default:
-                Debug.LogWarning($"FEHLER: entityTypeFrom ist: {entityTypeFrom}");
+                Debug.LogWarning($"FEHLER: entityTypeFrom ist: {_activeEntityType}");
                 break;
         }
+    }
 
-        return cubeBehaviour;
+    private void SwitchBlockCase()
+    {
+        switch (_goalEntityType)
+        {
+            case (EntityType.BLOCK):
+                _cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_BlockToBlock>();
+                break;
+
+            case (EntityType.STAIR):
+                _cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_BlockToStair>();
+                if (RelativeYPos() < 0)
+                {
+                    _cubeBehaviour.SetIsReversed(true);
+                } else
+                {
+                    _cubeBehaviour.SetIsReversed(false);
+                }
+                break;
+
+            default:
+                Debug.LogWarning($"FEHLER: entityTypeTo ist: {_goalEntityType}");
+                break;
+        }
+    }
+
+    private void SwitchStairCase()
+    {
+        switch (_goalEntityType)
+        {
+            case (EntityType.BLOCK):
+                _cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_StairToBlock>();
+
+                if (RelativeYPos() <= 0)
+                {
+                    _cubeBehaviour.SetIsReversed(true);
+                }
+                else
+                { 
+                    _cubeBehaviour.SetIsReversed(false);
+                }
+                break;
+
+            case (EntityType.STAIR):
+                if (_activeEntity.GetPosition().y == _goalEntity.GetPosition().y)
+                {
+                    _cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_StairToStairEven>();
+                }
+                else
+                {
+                    _cubeBehaviour = _playerVisual.GetComponent<CubeBehaviour_StairToStairUneven>();
+
+                    if (RelativeYPos() < 0)
+                    {
+                        _cubeBehaviour.SetIsReversed(true);
+                    }
+                    else
+                    {
+
+                        _cubeBehaviour.SetIsReversed(false);
+                    }
+                }
+                break;
+
+            default:
+                Debug.LogWarning($"FEHLER: entityTypeTo ist: {_goalEntityType}");
+                break;
+        }
+    }
+
+    private float RelativeYPos()
+    {
+        return _activeEntity.GetPosition().y - _goalEntity.GetPosition().y;
     }
 
 
