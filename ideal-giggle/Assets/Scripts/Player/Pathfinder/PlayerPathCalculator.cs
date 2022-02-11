@@ -26,7 +26,7 @@ public class PlayerPathCalculator : MonoBehaviour
     bool _visualise = true;
 
     [SerializeField]
-    float _createPathTimeInMS = 50f;
+    float _createPathTimeInSeconds = 0.05f;
 
     AbstractEntityController _startEntity;
     AbstractEntityController _endEntity;
@@ -82,7 +82,7 @@ public class PlayerPathCalculator : MonoBehaviour
                     if (_visualise)
                     {
                         currentPathTile.ChangeMaterial(pathFinalMaterial);
-                        yield return new WaitForSeconds(_createPathTimeInMS);
+                        yield return new WaitForSeconds(_createPathTimeInSeconds);
                     }
 
                     currentPathTile = currentPathTile.Connection;
@@ -99,7 +99,7 @@ public class PlayerPathCalculator : MonoBehaviour
                 if (_visualise)
                 {
                     currentPathTile.ChangeMaterial(pathFinalMaterial);
-                    yield return new WaitForSeconds(_createPathTimeInMS);
+                    yield return new WaitForSeconds(_createPathTimeInSeconds);
                 }
 
                 yield return path;

@@ -76,7 +76,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50af11a9bf8ca1840b68ada400b2d3a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entityManager: {fileID: 0}
 --- !u!114 &6025138495081301373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,7 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f8179f2ff0bb343b29be239b89e08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entityManager: {fileID: 0}
   _playerVisual: {fileID: 4037893136254092438}
 --- !u!114 &995190126873025134
 MonoBehaviour:
@@ -103,8 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b699483c1a4c3134bb1447f4d6da7db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entityManager: {fileID: 0}
-  _playerVisual: {fileID: 4037893136254092438}
 --- !u!114 &2123574841458104125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,7 +113,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdd998d26da4ec4419312e282b7724b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 5
+  _entityManager: {fileID: 0}
+  pathFinalMaterial: {fileID: 2100000, guid: 9c331fc858f41d94b91a2edb6464a16a, type: 2}
+  pathCheckMaterial: {fileID: 2100000, guid: e82b856867668ba4089a7d44421f6e13, type: 2}
+  pathCheckedMaterial: {fileID: 2100000, guid: 08d5ef6781b72a149b93c91803505814, type: 2}
+  _visualise: 1
+  _createPathTimeInMS: 50
 --- !u!1 &5760897010274260429
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +231,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c10a934436f44b64d9e3febcd48122b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cubeLength: 0.5
   _rollSpeed: 4
 --- !u!114 &426199592
 MonoBehaviour:
@@ -244,7 +244,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3296bf02d5829c244ab43345f4d90e43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cubeLength: 0.5
   _rollSpeed: 4
 --- !u!114 &1629877486
 MonoBehaviour:
@@ -258,7 +257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 016a9b00dbe165c44be5d2ff7c6834dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cubeLength: 0.5
   _rollSpeed: 4
 --- !u!114 &1629877490
 MonoBehaviour:
@@ -272,7 +270,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda95e9a1d64e2140902a3db5f08fae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cubeLength: 0.5
   _rollSpeed: 4
 --- !u!114 &1629877491
 MonoBehaviour:
@@ -286,5 +283,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c542abe6faf1524b9514277bfb3dd19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cubeLength: 0.5
   _rollSpeed: 4
