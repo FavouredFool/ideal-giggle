@@ -4761,6 +4761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6d1817bae76444eabf9a07a5e903a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _entityMaterial: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
 --- !u!1001 &823627567
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10821,6 +10822,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _visualise
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: pathMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 9c331fc858f41d94b91a2edb6464a16a, type: 2}
@@ -10840,6 +10845,10 @@ PrefabInstance:
       propertyPath: pathFinalMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 9c331fc858f41d94b91a2edb6464a16a, type: 2}
+    - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _createPathTimeInMS
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: pathCheckedMaterial
       value: 

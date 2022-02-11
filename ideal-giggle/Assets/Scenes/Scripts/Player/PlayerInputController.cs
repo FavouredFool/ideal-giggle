@@ -28,10 +28,14 @@ public class PlayerInputController : MonoBehaviour
             }
 
             hit = CoordinateHelper.DetermineGridCoordinate(hit);
-
             hit = CalculateMovePosFromClickPos(hit);
 
-            _playerMovement.SetEndPosition(hit);
+            AbstractEntityController hitEntity = _entityManager.GetEntityFromCoordiantes(hit);
+            if (!hitEntity)
+            {
+                throw new System.Exception();
+            }
+            _playerMovement.SetEndEntity(hitEntity);
         }
     }
 
@@ -56,7 +60,6 @@ public class PlayerInputController : MonoBehaviour
             {
                 break;
             }
-            hit = new Vector3(hit.x, hit.y + 1, hit.z);
         }
 
         return hit;

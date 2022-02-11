@@ -12,7 +12,6 @@ public class CubeBehaviourCalculator : MonoBehaviour
     private EntityType _activeEntityType;
     private EntityType _goalEntityType;
 
-    private bool _isReversed;
     AbstractCubeBehaviour _cubeBehaviour = null;
 
     public AbstractCubeBehaviour CalculateCubeBehaviour(AbstractEntityController activeEntity, AbstractEntityController stepGoalEntity)

@@ -12,19 +12,14 @@ public class PlayerMovementController : MonoBehaviour
     private EntityManager _entityManager;
 
     private PlayerStepCalculator _stepCalculator;
-
     private PlayerPathCalculator _pathCalculator;
-
-    private Vector3 _endPosition = Vector3.negativeInfinity;
 
     private List<AbstractEntityController> _playerMovementPath;
 
     private bool _isMoving = false;
     private bool _pathCalculating = false;
 
-    private AbstractEntityController _entityPlayerIsOn;
-    private AbstractEntityController _goalEntity;
-
+    private AbstractEntityController _endEntity;
     private AbstractEntityController _groundEntity;
 
     public void Awake()
@@ -36,17 +31,13 @@ public class PlayerMovementController : MonoBehaviour
     {
         _stepCalculator = GetComponent<PlayerStepCalculator>();
         _pathCalculator = GetComponent<PlayerPathCalculator>();
+
         _groundEntity = _entityManager.GetEntityFromCoordiantes(transform.position + Vector3.down);
     }
 
     public void Update()
     {
-        if (_endPosition.Equals(Vector3.negativeInfinity))
-        {
-            return;
-        }
-
-        if (transform.position.Equals(_endPosition))
+        if (_groundEntity.Equals(_endEntity))
         {
             return;
         }
@@ -56,7 +47,7 @@ public class PlayerMovementController : MonoBehaviour
             return;
         }
 
-        if (_playerMovementPath == null)
+        if (_pathCalculating || _playerMovementPath == null)
         {
             return;
         }
@@ -70,36 +61,33 @@ public class PlayerMovementController : MonoBehaviour
 
         _isMoving = true;
 
-        step = _stepCalculator.CalculateStep(transform.position, movementPath);
+        step = _stepCalculator.CalculateStep(_groundEntity, movementPath);
 
         _visualController.MoveStep(step);
     }
 
-    public void SetEndPosition(Vector3 endPosition)
+    public void SetEndEntity(AbstractEntityController endEntity)
     {
         if (_pathCalculating)
         {
             return;
         }
 
-        _endPosition = endPosition;
-        Vector3 startPosition = transform.position;
-
-        _entityPlayerIsOn = _entityManager.GetEntityFromCoordiantes(transform.position + Vector3.down);
-        _goalEntity = _entityManager.GetEntityFromCoordiantes(_endPosition + Vector3.down);
-
+        _endEntity = endEntity;
         _playerMovementPath = null;
-        StartCoroutine(CalculatePath());
+
+        StartCoroutine(InitCalculatePath());
     }
 
-    public IEnumerator CalculatePath()
+    public IEnumerator InitCalculatePath()
     {
         _pathCalculating = true;
-        PathfinderCoroutine pc = new PathfinderCoroutine(this, _pathCalculator.CalculatePathAstar(_entityPlayerIsOn, _goalEntity));
-        yield return pc.coroutine;
-        _playerMovementPath = (List<AbstractEntityController>) pc.result;
+
+        PathfinderCoroutine pathfinderCoroutine = new PathfinderCoroutine(this, _pathCalculator.CalculatePathAstar(_groundEntity, _endEntity));
+        yield return pathfinderCoroutine.coroutine;
+        _playerMovementPath = (List<AbstractEntityController>) pathfinderCoroutine.result;
+
         _pathCalculating = false;
-        
     }
 
     public void SetIsMoving(bool isMoving)
@@ -116,28 +104,5 @@ public class PlayerMovementController : MonoBehaviour
     {
         _groundEntity = groundEntity;
     }
-}
-
-public class PathfinderCoroutine
-{
-    public Coroutine coroutine { get; private set; }
-    public object result;
-    private IEnumerator target;
-
-    public PathfinderCoroutine(MonoBehaviour owner, IEnumerator target)
-    {
-        this.target = target;
-        coroutine = owner.StartCoroutine(Run());
-    }
-
-    private IEnumerator Run()
-    {
-        while(target.MoveNext())
-        {
-            result = target.Current;
-            yield return result;
-        }
-    }
-
 }
 

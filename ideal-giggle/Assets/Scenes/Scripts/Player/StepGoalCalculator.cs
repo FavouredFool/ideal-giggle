@@ -6,10 +6,10 @@ using static EntityHelper;
 public class StepGoalCalculator : MonoBehaviour
 {
     [SerializeField]
-    private EntityManager _entityManager;
+    private PlayerVisualController _playerVisual;
 
     [SerializeField]
-    private PlayerVisualController _playerVisual;
+    private EntityManager _entityManager;
 
     private Vector3 _activePosition;
     private Vector3 _endPosition;

@@ -1,15 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static EntityHelper;
 
 
 public class PlayerStepCalculator : MonoBehaviour
 {
-
-    [SerializeField]
-    private EntityManager _entityManager;
-
     private StepGoalCalculator _stepGoalCalculator;
     private CubeBehaviourCalculator _cubeBehaviourCalculator;
 
@@ -20,11 +14,9 @@ public class PlayerStepCalculator : MonoBehaviour
         _cubeBehaviourCalculator = GetComponent<CubeBehaviourCalculator>();
     }
 
-    public Step CalculateStep(Vector3 activePosition, List<AbstractEntityController> playerMovementPath)
+    public Step CalculateStep(AbstractEntityController activeEntity, List<AbstractEntityController> playerMovementPath)
     {
         var activeStep = new Step();
-
-        AbstractEntityController activeEntity = _entityManager.GetEntityFromCoordiantes(activePosition + Vector3.down);
 
         // Calculate Stepgoal
         AbstractEntityController stepGoalEntity;

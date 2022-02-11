@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class EntityManager : MonoBehaviour
 {
+    [SerializeField]
+    private Material _entityMaterial;
+
     private List<AbstractEntityController> _entityList;
+
 
     public void Awake()
     {
@@ -28,9 +32,13 @@ public class EntityManager : MonoBehaviour
         return entity;
     }
 
-
     public List<AbstractEntityController> GetEntityList()
     {
         return _entityList;
+    }
+
+    public Material GetEntityMaterial()
+    {
+        return _entityMaterial;
     }
 }
