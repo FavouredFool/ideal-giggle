@@ -16,6 +16,13 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     protected Vector3 _position;
 
+    // PathfinderStuff:
+    public AbstractEntityController Connection { get; private set; }
+    public float G { get; private set; }
+    public float H { get; private set; }
+    public float F => G + H;
+
+
 
     public virtual void Awake()
     {
@@ -46,5 +53,26 @@ public abstract class AbstractEntityController : MonoBehaviour
     {
         return _entityReferences;
     }
+
+    public void PathfinderInit()
+    {
+        // Set H and G
+    }
+
+    public void SetConnection(AbstractEntityController entity)
+    {
+        Connection = entity;
+    }
+
+    public void SetG(float g)
+    {
+        G = g;
+    }
+
+    public void SetH(float h)
+    {
+        H = h;
+    }
+
 }
 

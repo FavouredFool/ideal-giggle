@@ -10800,6 +10800,14 @@ PrefabInstance:
       propertyPath: _radius
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: pathMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 9c331fc858f41d94b91a2edb6464a16a, type: 2}
+    - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _entityManager
+      value: 
+      objectReference: {fileID: 810713284}
     - target: {fileID: 5760897009634157104, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: m_Name
       value: PlayerTarget

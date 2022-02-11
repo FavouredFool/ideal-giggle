@@ -81,8 +81,7 @@ public class PlayerMovementController : MonoBehaviour
         _entityPlayerIsOn = _entityManager.GetEntityFromCoordiantes(transform.position + Vector3.down);
         _goalEntity = _entityManager.GetEntityFromCoordiantes(_endPosition + Vector3.down);
 
-        _playerMovementPath = _pathCalculator.CalculatePath(_entityPlayerIsOn, _goalEntity);
-
+        _playerMovementPath = _pathCalculator.CalculatePathAstar(_entityPlayerIsOn, _goalEntity);
     }
 
     public void SetIsMoving(bool isMoving)
