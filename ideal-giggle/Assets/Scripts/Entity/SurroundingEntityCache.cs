@@ -1,15 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static EntityHelper;
 
 public class SurroundingEntityCache : MonoBehaviour
 {
 
     private EntityManager _entityManager;
-
     private Vector3 _position;
-
     private List<AbstractEntityController> _surroundingEntities;
 
     public void Awake()

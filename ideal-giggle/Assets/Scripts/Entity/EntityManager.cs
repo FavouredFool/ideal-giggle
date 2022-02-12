@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EntityManager : MonoBehaviour
 {
+    [Header("Dependencies")]
     [SerializeField]
     private Material _entityMaterial;
 

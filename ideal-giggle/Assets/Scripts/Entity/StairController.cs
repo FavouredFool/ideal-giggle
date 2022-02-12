@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static EntityHelper;
 
@@ -9,11 +7,48 @@ public class StairController : AbstractEntityController
     bool _transitionIsSet = false;
     Vector3 _referenceDirection;
 
+    Vector3 _bottomEnter;
+    Vector3 _topEnter;
+
     public override void Awake()
     {
         base.Awake();
         _entityType = EntityType.STAIR;
         _visualPosition = new Vector3(0, -0.75f, 0);
+
+        // Vector3's um aufzuzeigen wie eine Treppe betreten werden kann
+        Vector3 rotation = transform.eulerAngles;
+        
+
+        if (rotation.x == 0 && rotation.z == 0)
+        {
+            switch ((int)(rotation.y / 90) % 4)
+            {
+                case 0:
+                    _bottomEnter = Vector3.left;
+                    _topEnter = Vector3.right;
+                    break;
+                case 1:
+                    _bottomEnter = Vector3.forward;
+                    _topEnter = Vector3.back;
+                    break;
+                case 2:
+                    _bottomEnter = Vector3.right;
+                    _topEnter = Vector3.left;
+                    break;
+                case 3:
+                    _bottomEnter = Vector3.back;
+                    _topEnter = Vector3.forward;
+                    break;
+            }
+        } else
+        {
+            _bottomEnter = Vector3.zero;
+            _topEnter = Vector3.zero;
+        }
+
+        // Debug.Log($"BottomEnter: {_bottomEnter}, TopEnter: {_topEnter}");
+
     }
 
     public override void CalculateReferences()
@@ -84,6 +119,7 @@ public class StairController : AbstractEntityController
     {
         foreach (AbstractEntityController activeEntity in _entityCache)
         {
+
             if (!(activeEntity.GetPosition().Equals(_position + _referenceDirection + Vector3.up)))
             {
                 continue;
@@ -94,7 +130,18 @@ public class StairController : AbstractEntityController
             switch (activeEntity.GetEntityType())
             {
                 case EntityType.STAIR:
-                    Debug.LogWarning("CHECK, OB BEIDE STAIRS KORREKT GEDREHT SIND, FEHLT");
+
+                    if (!_referenceDirection.Equals(-GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetBottomEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
 
                     // Check ob obere Treppe bedeckt ist, oder über dem Spieler ein Block ist
 
@@ -145,10 +192,29 @@ public class StairController : AbstractEntityController
             switch (activeEntity.GetEntityType())
             {
                 case EntityType.BLOCK:
+
+                    if (!_referenceDirection.Equals(-GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
                     _entityReferences[index] = activeEntity;
                     break;
                 case EntityType.STAIR:
-                    Debug.LogWarning("CHECK, OB STAIRS KORREKT GEDREHT SIND, FEHLT");
+
+                    if (!_referenceDirection.Equals(-GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
                     _entityReferences[index] = activeEntity;
                     break;
                 default:
@@ -175,11 +241,29 @@ public class StairController : AbstractEntityController
             switch (activeEntity.GetEntityType())
             {
                 case EntityType.BLOCK:
-                    Debug.LogWarning("CHECK, OB STAIR KORREKT GEDREHT IST, FEHLT");
+
+                    if (!_referenceDirection.Equals(-GetBottomEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
                     _entityReferences[index] = activeEntity;
                     break;
                 case EntityType.STAIR:
-                    Debug.LogWarning("CHECK, OB STAIRS KORREKT GEDREHT SIND, FEHLT");
+
+                    if (!_referenceDirection.Equals(-GetBottomEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
                     _entityReferences[index] = activeEntity;
                     break;
                 default:
@@ -190,5 +274,15 @@ public class StairController : AbstractEntityController
 
             break;
         }
+    }
+    
+    public Vector3 GetTopEnter()
+    {
+        return _topEnter;
+    }
+
+    public Vector3 GetBottomEnter()
+    {
+        return _bottomEnter;
     }
 }

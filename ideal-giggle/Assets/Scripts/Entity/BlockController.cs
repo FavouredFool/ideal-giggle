@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static EntityHelper;
 
@@ -85,10 +83,13 @@ public class BlockController : AbstractEntityController
             switch (activeEntity.GetEntityType())
             {
                 case EntityType.STAIR:
-                    Debug.LogWarning("CHECK, OB BEIDE STAIRS KORREKT GEDREHT SIND, FEHLT");
+
+                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetBottomEnter())) {
+                        _entityReferences[index] = null;
+                        break;
+                    }
 
                     // Check ob Treppe bedeckt ist, oder über dem Spieler ein Block ist
-
                     bool foundCeil = false;
                     foreach (AbstractEntityController ceilingEntity in _entityCache)
                     {
@@ -138,7 +139,13 @@ public class BlockController : AbstractEntityController
                     _entityReferences[index] = activeEntity;
                     break;
                 case EntityType.STAIR:
-                    Debug.LogWarning("CHECK, OB STAIR KORREKT GEDREHT IST, FEHLT");
+
+                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
                     _entityReferences[index] = activeEntity;
                     break;
                 default:

@@ -34,7 +34,7 @@ public abstract class AbstractEntityController : MonoBehaviour
         _position = transform.position;
     }
 
-    public virtual void Start()
+    public void Start()
     {
         _entityCache = _entityReferenceCalculator.CacheSurroundingEntityReferences(_position);
         CalculateReferences();
@@ -54,11 +54,6 @@ public abstract class AbstractEntityController : MonoBehaviour
     public List<AbstractEntityController> GetEntityReferences()
     {
         return _entityReferences;
-    }
-
-    public void PathfinderInit()
-    {
-        // Set H and G
     }
 
     public void SetConnection(AbstractEntityController entity)
