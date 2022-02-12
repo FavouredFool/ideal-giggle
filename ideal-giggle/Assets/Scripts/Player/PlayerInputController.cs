@@ -29,7 +29,6 @@ public class PlayerInputController : MonoBehaviour
             }
 
             hit = CoordinateHelper.DetermineGridCoordinate(hit);
-            hit = CalculateMovePosFromClickPos(hit);
 
             AbstractEntityController hitEntity = _entityManager.GetEntityFromCoordiantes(hit);
             if (!hitEntity)
@@ -39,33 +38,6 @@ public class PlayerInputController : MonoBehaviour
             _playerMovement.SetEndEntity(hitEntity);
         }
     }
-
-
-    public Vector3 CalculateMovePosFromClickPos(Vector3 hit)
-    {
-        // When you click the side of a square, the click should register at the top of the whole square-stack
-        var differentY = new List<Vector3>();
-
-        foreach (AbstractEntityController entity in _entityManager.GetEntityList())
-        {
-            if (entity.GetPosition().x.Equals(hit.x) && entity.GetPosition().z.Equals(hit.z))
-            {
-                differentY.Add(entity.GetPosition());
-            }
-        }
-
-        for (int i = 0; i < differentY.Count; i++)
-        {
-            if (!differentY.Contains(hit))
-            {
-                break;
-            }
-        }
-
-        return hit;
-    }
-
-    
 
 }
 
