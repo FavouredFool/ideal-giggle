@@ -184,15 +184,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.b
-      value: 0.34901962
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.g
-      value: 0.41657183
+      value: 0.19704434
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.r
-      value: 0.69803923
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Shadows.m_Type
@@ -551,15 +551,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.b
-      value: 0.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.g
-      value: 0.6209676
+      value: 0.7733991
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.r
-      value: 0.35
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_DrawHalo
@@ -5250,15 +5250,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.b
-      value: 0.34901962
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.g
-      value: 0.69803923
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.r
-      value: 0.38369042
+      value: 0.09852219
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Intensity
@@ -8343,15 +8343,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.b
-      value: 0.69411767
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.g
-      value: 0.34705883
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_Color.r
-      value: 0.5332294
+      value: 0.5320196
       objectReference: {fileID: 0}
     - target: {fileID: 7831210129933492795, guid: 9eb1e827ed5b64241b7da9af350f6128, type: 3}
       propertyPath: m_DrawHalo
