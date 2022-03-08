@@ -14,6 +14,8 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     protected SurroundingEntityCache _entityReferenceCalculator;
 
+    protected ColorCalculator _colorCalculator;
+
     protected Vector3 _position;
 
     protected Vector3 _visualPosition;
@@ -29,6 +31,7 @@ public abstract class AbstractEntityController : MonoBehaviour
     public virtual void Awake()
     {
         _entityReferenceCalculator = GetComponent<SurroundingEntityCache>();
+        _colorCalculator = GetComponent<ColorCalculator>();
 
         transform.position = CoordinateHelper.DetermineGridCoordinate(transform.position);
         _position = transform.position;
@@ -36,6 +39,7 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public void Start()
     {
+        _colorCalculator.CalculateColor();
         _entityCache = _entityReferenceCalculator.CacheSurroundingEntityReferences(_position);
         CalculateReferences();
     }
