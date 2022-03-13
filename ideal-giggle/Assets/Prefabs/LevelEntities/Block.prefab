@@ -184,27 +184,27 @@ PrefabInstance:
     - target: {fileID: -7635826562936255635, guid: 15465bd69b8357749b6ddc34998a38e7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f38bacfe9091eb44e80fcc2b482e4fe2, type: 2}
+      objectReference: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
     - target: {fileID: -7635826562936255635, guid: 15465bd69b8357749b6ddc34998a38e7, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: d2b73cd003f45f24ead3cc130a82a4da, type: 2}
+      objectReference: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
     - target: {fileID: -7635826562936255635, guid: 15465bd69b8357749b6ddc34998a38e7, type: 3}
       propertyPath: m_Materials.Array.data[2]
       value: 
-      objectReference: {fileID: 2100000, guid: a9056dbde62cd2341ace2400a08337e3, type: 2}
+      objectReference: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
     - target: {fileID: -7635826562936255635, guid: 15465bd69b8357749b6ddc34998a38e7, type: 3}
       propertyPath: m_Materials.Array.data[3]
       value: 
-      objectReference: {fileID: 2100000, guid: 04378813a9386fd429a85fdca00de2af, type: 2}
+      objectReference: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
     - target: {fileID: -7635826562936255635, guid: 15465bd69b8357749b6ddc34998a38e7, type: 3}
       propertyPath: m_Materials.Array.data[4]
       value: 
-      objectReference: {fileID: 2100000, guid: 4e60612ed68afe44e872a5cb9d4d3e4a, type: 2}
+      objectReference: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
     - target: {fileID: -7635826562936255635, guid: 15465bd69b8357749b6ddc34998a38e7, type: 3}
       propertyPath: m_Materials.Array.data[5]
       value: 
-      objectReference: {fileID: 2100000, guid: d2b73cd003f45f24ead3cc130a82a4da, type: 2}
+      objectReference: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
     - target: {fileID: 919132149155446097, guid: 15465bd69b8357749b6ddc34998a38e7, type: 3}
       propertyPath: m_Name
       value: MatCube
