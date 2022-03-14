@@ -13,18 +13,18 @@ public class PlaneInputController : MonoBehaviour
 
     protected void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             _zPlane.MovePlane(Vector3.back);
-        } else if (Input.GetKeyDown(KeyCode.W))
+        } else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             _zPlane.MovePlane(Vector3.forward);
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             _xPlane.MovePlane(Vector3.left);
-        } else if (Input.GetKeyDown(KeyCode.E))
+        } else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             _xPlane.MovePlane(Vector3.right);
         }

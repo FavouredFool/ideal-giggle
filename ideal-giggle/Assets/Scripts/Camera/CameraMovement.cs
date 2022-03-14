@@ -11,18 +11,33 @@ public class CameraMovement : MonoBehaviour
 
     private Vector3 pivot;
 
+    private enum VerticalState { UPPER, LOWER };
+
+    private VerticalState _verticalState;
+
     private void Start()
     {
-        Vector3 dimensions = _entityManager.GetDimensions();
+        _verticalState = VerticalState.UPPER;
 
+        Vector3 dimensions = _entityManager.GetDimensions();
         pivot = new Vector3((dimensions.x-1) / 2f, (dimensions.y-1) / 2f, (dimensions.z-1) / 2f);
-        Debug.Log(pivot);
     }
 
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+
+        if (Input.GetKeyDown(KeyCode.S) && _verticalState == VerticalState.UPPER)
+        {
+            _verticalState = VerticalState.LOWER;
+            transform.RotateAround(pivot, Vector3.Cross(transform.forward, Vector3.up), 45);
+        }
+        else if (Input.GetKeyDown(KeyCode.W) && _verticalState == VerticalState.LOWER)
+        {
+            _verticalState = VerticalState.UPPER;
+            transform.RotateAround(pivot, Vector3.Cross(transform.forward, Vector3.up), -45);
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
         {
             transform.RotateAround(pivot, Vector3.up, 45);
         } else if (Input.GetKeyDown(KeyCode.D))
