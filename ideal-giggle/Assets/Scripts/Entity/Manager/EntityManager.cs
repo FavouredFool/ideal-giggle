@@ -28,10 +28,7 @@ public class EntityManager : MonoBehaviour
 
     public void Start()
     {
-        foreach (AbstractEntityController ele in _entityList)
-        {
-            ele.GetColorCalculator().CalculateColor(_xPlane.transform.position.x, _zPlane.transform.position.z);
-        }
+        UpdateColor();
     }
 
     public AbstractEntityController GetEntityFromCoordiantes(Vector3 coordinates)
@@ -49,6 +46,14 @@ public class EntityManager : MonoBehaviour
         }
         
         return entity;
+    }
+
+    public void UpdateColor()
+    {
+        foreach (AbstractEntityController ele in _entityList)
+        {
+            ele.GetColorCalculator().CalculateColor(_xPlane.transform.position.x, _zPlane.transform.position.z);
+        }
     }
 
     public List<AbstractEntityController> GetEntityList()
