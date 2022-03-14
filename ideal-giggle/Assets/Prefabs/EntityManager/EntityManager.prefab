@@ -332,6 +332,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityMaterial: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
+  _xPlane: {fileID: 1721014146}
+  _zPlane: {fileID: 1149561358}
   _dimensions: {x: 7, y: 8, z: 7}
 --- !u!1001 &1051054651244483550
 PrefabInstance:
@@ -358,7 +360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5164367323269956942, guid: 6ff579f4de53fa04db83f835fc81e20e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 5164367323269956942, guid: 6ff579f4de53fa04db83f835fc81e20e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -430,7 +432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7321694794623581975, guid: 5cd3ddf5c81d4db4ea54d65d2dff52ba, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 7321694794623581975, guid: 5cd3ddf5c81d4db4ea54d65d2dff52ba, type: 3}
       propertyPath: m_LocalPosition.y

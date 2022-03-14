@@ -39,7 +39,6 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public void Start()
     {
-        _colorCalculator.CalculateColor();
         _entityCache = _entityReferenceCalculator.CacheSurroundingEntityReferences(_position);
         CalculateReferences();
     }
@@ -93,6 +92,11 @@ public abstract class AbstractEntityController : MonoBehaviour
     public Vector3 GetAdjacentPosition(Vector3 addedVector)
     {
         return GetPosition() + addedVector;
+    }
+
+    public ColorCalculator GetColorCalculator()
+    {
+        return _colorCalculator;
     }
 
 }

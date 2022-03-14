@@ -85,12 +85,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 1115440289059889349}
-  xMaterial: {fileID: 2100000, guid: 4e60612ed68afe44e872a5cb9d4d3e4a, type: 2}
-  nxMaterial: {fileID: 2100000, guid: f38bacfe9091eb44e80fcc2b482e4fe2, type: 2}
-  zMaterial: {fileID: 2100000, guid: 04378813a9386fd429a85fdca00de2af, type: 2}
-  nzMaterial: {fileID: 2100000, guid: a9056dbde62cd2341ace2400a08337e3, type: 2}
-  yMaterial: {fileID: 2100000, guid: d2b73cd003f45f24ead3cc130a82a4da, type: 2}
-  nyMaterial: {fileID: 2100000, guid: d2b73cd003f45f24ead3cc130a82a4da, type: 2}
+  xMaterials:
+  - {fileID: 2100000, guid: 4e60612ed68afe44e872a5cb9d4d3e4a, type: 2}
+  - {fileID: 2100000, guid: 613dc6df7282f3e4c82a5a14423d545b, type: 2}
+  nxMaterials:
+  - {fileID: 2100000, guid: f38bacfe9091eb44e80fcc2b482e4fe2, type: 2}
+  - {fileID: 2100000, guid: d109d8d968522864a903ef655c080001, type: 2}
+  zMaterials:
+  - {fileID: 2100000, guid: 04378813a9386fd429a85fdca00de2af, type: 2}
+  - {fileID: 2100000, guid: b1999f1d49adc874abd3d19fa610be6a, type: 2}
+  nzMaterials:
+  - {fileID: 2100000, guid: a9056dbde62cd2341ace2400a08337e3, type: 2}
+  - {fileID: 2100000, guid: b56c2fca09ea20543a550fe48260ff97, type: 2}
+  yMaterials:
+  - {fileID: 2100000, guid: d2b73cd003f45f24ead3cc130a82a4da, type: 2}
+  - {fileID: 2100000, guid: d2b73cd003f45f24ead3cc130a82a4da, type: 2}
+  nyMaterials:
+  - {fileID: 2100000, guid: d2b73cd003f45f24ead3cc130a82a4da, type: 2}
+  - {fileID: 2100000, guid: d2b73cd003f45f24ead3cc130a82a4da, type: 2}
 --- !u!1 &4286768202204828964
 GameObject:
   m_ObjectHideFlags: 0

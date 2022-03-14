@@ -8,6 +8,12 @@ public class EntityManager : MonoBehaviour
     [SerializeField]
     private Material _entityMaterial;
 
+    [SerializeField]
+    private PlaneController _xPlane;
+
+    [SerializeField]
+    private PlaneController _zPlane;
+
     [Header("Dimensions")]
     [SerializeField]
     private Vector3 _dimensions;
@@ -18,6 +24,14 @@ public class EntityManager : MonoBehaviour
     public void Awake()
     {
         _entityList = new List<AbstractEntityController>(GetComponentsInChildren<AbstractEntityController>());
+    }
+
+    public void Start()
+    {
+        foreach (AbstractEntityController ele in _entityList)
+        {
+            ele.GetColorCalculator().CalculateColor(_xPlane.transform.position.x, _zPlane.transform.position.z);
+        }
     }
 
     public AbstractEntityController GetEntityFromCoordiantes(Vector3 coordinates)
