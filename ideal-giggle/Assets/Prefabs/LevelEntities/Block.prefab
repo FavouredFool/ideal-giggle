@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c14c4333027313f40910df4def3cd197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 1115440289059889349}
+  _meshRenderer: {fileID: 1115440289059889349}
   xMaterial: {fileID: 2100000, guid: 4e60612ed68afe44e872a5cb9d4d3e4a, type: 2}
   nxMaterial: {fileID: 2100000, guid: f38bacfe9091eb44e80fcc2b482e4fe2, type: 2}
   zMaterial: {fileID: 2100000, guid: 04378813a9386fd429a85fdca00de2af, type: 2}

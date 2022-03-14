@@ -8,13 +8,8 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField]
     private EntityManager _entityManager;
 
+    [SerializeField]
     private PlayerMovementController _playerMovement;
-
-
-    public void Start()
-    {
-        _playerMovement = gameObject.GetComponent<PlayerMovementController>();
-    }
 
     public void Update()
     {

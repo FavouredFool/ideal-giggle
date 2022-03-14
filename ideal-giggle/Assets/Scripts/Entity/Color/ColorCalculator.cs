@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class ColorCalculator : MonoBehaviour
 {
-    public MeshRenderer meshRenderer;
+    [Header("Dependencies")]
+    [SerializeField]
+    private MeshRenderer _meshRenderer;
 
     public Material xMaterial;
     public Material nxMaterial;
@@ -35,7 +37,7 @@ public class ColorCalculator : MonoBehaviour
     }
     public void CalculateColor()
     {
-        meshRenderer.materials = _faceMaterialArray;
+        _meshRenderer.materials = _faceMaterialArray;
     }
 
 

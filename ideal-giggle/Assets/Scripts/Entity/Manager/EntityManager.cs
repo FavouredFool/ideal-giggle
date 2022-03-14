@@ -8,6 +8,10 @@ public class EntityManager : MonoBehaviour
     [SerializeField]
     private Material _entityMaterial;
 
+    [Header("Dimensions")]
+    [SerializeField]
+    private Vector3 _dimensions;
+
     private List<AbstractEntityController> _entityList;
 
 
@@ -41,5 +45,10 @@ public class EntityManager : MonoBehaviour
     public Material GetEntityMaterial()
     {
         return _entityMaterial;
+    }
+
+    public Vector3 GetDimensions()
+    {
+        return _dimensions;
     }
 }
