@@ -4,21 +4,30 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    [Header("Dependencies")]
+    [SerializeField]
+    private EntityManager _entityManager;
+
+    private Vector3 pivot;
+
+    private void Start()
     {
-        
+        Vector3 dimensions = _entityManager.GetDimensions();
+
+        pivot = new Vector3((dimensions.x-1) / 2f, (dimensions.y-1) / 2f, (dimensions.z-1) / 2f);
+        Debug.Log(pivot);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            transform.RotateAround(new Vector3(4, 0, 4), Vector3.up, 45);
+            transform.RotateAround(pivot, Vector3.up, 45);
         } else if (Input.GetKeyDown(KeyCode.D))
         {
-            transform.RotateAround(new Vector3(4, 0, 4), Vector3.up, -45);
+            transform.RotateAround(pivot, Vector3.up, -45);
         }
     }
 }
