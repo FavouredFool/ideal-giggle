@@ -13,36 +13,68 @@ public class CameraMovement : MonoBehaviour
 
     private enum VerticalState { UPPER, LOWER };
 
+    private enum Dimension { TWO, THREE };
+
     private VerticalState _verticalState;
+    private Dimension _dimension;
 
     private void Start()
     {
         _verticalState = VerticalState.UPPER;
+        _dimension = Dimension.THREE;
 
         Vector3 dimensions = _entityManager.GetDimensions();
         pivot = new Vector3((dimensions.x-1) / 2f, (dimensions.y-1) / 2f, (dimensions.z-1) / 2f);
     }
 
-
-    private void Update()
+    public void MoveCameraVertically()
     {
-
-        if (Input.GetKeyDown(KeyCode.S) && _verticalState == VerticalState.UPPER)
+       
+        if (_verticalState.Equals(VerticalState.UPPER))
         {
-            _verticalState = VerticalState.LOWER;
             transform.RotateAround(pivot, Vector3.Cross(transform.forward, Vector3.up), 45);
+            _verticalState = VerticalState.LOWER;
         }
-        else if (Input.GetKeyDown(KeyCode.W) && _verticalState == VerticalState.LOWER)
+        else if (_verticalState.Equals(VerticalState.LOWER))
         {
-            _verticalState = VerticalState.UPPER;
             transform.RotateAround(pivot, Vector3.Cross(transform.forward, Vector3.up), -45);
+            _verticalState = VerticalState.UPPER;
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else
         {
-            transform.RotateAround(pivot, Vector3.up, 45);
-        } else if (Input.GetKeyDown(KeyCode.D))
+            Debug.LogWarning("FEHLER");
+        }
+
+        UpdateDimension();
+        UpdateReferences();
+    }
+
+    public void MoveCameraHorizontally(int degrees)
+    {
+        transform.RotateAround(pivot, Vector3.up, degrees);
+        UpdateDimension();
+        UpdateReferences();
+    }
+
+    void UpdateDimension()
+    {
+        if (_verticalState.Equals(VerticalState.UPPER))
         {
-            transform.RotateAround(pivot, Vector3.up, -45);
+            _dimension = Dimension.THREE;
+        }
+        else if (transform.rotation.eulerAngles.y % 90 != 0)
+        {
+            _dimension = Dimension.THREE;
+        }
+        else
+        {
+            _dimension = Dimension.TWO;
         }
     }
+
+    void UpdateReferences()
+    {
+
+    }
+
 }

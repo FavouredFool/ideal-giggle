@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SurroundingEntityCache : MonoBehaviour
+public class SurroundingEntityCache3D : MonoBehaviour
 {
 
     private EntityManager _entityManager;

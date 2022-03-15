@@ -10,9 +10,13 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     protected List<AbstractEntityController> _entityCache;
 
-    protected List<AbstractEntityController> _entityReferences = new List<AbstractEntityController> { null, null, null, null };
+    protected List<AbstractEntityController> _entityReferences2D = new List<AbstractEntityController> { null, null, null, null };
 
-    protected SurroundingEntityCache _entityReferenceCalculator;
+    protected List<AbstractEntityController> _entityReferences3D = new List<AbstractEntityController> { null, null, null, null };
+
+    protected List<AbstractEntityController> _activeEntityReferences;
+
+    protected SurroundingEntityCache3D _surroundingEntityCache3D;
 
     protected ColorCalculator _colorCalculator;
 
@@ -30,7 +34,7 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public virtual void Awake()
     {
-        _entityReferenceCalculator = GetComponent<SurroundingEntityCache>();
+        _surroundingEntityCache3D = GetComponent<SurroundingEntityCache3D>();
         _colorCalculator = GetComponent<ColorCalculator>();
 
         transform.position = CoordinateHelper.DetermineGridCoordinate(transform.position);
@@ -39,11 +43,12 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public void Start()
     {
-        _entityCache = _entityReferenceCalculator.CacheSurroundingEntityReferences(_position);
-        CalculateReferences();
+        _entityCache = _surroundingEntityCache3D.CacheSurroundingEntityReferences(_position);
+        _entityReferences3D = CalculateReferences3D();
+        _activeEntityReferences = _entityReferences3D;
     }
 
-    public abstract void CalculateReferences();
+    public abstract List<AbstractEntityController> CalculateReferences3D();
 
     public Vector3 GetPosition()
     {
@@ -54,9 +59,9 @@ public abstract class AbstractEntityController : MonoBehaviour
     {
         return _entityType;
     }
-    public List<AbstractEntityController> GetEntityReferences()
+    public List<AbstractEntityController> GetActiveEntityReferences()
     {
-        return _entityReferences;
+        return _activeEntityReferences;
     }
 
     public void SetConnection(AbstractEntityController entity)
