@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1296595107499641700}
   - component: {fileID: 5523241910462032279}
-  - component: {fileID: 925490353528570126}
   - component: {fileID: 6637476761537193653}
+  - component: {fileID: 3240890091598104288}
   - component: {fileID: -4339958983368732355}
   m_Layer: 3
   m_Name: Stair
@@ -47,18 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc79b8f07fb74545b4d3129a0a81bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &925490353528570126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1296595107499641696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0831f59e99bf933419babca5b3888f20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6637476761537193653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,6 +57,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e331e299458f0c8408500b905b109d70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3240890091598104288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296595107499641696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecafcd23f80c9c5418626d8d92e1860f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &-4339958983368732355

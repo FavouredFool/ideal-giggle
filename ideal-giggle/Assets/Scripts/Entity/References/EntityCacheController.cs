@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SurroundingEntityCache3D : MonoBehaviour
+public class EntityCacheController : MonoBehaviour
 {
 
     private EntityManager _entityManager;
@@ -13,11 +13,16 @@ public class SurroundingEntityCache3D : MonoBehaviour
         _entityManager = GetComponentInParent<EntityManager>();
     }
 
-    public List<AbstractEntityController> CacheSurroundingEntityReferences(Vector3 position)
+    public List<AbstractEntityController> CacheEntityReferences3D(Vector3 position)
     {
         _position = position;
         _surroundingEntities = CacheSurroundingEntities();
         return _surroundingEntities;
+    }
+
+    public List<AbstractEntityController> CacheEntityReferences2D()
+    {
+        return null;
     }
 
     private List<AbstractEntityController> CacheSurroundingEntities()

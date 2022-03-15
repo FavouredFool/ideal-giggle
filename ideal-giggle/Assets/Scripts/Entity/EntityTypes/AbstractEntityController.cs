@@ -17,7 +17,9 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     protected List<AbstractEntityController> _activeEntityReferences;
 
-    protected SurroundingEntityCache3D _surroundingEntityCache3D;
+    protected AbstractReferenceController _abstractReferenceController;
+
+    protected EntityCacheController _entityCacheController;
 
     protected ColorCalculator _colorCalculator;
 
@@ -35,7 +37,7 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public virtual void Awake()
     {
-        _surroundingEntityCache3D = GetComponent<SurroundingEntityCache3D>();
+        _entityCacheController = GetComponent<EntityCacheController>();
         _colorCalculator = GetComponent<ColorCalculator>();
 
         transform.position = CoordinateHelper.DetermineGridCoordinate(transform.position);
@@ -44,23 +46,31 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public void Start()
     {
-        _entityCache = _surroundingEntityCache3D.CacheSurroundingEntityReferences(_position);
+        _abstractReferenceController = GetComponent<AbstractReferenceController>();
         _entityReferences3D = CalculateReferences3D();
         _activeEntityReferences = _entityReferences3D;
     }
 
-    public abstract List<AbstractEntityController> CalculateReferences3D();
-
-    public abstract List<AbstractEntityController> CalculateReferences2D(PlaneController xPlane, PlaneController zPlane);
-
-    public void SetReferences(Dimension _dimension, PlaneController xPlane, PlaneController zPlane)
+    public List<AbstractEntityController> CalculateReferences3D()
     {
-        if (_dimension.Equals(Dimension.THREE))
+        _entityCache = _entityCacheController.CacheEntityReferences3D(_position);
+        return _abstractReferenceController.CalculateReferences3D(_entityCache, _position);
+    }
+
+    public List<AbstractEntityController> CalculateReferences2D(Dimension dimension, PlaneController xPlane, PlaneController zPlane)
+    {
+        _entityCache = _entityCacheController.CacheEntityReferences2D();
+        return _abstractReferenceController.CalculateReferences2D(_entityCache, dimension, _position, xPlane, zPlane);
+    }
+
+    public void SetReferences(Dimension dimension, PlaneController xPlane, PlaneController zPlane)
+    {
+        if (dimension.Equals(Dimension.THREE))
         {
             _activeEntityReferences = _entityReferences3D;
         } else
         {
-            _activeEntityReferences = CalculateReferences2D(xPlane, zPlane);
+            _activeEntityReferences = CalculateReferences2D(dimension, xPlane, zPlane);
         }
     }
 

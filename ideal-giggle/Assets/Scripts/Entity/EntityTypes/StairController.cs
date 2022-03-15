@@ -4,9 +4,6 @@ using static EntityHelper;
 
 public class StairController : AbstractEntityController
 {
-
-    StairReferenceController _stairReferenceController;
-
     Vector3 _bottomEnter;
     Vector3 _topEnter;
 
@@ -15,7 +12,6 @@ public class StairController : AbstractEntityController
         base.Awake();
         _entityType = EntityType.STAIR;
         _visualPosition = new Vector3(0, -0.75f, 0);
-        _stairReferenceController = GetComponent<StairReferenceController>();
 
         Vector3 rotation = transform.eulerAngles;
 
@@ -47,16 +43,6 @@ public class StairController : AbstractEntityController
             _bottomEnter = Vector3.zero;
             _topEnter = Vector3.zero;
         }
-    }
-
-    public override List<AbstractEntityController> CalculateReferences3D()
-    {
-       return _stairReferenceController.CalculateReferences3D(_entityCache, _position);
-    }
-
-    public override List<AbstractEntityController> CalculateReferences2D(PlaneController xPlane, PlaneController zPlane)
-    {
-        return _stairReferenceController.CalculateReferences2D(xPlane, zPlane);
     }
 
     public Vector3 GetTopEnter()
