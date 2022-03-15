@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ViewHelper;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -10,10 +11,6 @@ public class CameraMovement : MonoBehaviour
     private EntityManager _entityManager;
 
     private Vector3 pivot;
-
-    private enum VerticalState { UPPER, LOWER };
-
-    private enum Dimension { TWO, THREE };
 
     private VerticalState _verticalState;
     private Dimension _dimension;
@@ -45,15 +42,22 @@ public class CameraMovement : MonoBehaviour
             Debug.LogWarning("FEHLER");
         }
 
-        UpdateDimension();
-        UpdateReferences();
+        UpdateView();
     }
+
 
     public void MoveCameraHorizontally(int degrees)
     {
         transform.RotateAround(pivot, Vector3.up, degrees);
+
+        UpdateView();
+    }
+
+    void UpdateView()
+    {
         UpdateDimension();
-        UpdateReferences();
+
+        _entityManager.UpdateReferences(_dimension);
     }
 
     void UpdateDimension()
@@ -62,19 +66,29 @@ public class CameraMovement : MonoBehaviour
         {
             _dimension = Dimension.THREE;
         }
-        else if (transform.rotation.eulerAngles.y % 90 != 0)
-        {
-            _dimension = Dimension.THREE;
-        }
         else
         {
-            _dimension = Dimension.TWO;
+            if (transform.forward.V3Equal(Vector3.forward))
+            {
+                _dimension = Dimension.TWO_NZ;
+            }
+            else if (transform.forward.V3Equal(Vector3.back))
+            {
+                _dimension = Dimension.TWO_Z;
+            }
+            else if (transform.forward.V3Equal(Vector3.right))
+            {
+                _dimension = Dimension.TWO_NX;
+            }
+            else if (transform.forward.V3Equal(Vector3.left))
+            {
+                _dimension = Dimension.TWO_X;
+            }
+            else
+            {
+                _dimension = Dimension.THREE;
+            }
         }
-    }
-
-    void UpdateReferences()
-    {
-
     }
 
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ViewHelper;
 
 public class EntityManager : MonoBehaviour
 {
@@ -29,6 +30,14 @@ public class EntityManager : MonoBehaviour
     public void Start()
     {
         UpdateColor();
+    }
+
+    public void UpdateReferences(Dimension _dimension)
+    {
+        foreach (AbstractEntityController entity in GetEntityList())
+        {
+            entity.SetReferences(_dimension, _xPlane, _zPlane);
+        }
     }
 
     public AbstractEntityController GetEntityFromCoordiantes(Vector3 coordinates)

@@ -21,5 +21,10 @@ public class BlockController : AbstractEntityController
         return _blockReferenceController.CalculateReferences3D(_entityCache, _position);
     }
 
+    public override List<AbstractEntityController> CalculateReferences2D(PlaneController xPlane, PlaneController zPlane)
+    {
+        return _blockReferenceController.CalculateReferences2D(xPlane, zPlane);
+    }
+
 }
 

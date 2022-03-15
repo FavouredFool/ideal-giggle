@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using static EntityHelper;
+using static ViewHelper;
 
 public abstract class AbstractEntityController : MonoBehaviour
 {
@@ -49,6 +50,19 @@ public abstract class AbstractEntityController : MonoBehaviour
     }
 
     public abstract List<AbstractEntityController> CalculateReferences3D();
+
+    public abstract List<AbstractEntityController> CalculateReferences2D(PlaneController xPlane, PlaneController zPlane);
+
+    public void SetReferences(Dimension _dimension, PlaneController xPlane, PlaneController zPlane)
+    {
+        if (_dimension.Equals(Dimension.THREE))
+        {
+            _activeEntityReferences = _entityReferences3D;
+        } else
+        {
+            _activeEntityReferences = CalculateReferences2D(xPlane, zPlane);
+        }
+    }
 
     public Vector3 GetPosition()
     {
@@ -103,6 +117,8 @@ public abstract class AbstractEntityController : MonoBehaviour
     {
         return _colorCalculator;
     }
+
+    
 
 }
 

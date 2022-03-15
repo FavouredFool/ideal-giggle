@@ -962,6 +962,10 @@ PrefabInstance:
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 891878654}
+    - target: {fileID: 1984108489073277441, guid: db36de872f0627a479c5c572a0029b96, type: 3}
+      propertyPath: _entityReferenceManager
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db36de872f0627a479c5c572a0029b96, type: 3}
 --- !u!1001 &5277545953485913246
@@ -971,10 +975,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1707728603}
     m_Modifications:
-    - target: {fileID: 5277545952990161692, guid: 789e45824d6c0fe40ab82a6bd1b81222, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.5
-      objectReference: {fileID: 0}
     - target: {fileID: 5277545954285812828, guid: 789e45824d6c0fe40ab82a6bd1b81222, type: 3}
       propertyPath: m_Name
       value: EntityManager
@@ -1023,7 +1023,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1105818527338548281, guid: 789e45824d6c0fe40ab82a6bd1b81222, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 789e45824d6c0fe40ab82a6bd1b81222, type: 3}
 --- !u!1001 &7831210129565241505
 PrefabInstance:

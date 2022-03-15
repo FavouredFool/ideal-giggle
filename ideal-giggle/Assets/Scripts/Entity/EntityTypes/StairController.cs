@@ -54,6 +54,11 @@ public class StairController : AbstractEntityController
        return _stairReferenceController.CalculateReferences3D(_entityCache, _position);
     }
 
+    public override List<AbstractEntityController> CalculateReferences2D(PlaneController xPlane, PlaneController zPlane)
+    {
+        return _stairReferenceController.CalculateReferences2D(xPlane, zPlane);
+    }
+
     public Vector3 GetTopEnter()
     {
         return _topEnter;

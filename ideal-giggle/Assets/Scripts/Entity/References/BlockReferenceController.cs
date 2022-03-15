@@ -161,4 +161,9 @@ public class BlockReferenceController : MonoBehaviour
             break;
         }
     }
+
+    public List<AbstractEntityController> CalculateReferences2D(PlaneController xPlane, PlaneController zPlane)
+    {
+        return null;
+    }
 }
