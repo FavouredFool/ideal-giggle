@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static ViewHelper;
+using static EntityHelper;
 
 public class EntityManager : MonoBehaviour
 {
@@ -51,20 +52,45 @@ public class EntityManager : MonoBehaviour
         int zLevelSize = GetLevelSize().z;
 
         int width = 0;
+        float activePlanePos = 0;
+        int posDepthIndex = 0;
+        int posWidthIndex = 0;
+        int negation = 0;
+        Vector3 lookDirection = Vector3.zero; ;
 
         switch (_dimension)
         {
             case Dimension.TWO_X:
                 width = zLevelSize;
+                activePlanePos = _xPlane.transform.position.x;
+                posDepthIndex = 0;
+                posWidthIndex = 2;
+                negation = -1;
+                lookDirection = Vector3.left;
                 break;
             case Dimension.TWO_NX:
                 width = zLevelSize;
+                activePlanePos = _xPlane.transform.position.x;
+                posDepthIndex = 0;
+                posWidthIndex = 2;
+                negation = 1;
+                lookDirection = Vector3.right;
                 break;
             case Dimension.TWO_Z:
                 width = xLevelSize;
+                activePlanePos = _zPlane.transform.position.z;
+                posDepthIndex = 2;
+                posWidthIndex = 0;
+                negation = -1;
+                lookDirection = Vector3.back;
                 break;
             case Dimension.TWO_NZ:
                 width = xLevelSize;
+                activePlanePos = _zPlane.transform.position.z;
+                posDepthIndex = 2;
+                posWidthIndex = 0;
+                negation = 1;
+                lookDirection = Vector3.forward;
                 break;
         }
 
@@ -72,39 +98,19 @@ public class EntityManager : MonoBehaviour
         {
             for (int j = 0; j < width; j++)
             {
-                float temp = float.PositiveInfinity;
-                AbstractEntityController tempEntity = null;
+                List<AbstractEntityController> tempEntityList = new List<AbstractEntityController>();
 
                 // Durch jede Entity durchgehen um nur die Relevanten zu finden.
                 foreach (AbstractEntityController entity in GetEntityList())
                 {
-                        
-                    float widthPoint = 0;
-                    float depthPoint = 0;
-                    int negation = 0;
+                    float widthPoint = entity.transform.position[posWidthIndex];
+                    float depthPoint = entity.transform.position[posDepthIndex];
 
-                    switch (_dimension)
+                    bool planeGuard = activePlanePos*negation < depthPoint*negation;
+
+                    if (planeGuard)
                     {
-                        case Dimension.TWO_X:
-                            widthPoint = entity.transform.position.z;
-                            depthPoint = entity.transform.position.x;
-                            negation = -1;
-                            break;
-                        case Dimension.TWO_NX:
-                            widthPoint = entity.transform.position.z;
-                            depthPoint = entity.transform.position.x;
-                            negation = 1;
-                            break;
-                        case Dimension.TWO_Z:
-                            widthPoint = entity.transform.position.x;
-                            depthPoint = entity.transform.position.z;
-                            negation = -1;
-                            break;
-                        case Dimension.TWO_NZ:
-                            widthPoint = entity.transform.position.x;
-                            depthPoint = entity.transform.position.z;
-                            negation = 1;
-                            break;
+                        continue;
                     }
 
                     bool horizontalGuard = widthPoint != j;
@@ -115,18 +121,54 @@ public class EntityManager : MonoBehaviour
                         continue;
                     }
 
-                    if (depthPoint*negation < temp)
+                    tempEntityList.Add(entity);
+                }
+
+                AbstractEntityController entityToAdd = null;
+
+                if (tempEntityList.Count == 0)
+                {
+                    continue;
+                }
+
+                tempEntityList.Sort((AbstractEntityController x, AbstractEntityController y) =>
+                {
+                    if (x.transform.position[posDepthIndex]*negation > y.transform.position[posDepthIndex]*negation)
                     {
-                        temp = depthPoint*negation;
-                        tempEntity = entity;
+                        return 1;
+                    } else if (x.transform.position[posDepthIndex]*negation < y.transform.position[posDepthIndex]*negation)
+                    {
+                        return -1;
+                    } else
+                    {
+                        return 0;
+                    }
+                });
+
+                // Check ob Entity eine schlecht rotierte Stair ist. Dann wird das hintere Element gewählt, welches dies nicht ist.
+                entityToAdd = tempEntityList[0];
+
+                for (int k = 0; k < tempEntityList.Count; k++)
+                {
+                    bool isStair = tempEntityList[k].GetEntityType().Equals(EntityType.STAIR);
+                    
+                    if (!isStair)
+                    {
+                        entityToAdd = tempEntityList[k];
+                        break;
+                    }
+
+                    StairController stair = (StairController)tempEntityList[k];
+                    bool isCorrectlyTurned = stair.GetTopEnter().V3Equal(lookDirection) || stair.GetTopEnter().V3Equal(-lookDirection);
+
+                    if (isCorrectlyTurned)
+                    {
+                        entityToAdd = tempEntityList[k];
+                        break;
                     }
                 }
-                if (tempEntity)
-                {
-                    pruned2DList.Add(tempEntity);
-                }
-                
 
+                pruned2DList.Add(entityToAdd);
             }
         }
         
