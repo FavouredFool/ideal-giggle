@@ -97,7 +97,6 @@ public class StairReferenceController : AbstractReferenceController
                     _entityReferences[index] = activeEntity;
                     break;
                 case EntityType.STAIR:
-
                     if (!_referenceDirection.Equals(-_stairController.GetTopEnter()))
                     {
                         _entityReferences[index] = null;

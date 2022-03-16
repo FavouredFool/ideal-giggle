@@ -20,7 +20,7 @@ public class CameraMovement : MonoBehaviour
         _verticalState = VerticalState.UPPER;
         _dimension = Dimension.THREE;
 
-        Vector3 dimensions = _entityManager.GetDimensions();
+        Vector3 dimensions = _entityManager.GetLevelSize();
         pivot = new Vector3((dimensions.x-1) / 2f, (dimensions.y-1) / 2f, (dimensions.z-1) / 2f);
     }
 

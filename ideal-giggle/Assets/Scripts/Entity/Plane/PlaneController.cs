@@ -13,8 +13,8 @@ public class PlaneController : MonoBehaviour
     {
         Vector3 desiredPosition = transform.position + direction;
 
-        bool xGuard = desiredPosition.x < -0.5f || desiredPosition.x > _entityManager.GetDimensions().x - 0.5f;
-        bool zGuard = desiredPosition.z < -0.5f || desiredPosition.z > _entityManager.GetDimensions().z - 0.5f;
+        bool xGuard = desiredPosition.x < -0.5f || desiredPosition.x > _entityManager.GetLevelSize().x - 0.5f;
+        bool zGuard = desiredPosition.z < -0.5f || desiredPosition.z > _entityManager.GetLevelSize().z - 0.5f;
 
         if (xGuard || zGuard)
         {

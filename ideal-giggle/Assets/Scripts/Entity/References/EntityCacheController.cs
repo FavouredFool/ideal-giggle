@@ -1,31 +1,42 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static ViewHelper;
 
 public class EntityCacheController : MonoBehaviour
 {
-
+    private AbstractEntityController _entity;
     private EntityManager _entityManager;
     private Vector3 _position;
     private List<AbstractEntityController> _surroundingEntities;
 
     public void Awake()
     {
+        _entity = GetComponent<AbstractEntityController>();
         _entityManager = GetComponentInParent<EntityManager>();
     }
 
     public List<AbstractEntityController> CacheEntityReferences3D(Vector3 position)
     {
         _position = position;
-        _surroundingEntities = CacheSurroundingEntities();
+        _surroundingEntities = CacheSurroundingEntities3D();
         return _surroundingEntities;
     }
 
-    public List<AbstractEntityController> CacheEntityReferences2D()
+    public List<AbstractEntityController> CacheEntityReferences2D(Dimension dimension, List<AbstractEntityController> entityList, Vector3 position)
     {
-        return null;
+        List<AbstractEntityController> surroundingEntities = new List<AbstractEntityController>();
+
+        if (!entityList.Contains(_entity))
+        {
+            return surroundingEntities;
+        }
+
+        Debug.Log(_entity);
+
+        return surroundingEntities;
     }
 
-    private List<AbstractEntityController> CacheSurroundingEntities()
+    private List<AbstractEntityController> CacheSurroundingEntities3D()
     {
         List<AbstractEntityController> surroundingEntities = new List<AbstractEntityController>();
 

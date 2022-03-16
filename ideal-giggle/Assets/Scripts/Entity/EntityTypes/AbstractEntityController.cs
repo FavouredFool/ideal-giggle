@@ -57,20 +57,20 @@ public abstract class AbstractEntityController : MonoBehaviour
         return _abstractReferenceController.CalculateReferences3D(_entityCache, _position);
     }
 
-    public List<AbstractEntityController> CalculateReferences2D(Dimension dimension, PlaneController xPlane, PlaneController zPlane)
+    public List<AbstractEntityController> CalculateReferences2D(Dimension dimension, List<AbstractEntityController> entityList, PlaneController xPlane, PlaneController zPlane)
     {
-        _entityCache = _entityCacheController.CacheEntityReferences2D();
+        _entityCache = _entityCacheController.CacheEntityReferences2D(dimension, entityList, _position);
         return _abstractReferenceController.CalculateReferences2D(_entityCache, dimension, _position, xPlane, zPlane);
     }
 
-    public void SetReferences(Dimension dimension, PlaneController xPlane, PlaneController zPlane)
+    public void SetReferences(Dimension dimension, List<AbstractEntityController> entityList, PlaneController xPlane, PlaneController zPlane)
     {
         if (dimension.Equals(Dimension.THREE))
         {
             _activeEntityReferences = _entityReferences3D;
         } else
         {
-            _activeEntityReferences = CalculateReferences2D(dimension, xPlane, zPlane);
+            _activeEntityReferences = CalculateReferences2D(dimension, entityList, xPlane, zPlane);
         }
     }
 
