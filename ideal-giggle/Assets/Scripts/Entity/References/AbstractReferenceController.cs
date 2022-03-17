@@ -11,6 +11,9 @@ public abstract class AbstractReferenceController : MonoBehaviour
     protected bool _transitionIsSet = false;
     protected Vector3 _referenceDirection;
     protected Dimension _dimension;
+    protected int _posDepthIndex;
+    protected int _posWidthIndex;
+    
 
 
     public List<AbstractEntityController> CalculateReferences3D(List<AbstractEntityController> entityCache, Vector3 position)
@@ -20,29 +23,24 @@ public abstract class AbstractReferenceController : MonoBehaviour
         _dimension = Dimension.THREE;
         _position = position;
 
-        for (int i = 0; i < _entityReferences.Count; i++)
-        {
-            _entityReferences[i] = null;
-        }
-
         for (int i = 0; i < 4; i++)
         {
-            _referenceDirection = SwitchReferenceDirection(i);
+            _referenceDirection = SwitchReferenceDirection3D(i);
             _transitionIsSet = false;
 
-            EvaluateUpperRow(i);
+            EvaluateUpperRow3D(i);
             if (_transitionIsSet)
             {
                 continue;
             }
 
-            EvaluateMiddleRow(i);
+            EvaluateMiddleRow3D(i);
             if (_transitionIsSet)
             {
                 continue;
             }
 
-            EvaluateLowerRow(i);
+            EvaluateLowerRow3D(i);
             if (_transitionIsSet)
             {
                 continue;
@@ -54,17 +52,66 @@ public abstract class AbstractReferenceController : MonoBehaviour
         return _entityReferences;
     }
 
-    public List<AbstractEntityController> CalculateReferences2D(List<AbstractEntityController> entityCache, Dimension dimension, Vector3 position, PlaneController xPlane, PlaneController zPlane)
+    public List<AbstractEntityController> CalculateReferences2D(List<AbstractEntityController> entityCache, Dimension dimension, Vector3 position)
     {
         _entityCache = entityCache;
-        _entityReferences = new List<AbstractEntityController> { null, null, null, null };
+        _entityReferences = new List<AbstractEntityController> { null, null };
         _dimension = dimension;
         _position = position;
+        
+        
 
-        return null;
+        switch (dimension)
+        {
+            case Dimension.TWO_X:
+                _posDepthIndex = 0;
+                _posWidthIndex = 2;
+                break;
+            case Dimension.TWO_NX:
+                _posDepthIndex = 0;
+                _posWidthIndex = 2;
+                break;
+            case Dimension.TWO_Z:
+                _posDepthIndex = 2;
+                _posWidthIndex = 0;
+                break;
+            case Dimension.TWO_NZ:
+                _posDepthIndex = 2;
+                _posWidthIndex = 0;
+                break;
+        }
+
+
+        for (int i = 0; i < 2; i++)
+        {
+            _referenceDirection = SwitchReferenceDirection2D(i);
+            _transitionIsSet = false;
+            
+            EvaluateUpperRow2D(i);
+            if (_transitionIsSet)
+            {
+                continue;
+            }
+
+            EvaluateMiddleRow2D(i);
+            if (_transitionIsSet)
+            {
+                continue;
+            }
+
+            EvaluateLowerRow2D(i);
+            if (_transitionIsSet)
+            {
+                continue;
+            }
+
+            _entityReferences[i] = null;
+        }
+
+        return _entityReferences;
     }
 
-    public Vector3 SwitchReferenceDirection(int index)
+    public Vector3 SwitchReferenceDirection3D(int index)
     {
         Vector3 localReferenceDirection;
 
@@ -91,9 +138,48 @@ public abstract class AbstractReferenceController : MonoBehaviour
         return localReferenceDirection;
     }
 
-    protected abstract void EvaluateUpperRow(int index);
+    public Vector3 SwitchReferenceDirection2D(int index)
+    {
+        Vector3 localReferenceDirection;
 
-    protected abstract void EvaluateMiddleRow(int index);
+        switch (index)
+        {
+            case 0:
+                if (_dimension.Equals(Dimension.TWO_NX) || _dimension.Equals(Dimension.TWO_X)) {
+                    localReferenceDirection = Vector3.forward;
+                } else
+                {
+                    localReferenceDirection = Vector3.right;
+                }
+                break;
+            case 1:
+                if (_dimension.Equals(Dimension.TWO_NX) || _dimension.Equals(Dimension.TWO_X))
+                {
+                    localReferenceDirection = Vector3.back;
+                }
+                else
+                {
+                    localReferenceDirection = Vector3.left;
+                }
+                break;
+            default:
+                localReferenceDirection = Vector3.zero;
+                Debug.LogWarning($"FEHLER: referenceDirection darf niemals {localReferenceDirection} sein.");
+                break;
+        }
 
-    protected abstract void EvaluateLowerRow(int index);
+        return localReferenceDirection;
+    }
+
+    protected abstract void EvaluateUpperRow3D(int index);
+
+    protected abstract void EvaluateMiddleRow3D(int index);
+
+    protected abstract void EvaluateLowerRow3D(int index);
+
+    protected abstract void EvaluateUpperRow2D(int index);
+
+    protected abstract void EvaluateMiddleRow2D(int index);
+
+    protected abstract void EvaluateLowerRow2D(int index);
 }

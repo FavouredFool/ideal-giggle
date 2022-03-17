@@ -23,6 +23,7 @@ public class PlaneController : MonoBehaviour
 
         transform.localPosition = desiredPosition;
         _entityManager.UpdateColor();
+        _entityManager.UpdateReferences();
 
     }
 

@@ -12,7 +12,7 @@ public class StairReferenceController : AbstractReferenceController
         _stairController = GetComponent<StairController>();
     }
 
-    protected override void EvaluateUpperRow(int index)
+    protected override void EvaluateUpperRow3D(int index)
     {
         foreach (AbstractEntityController activeEntity in _entityCache)
         {
@@ -73,7 +73,7 @@ public class StairReferenceController : AbstractReferenceController
         }
     }
 
-    protected override void EvaluateMiddleRow(int index)
+    protected override void EvaluateMiddleRow3D(int index)
     {
         foreach (AbstractEntityController activeEntity in _entityCache)
         {
@@ -121,7 +121,7 @@ public class StairReferenceController : AbstractReferenceController
         }
     }
 
-    protected override void EvaluateLowerRow(int index)
+    protected override void EvaluateLowerRow3D(int index)
     {
         foreach (AbstractEntityController activeEntity in _entityCache)
         {
@@ -169,5 +169,183 @@ public class StairReferenceController : AbstractReferenceController
             break;
         }
     }
+
+    protected override void EvaluateUpperRow2D(int index)
+    {
+        foreach (AbstractEntityController activeEntity in _entityCache)
+        {
+            bool horizontalGuard = activeEntity.GetPosition()[_posWidthIndex].Equals(_position[_posWidthIndex] + _referenceDirection[_posWidthIndex] + Vector3.up[_posWidthIndex]);
+            bool verticalGuard = activeEntity.GetPosition()[1].Equals(_position[1] + _referenceDirection[1] + Vector3.up[1]);
+
+            if (!(horizontalGuard && verticalGuard))
+            {
+                continue;
+            }
+
+            _transitionIsSet = true;
+
+            switch (activeEntity.GetEntityType())
+            {
+                case EntityType.STAIR:
+
+                    if (!_referenceDirection.Equals(-_stairController.GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetBottomEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    bool foundCeil = false;
+                    foreach (AbstractEntityController ceilingEntity in _entityCache)
+                    {
+                        bool horizontalCeilingGuard = ceilingEntity.GetPosition()[_posWidthIndex].Equals(_position[_posWidthIndex] + Vector3.up[_posWidthIndex] * 2);
+                        bool verticalCeilingGuard = ceilingEntity.GetPosition()[1].Equals(_position[1] + Vector3.up[1] * 2);
+
+                        if (horizontalCeilingGuard && verticalCeilingGuard)
+                        {
+                            foundCeil = true;
+                            break;
+                        }
+
+                        horizontalCeilingGuard = ceilingEntity.GetPosition()[_posWidthIndex].Equals(_position[_posWidthIndex] + _referenceDirection[_posWidthIndex] + Vector3.up[_posWidthIndex] * 2);
+                        verticalCeilingGuard = ceilingEntity.GetPosition()[1].Equals(_position[1] + _referenceDirection[1] + Vector3.up[1] * 2);
+
+
+                        if (horizontalCeilingGuard && verticalCeilingGuard)
+                        {
+                            foundCeil = true;
+                            break;
+                        }
+                    }
+
+                    if (foundCeil)
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    _entityReferences[index] = activeEntity;
+                    break;
+                default:
+                    _entityReferences[index] = null;
+                    break;
+            }
+
+            break;
+        }
+    }
+
+    protected override void EvaluateMiddleRow2D(int index)
+    {
+        foreach (AbstractEntityController activeEntity in _entityCache)
+        {
+            bool horizontalGuard = activeEntity.GetPosition()[_posWidthIndex].Equals(_position[_posWidthIndex] + _referenceDirection[_posWidthIndex]);
+            bool verticalGuard = activeEntity.GetPosition()[1].Equals(_position[1] + _referenceDirection[1]);
+
+            if (!(horizontalGuard && verticalGuard))
+            {
+                continue;
+            }
+
+            _transitionIsSet = true;
+
+            switch (activeEntity.GetEntityType())
+            {
+                case EntityType.BLOCK:
+
+                    if (!_referenceDirection.Equals(-_stairController.GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    _entityReferences[index] = activeEntity;
+                    break;
+                case EntityType.STAIR:
+                    if (!_referenceDirection.Equals(-_stairController.GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    _entityReferences[index] = activeEntity;
+                    break;
+                default:
+                    Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {activeEntity.GetEntityType()} sein");
+                    _entityReferences[index] = null;
+                    break;
+            }
+
+            break;
+        }
+    }
+
+    protected override void EvaluateLowerRow2D(int index)
+    {
+        foreach (AbstractEntityController activeEntity in _entityCache)
+        {
+
+            bool horizontalGuard = activeEntity.GetPosition()[_posWidthIndex].Equals(_position[_posWidthIndex] + _referenceDirection[_posWidthIndex] + Vector3.down[_posWidthIndex]);
+            bool verticalGuard = activeEntity.GetPosition()[1].Equals(_position[1] + _referenceDirection[1] + Vector3.down[1]);
+
+            if (!(horizontalGuard && verticalGuard))
+            {
+                continue;
+            }
+
+            _transitionIsSet = true;
+
+            switch (activeEntity.GetEntityType())
+            {
+                case EntityType.BLOCK:
+
+                    if (!_referenceDirection.Equals(-_stairController.GetBottomEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    _entityReferences[index] = activeEntity;
+                    break;
+                case EntityType.STAIR:
+
+                    if (!_referenceDirection.Equals(-_stairController.GetBottomEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetTopEnter()))
+                    {
+                        _entityReferences[index] = null;
+                        break;
+                    }
+
+                    _entityReferences[index] = activeEntity;
+                    break;
+                default:
+                    Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {activeEntity.GetEntityType()} sein");
+                    _entityReferences[index] = null;
+                    break;
+            }
+
+            break;
+        }
+    }
+
+
+
+
 
 }

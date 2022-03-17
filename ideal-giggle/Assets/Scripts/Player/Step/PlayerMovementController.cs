@@ -69,6 +69,7 @@ public class PlayerMovementController : MonoBehaviour
 
     public void SetEndEntity(AbstractEntityController endEntity)
     {
+        
         if (_pathCalculating)
         {
             return;

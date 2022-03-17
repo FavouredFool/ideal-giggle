@@ -22,6 +22,8 @@ public class EntityManager : MonoBehaviour
 
     private List<AbstractEntityController> _entityList;
 
+    private Dimension _dimension;
+
 
     public void Awake()
     {
@@ -33,8 +35,15 @@ public class EntityManager : MonoBehaviour
         UpdateColor();
     }
 
-    public void UpdateReferences(Dimension _dimension)
+    public void UpdateReferences()
     {
+        UpdateReferences(_dimension);
+    }
+
+    public void UpdateReferences(Dimension dimension)
+    {
+        _dimension = dimension;
+
         if (_dimension.Equals(Dimension.THREE))
         {
             foreach (AbstractEntityController entity in GetEntityList())

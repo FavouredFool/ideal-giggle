@@ -31,7 +31,7 @@ public class EntityCacheController : MonoBehaviour
             return surroundingEntities;
         }
 
-        Debug.Log(_entity);
+        surroundingEntities = entityList;
 
         return surroundingEntities;
     }

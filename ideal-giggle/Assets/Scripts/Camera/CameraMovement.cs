@@ -56,7 +56,6 @@ public class CameraMovement : MonoBehaviour
     void UpdateView()
     {
         UpdateDimension();
-
         _entityManager.UpdateReferences(_dimension);
     }
 
