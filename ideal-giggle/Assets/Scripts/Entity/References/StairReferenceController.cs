@@ -26,8 +26,13 @@ public class StairReferenceController : AbstractReferenceController
             {
             case EntityType.STAIR:
 
-                StairController stairEntity = (StairController)entity;
+                if (StairRotationGuard(_thisStairEntity.GetBottomEnter()))
+                {
+                    SetReference(index, null);
+                    break;
+                }
 
+                StairController stairEntity = (StairController)entity;
                 if (StairRotationGuard(stairEntity.GetBottomEnter()))
                 {
                     SetReference(index, null);
@@ -54,7 +59,6 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateMiddleRow3D(int index)
     {
-
         AbstractEntityController entity = _entityCache.Where(entity => EntityCheck(entity, _referenceDirection)).FirstOrDefault();
 
         if (!entity)
@@ -66,7 +70,7 @@ public class StairReferenceController : AbstractReferenceController
             {
                 case EntityType.BLOCK:
 
-                if (StairRotationGuard(-_thisStairEntity.GetTopEnter()))
+                if (StairRotationGuard(_thisStairEntity.GetBottomEnter()))
                 {
                     SetReference(index, null);
                     break;
@@ -77,14 +81,14 @@ public class StairReferenceController : AbstractReferenceController
 
                 case EntityType.STAIR:
 
-                if (StairRotationGuard(-_thisStairEntity.GetTopEnter()))
+                if (StairRotationGuardNegated(_thisStairEntity.GetTopEnter()))
                 {
                     SetReference(index, null);
                     break;
                 }
 
                 StairController stairEntity = (StairController)entity;
-                if (StairRotationGuard(stairEntity.GetTopEnter()))
+                if (StairRotationGuardNegated(stairEntity.GetBottomEnter()))
                 {
                     SetReference(index, null);
                     break;
@@ -114,7 +118,7 @@ public class StairReferenceController : AbstractReferenceController
             {
                 case EntityType.BLOCK:
 
-                if (StairRotationGuard(-_thisStairEntity.GetBottomEnter()))
+                if (StairRotationGuard(_thisStairEntity.GetTopEnter()))
                 {
                     SetReference(index, null);
                     break;
@@ -125,7 +129,7 @@ public class StairReferenceController : AbstractReferenceController
 
                 case EntityType.STAIR:
 
-                if (StairRotationGuard(-_thisStairEntity.GetBottomEnter()))
+                if (StairRotationGuard(_thisStairEntity.GetTopEnter()))
                 {
                     SetReference(index, null);
                     break;
@@ -320,20 +324,6 @@ public class StairReferenceController : AbstractReferenceController
         }
     }
 
-    private void SetReference(int index, AbstractEntityController referencedEntity)
-    {
-        _entityReferences[index] = referencedEntity;
-        _transitionIsSet = true;
-    }
-
-    private bool StairRotationGuard(Vector3 stairEnter)
-    {
-        return !_referenceDirection.Equals(stairEnter);
-    }
-
-    private bool EntityCheck(AbstractEntityController entity, Vector3 desiredDirection)
-    {
-        return entity.GetPosition().Equals(_position + desiredDirection);
-    }
+    
 
 }

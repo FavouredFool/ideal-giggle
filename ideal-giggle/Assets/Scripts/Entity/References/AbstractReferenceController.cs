@@ -171,6 +171,27 @@ public abstract class AbstractReferenceController : MonoBehaviour
         return localReferenceDirection;
     }
 
+    protected void SetReference(int index, AbstractEntityController referencedEntity)
+    {
+        _entityReferences[index] = referencedEntity;
+        _transitionIsSet = true;
+    }
+
+    protected bool StairRotationGuard(Vector3 stairEnter)
+    {
+        return !_referenceDirection.Equals(stairEnter);
+    }
+
+    protected bool StairRotationGuardNegated(Vector3 stairEnter)
+    {
+        return _referenceDirection.Equals(stairEnter);
+    }
+
+    protected bool EntityCheck(AbstractEntityController entity, Vector3 desiredDirection)
+    {
+        return entity.GetPosition().Equals(_position + desiredDirection);
+    }
+
     protected abstract void EvaluateUpperRow3D(int index);
 
     protected abstract void EvaluateMiddleRow3D(int index);

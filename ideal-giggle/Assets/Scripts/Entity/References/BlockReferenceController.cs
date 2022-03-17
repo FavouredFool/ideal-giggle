@@ -196,22 +196,6 @@ public class BlockReferenceController : AbstractReferenceController
         return;
     }
 
-    private void SetReference(int index, AbstractEntityController referencedEntity)
-    {
-        _entityReferences[index] = referencedEntity;
-        _transitionIsSet = true;
-    }
-
-    private bool StairRotationGuard(Vector3 stairEnter)
-    {
-        return !_referenceDirection.Equals(stairEnter);
-    }
-
-    private bool EntityCheck(AbstractEntityController entity, Vector3 desiredDirection)
-    {
-        return entity.GetPosition().Equals(_position + desiredDirection);
-    }
-
 
 
 
