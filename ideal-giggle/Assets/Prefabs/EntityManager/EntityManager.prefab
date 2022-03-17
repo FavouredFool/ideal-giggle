@@ -294,7 +294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5277545954285812829}
   - component: {fileID: 5277545954285812826}
-  - component: {fileID: 1105818527338548281}
+  - component: {fileID: 6921054736108215564}
   m_Layer: 3
   m_Name: EntityManager
   m_TagString: Untagged
@@ -335,8 +335,8 @@ MonoBehaviour:
   _entityMaterial: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
   _xPlane: {fileID: 1721014146}
   _zPlane: {fileID: 1149561358}
-  _dimensions: {x: 7, y: 8, z: 7}
---- !u!114 &1105818527338548281
+  _levelSize: {x: 0, y: 0, z: 0}
+--- !u!114 &6921054736108215564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5277545954285812828}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebde48e22295fed408b8292f29f04d13, type: 3}
+  m_Script: {fileID: 11500000, guid: 3bf56aef4286f88499a2387ae56fe189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1051054651244483550

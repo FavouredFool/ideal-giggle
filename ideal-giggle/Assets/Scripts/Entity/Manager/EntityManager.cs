@@ -21,6 +21,7 @@ public class EntityManager : MonoBehaviour
     private Vector3Int _levelSize;
 
     private List<AbstractEntityController> _entityList;
+    private EntityCalculator _entityCalculator;
 
     private Dimension _dimension;
 
@@ -28,6 +29,7 @@ public class EntityManager : MonoBehaviour
     public void Awake()
     {
         _entityList = new List<AbstractEntityController>(GetComponentsInChildren<AbstractEntityController>());
+        _entityCalculator = GetComponent<EntityCalculator>();
     }
 
     public void Start()
@@ -51,142 +53,15 @@ public class EntityManager : MonoBehaviour
                 entity.SetReferences(_dimension, GetEntityList(), _xPlane, _zPlane);
             }
             return;
-        }
-
-        // Prune EntityList (This should go into a seperate class)
-        List<AbstractEntityController> pruned2DList = new List<AbstractEntityController>();
-
-        int xLevelSize = GetLevelSize().x;
-        int yLevelSize = GetLevelSize().y;
-        int zLevelSize = GetLevelSize().z;
-
-        int width = 0;
-        float activePlanePos = 0;
-        int posDepthIndex = 0;
-        int posWidthIndex = 0;
-        int negation = 0;
-        Vector3 lookDirection = Vector3.zero; ;
-
-        switch (_dimension)
+        } else
         {
-            case Dimension.TWO_X:
-                width = zLevelSize;
-                activePlanePos = _xPlane.transform.position.x;
-                posDepthIndex = 0;
-                posWidthIndex = 2;
-                negation = -1;
-                lookDirection = Vector3.left;
-                break;
-            case Dimension.TWO_NX:
-                width = zLevelSize;
-                activePlanePos = _xPlane.transform.position.x;
-                posDepthIndex = 0;
-                posWidthIndex = 2;
-                negation = 1;
-                lookDirection = Vector3.right;
-                break;
-            case Dimension.TWO_Z:
-                width = xLevelSize;
-                activePlanePos = _zPlane.transform.position.z;
-                posDepthIndex = 2;
-                posWidthIndex = 0;
-                negation = -1;
-                lookDirection = Vector3.back;
-                break;
-            case Dimension.TWO_NZ:
-                width = xLevelSize;
-                activePlanePos = _zPlane.transform.position.z;
-                posDepthIndex = 2;
-                posWidthIndex = 0;
-                negation = 1;
-                lookDirection = Vector3.forward;
-                break;
-        }
+            List<AbstractEntityController> pruned2DList = _entityCalculator.Prune2DEntityList(_dimension, _xPlane, _zPlane);
 
-        for (int i = 0; i < yLevelSize; i++)
-        {
-            for (int j = 0; j < width; j++)
+            foreach (AbstractEntityController entity in pruned2DList)
             {
-                List<AbstractEntityController> tempEntityList = new List<AbstractEntityController>();
-
-                // Durch jede Entity durchgehen um nur die Relevanten zu finden.
-                foreach (AbstractEntityController entity in GetEntityList())
-                {
-                    float widthPoint = entity.transform.position[posWidthIndex];
-                    float depthPoint = entity.transform.position[posDepthIndex];
-
-                    bool planeGuard = activePlanePos*negation < depthPoint*negation;
-
-                    if (planeGuard)
-                    {
-                        continue;
-                    }
-
-                    bool horizontalGuard = widthPoint != j;
-                    bool verticalGuard = entity.transform.position.y != i;
-
-                    if (verticalGuard || horizontalGuard)
-                    {
-                        continue;
-                    }
-
-                    tempEntityList.Add(entity);
-                }
-
-                AbstractEntityController entityToAdd = null;
-
-                if (tempEntityList.Count == 0)
-                {
-                    continue;
-                }
-
-                tempEntityList.Sort((AbstractEntityController x, AbstractEntityController y) =>
-                {
-                    if (x.transform.position[posDepthIndex]*negation > y.transform.position[posDepthIndex]*negation)
-                    {
-                        return 1;
-                    } else if (x.transform.position[posDepthIndex]*negation < y.transform.position[posDepthIndex]*negation)
-                    {
-                        return -1;
-                    } else
-                    {
-                        return 0;
-                    }
-                });
-
-                // Check ob Entity eine schlecht rotierte Stair ist. Dann wird das hintere Element gewählt, welches dies nicht ist.
-                entityToAdd = tempEntityList[0];
-
-                for (int k = 0; k < tempEntityList.Count; k++)
-                {
-                    bool isStair = tempEntityList[k].GetEntityType().Equals(EntityType.STAIR);
-                    
-                    if (!isStair)
-                    {
-                        entityToAdd = tempEntityList[k];
-                        break;
-                    }
-
-                    StairController stair = (StairController)tempEntityList[k];
-                    bool isCorrectlyTurned = stair.GetTopEnter().V3Equal(lookDirection) || stair.GetTopEnter().V3Equal(-lookDirection);
-
-                    if (isCorrectlyTurned)
-                    {
-                        entityToAdd = tempEntityList[k];
-                        break;
-                    }
-                }
-
-                pruned2DList.Add(entityToAdd);
+                entity.SetReferences(dimension, pruned2DList, _xPlane, _zPlane);
             }
         }
-        
-        foreach (AbstractEntityController entity in GetEntityList())
-        {
-            entity.SetReferences(_dimension, pruned2DList, _xPlane, _zPlane);
-        }
-        return;
-
     }
 
     public AbstractEntityController GetEntityFromCoordiantes(Vector3 coordinates)
@@ -229,3 +104,5 @@ public class EntityManager : MonoBehaviour
         return _levelSize;
     }
 }
+
+
