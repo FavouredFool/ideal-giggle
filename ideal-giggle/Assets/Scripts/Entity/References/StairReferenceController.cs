@@ -1,173 +1,149 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using static EntityHelper;
 
 public class StairReferenceController : AbstractReferenceController
 {
-    StairController _stairController;
+    StairController _thisStairEntity;
 
-    void Start()
+    void Awake()
     {
-        _stairController = GetComponent<StairController>();
+        _thisStairEntity = GetComponent<StairController>();
     }
 
     protected override void EvaluateUpperRow3D(int index)
     {
-        foreach (AbstractEntityController activeEntity in _entityCache)
+        AbstractEntityController entity = _entityCache.Where(entity => EntityCheck(entity, _referenceDirection + Vector3.up)).FirstOrDefault();
+
+        if (!entity)
         {
-
-            if (!(activeEntity.GetPosition().Equals(_position + _referenceDirection + Vector3.up)))
-            {
-                continue;
-            }
-
-            _transitionIsSet = true;
-
-            switch (activeEntity.GetEntityType())
-            {
-                case EntityType.STAIR:
-
-                    if (!_referenceDirection.Equals(-_stairController.GetTopEnter()))
-                    {
-                        _entityReferences[index] = null;
-                        break;
-                    }
-
-                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetBottomEnter()))
-                    {
-                        _entityReferences[index] = null;
-                        break;
-                    }
-
-                    bool foundCeil = false;
-                    foreach (AbstractEntityController ceilingEntity in _entityCache)
-                    {
-                        if (ceilingEntity.GetPosition().Equals(_position + (Vector3.up * 2)))
-                        {
-                            foundCeil = true;
-                            break;
-                        }
-
-                        if (ceilingEntity.GetPosition().Equals(_position + _referenceDirection + (Vector3.up * 2)))
-                        {
-                            foundCeil = true;
-                            break;
-                        }
-                    }
-
-                    if (foundCeil)
-                    {
-                        _entityReferences[index] = null;
-                        break;
-                    }
-
-                    _entityReferences[index] = activeEntity;
-                    break;
-                default:
-                    _entityReferences[index] = null;
-                    break;
-            }
-
-            break;
+            return;
         }
+
+        switch (entity.GetEntityType())
+            {
+            case EntityType.STAIR:
+
+                StairController stairEntity = (StairController)entity;
+
+                if (StairRotationGuard(stairEntity.GetBottomEnter()))
+                {
+                    SetReference(index, null);
+                    break;
+                }
+
+                Vector3 abovePos = Vector3.up * 2;
+                Vector3 onStairsPos = _referenceDirection + Vector3.up * 2;
+
+                if (_entityCache.Any(e => EntityCheck(e, abovePos) || EntityCheck(e, onStairsPos)))
+                {
+                    SetReference(index, null);
+                    break;
+                }
+
+                SetReference(index, entity);
+                break;
+
+            default:
+                SetReference(index, null);
+                break;
+            }
     }
 
     protected override void EvaluateMiddleRow3D(int index)
     {
-        foreach (AbstractEntityController activeEntity in _entityCache)
+
+        AbstractEntityController entity = _entityCache.Where(entity => EntityCheck(entity, _referenceDirection)).FirstOrDefault();
+
+        if (!entity)
         {
-            if (!activeEntity.GetPosition().Equals(_position + _referenceDirection))
-            {
-                continue;
-            }
+            return;
+        }
 
-            _transitionIsSet = true;
-
-            switch (activeEntity.GetEntityType())
+            switch (entity.GetEntityType())
             {
                 case EntityType.BLOCK:
 
-                    if (!_referenceDirection.Equals(-_stairController.GetTopEnter()))
-                    {
-                        _entityReferences[index] = null;
-                        break;
-                    }
-
-                    _entityReferences[index] = activeEntity;
+                if (StairRotationGuard(-_thisStairEntity.GetTopEnter()))
+                {
+                    SetReference(index, null);
                     break;
+                }
+
+                SetReference(index, entity);
+                break;
+
                 case EntityType.STAIR:
-                    if (!_referenceDirection.Equals(-_stairController.GetTopEnter()))
-                    {
-                        _entityReferences[index] = null;
-                        break;
-                    }
 
-                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetTopEnter()))
-                    {
-                        _entityReferences[index] = null;
-                        break;
-                    }
-
-                    _entityReferences[index] = activeEntity;
+                if (StairRotationGuard(-_thisStairEntity.GetTopEnter()))
+                {
+                    SetReference(index, null);
                     break;
+                }
+
+                StairController stairEntity = (StairController)entity;
+                if (StairRotationGuard(stairEntity.GetTopEnter()))
+                {
+                    SetReference(index, null);
+                    break;
+                }
+
+                SetReference(index, entity);
+                break;
                 default:
-                    Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {activeEntity.GetEntityType()} sein");
-                    _entityReferences[index] = null;
-                    break;
+                    Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
+                SetReference(index, null);
+                break;
             }
 
-            break;
-        }
     }
 
     protected override void EvaluateLowerRow3D(int index)
     {
-        foreach (AbstractEntityController activeEntity in _entityCache)
+        AbstractEntityController entity = _entityCache.Where(entity => EntityCheck(entity, _referenceDirection + Vector3.down)).FirstOrDefault();
+
+        if (!entity)
         {
-            if (!activeEntity.GetPosition().Equals(_position + _referenceDirection + Vector3.down))
-            {
-                continue;
-            }
+            return;
+        }
 
-            _transitionIsSet = true;
 
-            switch (activeEntity.GetEntityType())
+            switch (entity.GetEntityType())
             {
                 case EntityType.BLOCK:
 
-                    if (!_referenceDirection.Equals(-_stairController.GetBottomEnter()))
-                    {
-                        _entityReferences[index] = null;
-                        break;
-                    }
-
-                    _entityReferences[index] = activeEntity;
+                if (StairRotationGuard(-_thisStairEntity.GetBottomEnter()))
+                {
+                    SetReference(index, null);
                     break;
+                }
+
+                SetReference(index, entity);
+                    break;
+
                 case EntityType.STAIR:
 
-                    if (!_referenceDirection.Equals(-_stairController.GetBottomEnter()))
-                    {
-                        _entityReferences[index] = null;
-                        break;
-                    }
-
-                    if (!_referenceDirection.Equals(((StairController)activeEntity).GetTopEnter()))
-                    {
-                        _entityReferences[index] = null;
-                        break;
-                    }
-
-                    _entityReferences[index] = activeEntity;
+                if (StairRotationGuard(-_thisStairEntity.GetBottomEnter()))
+                {
+                    SetReference(index, null);
+                    break;
+                }
+                StairController stairEntity = (StairController)entity;
+                if (StairRotationGuard(stairEntity.GetTopEnter()))
+                {
+                    SetReference(index, null);
+                    break;
+                }
+                SetReference(index, entity);
                     break;
                 default:
-                    Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {activeEntity.GetEntityType()} sein");
-                    _entityReferences[index] = null;
-                    break;
+                    Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
+                SetReference(index, null);
+                break;
             }
 
-            break;
-        }
     }
 
     protected override void EvaluateUpperRow2D(int index)
@@ -188,7 +164,7 @@ public class StairReferenceController : AbstractReferenceController
             {
                 case EntityType.STAIR:
 
-                    if (!_referenceDirection.Equals(-_stairController.GetTopEnter()))
+                    if (!_referenceDirection.Equals(-_thisStairEntity.GetTopEnter()))
                     {
                         _entityReferences[index] = null;
                         break;
@@ -258,7 +234,7 @@ public class StairReferenceController : AbstractReferenceController
             {
                 case EntityType.BLOCK:
 
-                    if (!_referenceDirection.Equals(-_stairController.GetTopEnter()))
+                    if (!_referenceDirection.Equals(-_thisStairEntity.GetTopEnter()))
                     {
                         _entityReferences[index] = null;
                         break;
@@ -267,7 +243,7 @@ public class StairReferenceController : AbstractReferenceController
                     _entityReferences[index] = activeEntity;
                     break;
                 case EntityType.STAIR:
-                    if (!_referenceDirection.Equals(-_stairController.GetTopEnter()))
+                    if (!_referenceDirection.Equals(-_thisStairEntity.GetTopEnter()))
                     {
                         _entityReferences[index] = null;
                         break;
@@ -310,7 +286,7 @@ public class StairReferenceController : AbstractReferenceController
             {
                 case EntityType.BLOCK:
 
-                    if (!_referenceDirection.Equals(-_stairController.GetBottomEnter()))
+                    if (!_referenceDirection.Equals(-_thisStairEntity.GetBottomEnter()))
                     {
                         _entityReferences[index] = null;
                         break;
@@ -320,7 +296,7 @@ public class StairReferenceController : AbstractReferenceController
                     break;
                 case EntityType.STAIR:
 
-                    if (!_referenceDirection.Equals(-_stairController.GetBottomEnter()))
+                    if (!_referenceDirection.Equals(-_thisStairEntity.GetBottomEnter()))
                     {
                         _entityReferences[index] = null;
                         break;
@@ -344,8 +320,20 @@ public class StairReferenceController : AbstractReferenceController
         }
     }
 
+    private void SetReference(int index, AbstractEntityController referencedEntity)
+    {
+        _entityReferences[index] = referencedEntity;
+        _transitionIsSet = true;
+    }
 
+    private bool StairRotationGuard(Vector3 stairEnter)
+    {
+        return !_referenceDirection.Equals(stairEnter);
+    }
 
-
+    private bool EntityCheck(AbstractEntityController entity, Vector3 desiredDirection)
+    {
+        return entity.GetPosition().Equals(_position + desiredDirection);
+    }
 
 }
