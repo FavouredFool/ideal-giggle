@@ -108,9 +108,13 @@ public class PlayerPathCalculator : MonoBehaviour
                 yield break;
             }
             
-            foreach (AbstractEntityController neighbor in current.GetActiveEntityReferences())
+            foreach (EntityReference neighbor in current.GetActiveEntityReferences())
             {
-                CalculateIfEntityIsAddedToToSearch(current, neighbor);
+                if (neighbor != null)
+                {
+                    CalculateIfEntityIsAddedToToSearch(current, neighbor.GetReferenceEntity());
+                }
+                
             }
 
         }

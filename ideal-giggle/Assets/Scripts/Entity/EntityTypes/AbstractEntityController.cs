@@ -13,9 +13,9 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     protected List<AbstractEntityController> _entityReferences2D = new List<AbstractEntityController> { null, null, null, null };
 
-    protected List<AbstractEntityController> _entityReferences3D = new List<AbstractEntityController> { null, null, null, null };
+    protected List<EntityReference> _entityReferences3D = new List<EntityReference> { null, null, null, null };
 
-    protected List<AbstractEntityController> _activeEntityReferences;
+    protected List<EntityReference> _activeEntityReferences;
 
     protected AbstractReferenceController _abstractReferenceController;
 
@@ -51,7 +51,7 @@ public abstract class AbstractEntityController : MonoBehaviour
         _activeEntityReferences = _entityReferences3D;
     }
 
-    public List<AbstractEntityController> CalculateReferences3D()
+    public List<EntityReference> CalculateReferences3D()
     {
         _entityCache = _entityCacheController.CacheEntityReferences3D(_position);
         return _abstractReferenceController.CalculateReferences3D(_entityCache, _position);
@@ -59,8 +59,11 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public List<AbstractEntityController> CalculateReferences2D(Dimension dimension, List<AbstractEntityController> entityList, PlaneController xPlane, PlaneController zPlane)
     {
+        /*
         _entityCache = _entityCacheController.CacheEntityReferences2D(dimension, entityList, _position);
         return _abstractReferenceController.CalculateReferences2D(_entityCache, dimension, _position);
+        */
+        return null;
     }
 
     public void SetReferences(Dimension dimension, List<AbstractEntityController> entityList, PlaneController xPlane, PlaneController zPlane)
@@ -70,7 +73,7 @@ public abstract class AbstractEntityController : MonoBehaviour
             _activeEntityReferences = _entityReferences3D;
         } else
         {
-            _activeEntityReferences = CalculateReferences2D(dimension, entityList, xPlane, zPlane);
+            //_activeEntityReferences = CalculateReferences2D(dimension, entityList, xPlane, zPlane);
         }
     }
 
@@ -83,7 +86,7 @@ public abstract class AbstractEntityController : MonoBehaviour
     {
         return _entityType;
     }
-    public List<AbstractEntityController> GetActiveEntityReferences()
+    public List<EntityReference> GetActiveEntityReferences()
     {
         return _activeEntityReferences;
     }

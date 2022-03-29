@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CubeBehaviour_BlockToBlock : AbstractCubeBehaviour
+public class CubeBehaviour_Even : AbstractCubeBehaviour
 {
     public override IEnumerator SpecificRotations()
     {

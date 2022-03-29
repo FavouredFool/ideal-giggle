@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using static ViewHelper;
+using static ReferenceHelper;
 
 public abstract class AbstractReferenceController : MonoBehaviour
 {
-    protected List<AbstractEntityController> _entityReferences;
+    protected List<EntityReference> _entityReferences;
     protected List<AbstractEntityController> _entityCache;
     protected Vector3 _position;
     protected bool _transitionIsSet = false;
@@ -16,10 +18,10 @@ public abstract class AbstractReferenceController : MonoBehaviour
     
 
 
-    public List<AbstractEntityController> CalculateReferences3D(List<AbstractEntityController> entityCache, Vector3 position)
+    public List<EntityReference> CalculateReferences3D(List<AbstractEntityController> entityCache, Vector3 position)
     {
         _entityCache = entityCache;
-        _entityReferences = new List<AbstractEntityController> { null, null, null, null };
+        _entityReferences = new List<EntityReference> { null, null, null, null };
         _dimension = Dimension.THREE;
         _position = position;
 
@@ -52,15 +54,14 @@ public abstract class AbstractReferenceController : MonoBehaviour
         return _entityReferences;
     }
 
-    public List<AbstractEntityController> CalculateReferences2D(List<AbstractEntityController> entityCache, Dimension dimension, Vector3 position)
+    /*
+    public List<EntityReference> CalculateReferences2D(List<AbstractEntityController> entityCache, Dimension dimension, Vector3 position)
     {
         _entityCache = entityCache;
-        _entityReferences = new List<AbstractEntityController> { null, null };
+        _entityReferences = new List<EntityReference> { null, null };
         _dimension = dimension;
         _position = position;
         
-        
-
         switch (dimension)
         {
             case Dimension.TWO_X:
@@ -110,6 +111,7 @@ public abstract class AbstractReferenceController : MonoBehaviour
 
         return _entityReferences;
     }
+    */
 
     public Vector3 SwitchReferenceDirection3D(int index)
     {
@@ -171,11 +173,12 @@ public abstract class AbstractReferenceController : MonoBehaviour
         return localReferenceDirection;
     }
 
-    protected void SetReference(int index, AbstractEntityController referencedEntity)
+    protected void SetReference(int index, AbstractEntityController referencedEntity, ReferenceBehaviourType referenceBehaviour)
     {
-        _entityReferences[index] = referencedEntity;
+        _entityReferences[index] = new EntityReference(referencedEntity, referenceBehaviour);
         _transitionIsSet = true;
     }
+
 
     protected bool StairRotationGuard(Vector3 stairEnter)
     {
@@ -192,15 +195,22 @@ public abstract class AbstractReferenceController : MonoBehaviour
         return entity.GetPosition().Equals(_position + desiredDirection);
     }
 
+    protected bool StairBlockGuard(Vector3 checkPos1, Vector3 checkPos2)
+    {
+        return _entityCache.Any(e => EntityCheck(e, checkPos1) || EntityCheck(e, checkPos2));
+    }
+
     protected abstract void EvaluateUpperRow3D(int index);
 
     protected abstract void EvaluateMiddleRow3D(int index);
 
     protected abstract void EvaluateLowerRow3D(int index);
 
+    /*
     protected abstract void EvaluateUpperRow2D(int index);
 
     protected abstract void EvaluateMiddleRow2D(int index);
 
     protected abstract void EvaluateLowerRow2D(int index);
+    */
 }
