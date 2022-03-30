@@ -10,6 +10,9 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private EntityManager _entityManager;
 
+    [SerializeField]
+    private PlayerMovementController _playerMovementController;
+
     private Vector3 pivot;
 
     private VerticalState _verticalState;
@@ -27,18 +30,17 @@ public class CameraMovement : MonoBehaviour
         pivot = new Vector3((levelSize.x-1) / 2f, (levelSize.y-1) / 2f, (levelSize.z-1) / 2f);
     }
 
-    public void MoveCameraVertically()
+    public void MoveCameraVertically(VerticalState desiredVerticalState)
     {
-       
-        if (_verticalState.Equals(VerticalState.UPPER))
-        {
-            transform.RotateAround(pivot, Vector3.Cross(transform.forward, Vector3.up), 45);
-            _verticalState = VerticalState.LOWER;
-        }
-        else if (_verticalState.Equals(VerticalState.LOWER))
+        if (desiredVerticalState.Equals(VerticalState.UPPER) && !_verticalState.Equals(VerticalState.UPPER))
         {
             transform.RotateAround(pivot, Vector3.Cross(transform.forward, Vector3.up), -45);
             _verticalState = VerticalState.UPPER;
+        }
+        else if (desiredVerticalState.Equals(VerticalState.LOWER) && !_verticalState.Equals(VerticalState.LOWER))
+        {
+            transform.RotateAround(pivot, Vector3.Cross(transform.forward, Vector3.up), 45);
+            _verticalState = VerticalState.LOWER;
         }
         else
         {
@@ -51,6 +53,11 @@ public class CameraMovement : MonoBehaviour
 
     public void MoveCameraHorizontally(int degrees)
     {
+        if (CameraRotationGuard())
+        {
+
+        }
+
         transform.RotateAround(pivot, Vector3.up, degrees);
 
         UpdateView();
@@ -91,6 +98,11 @@ public class CameraMovement : MonoBehaviour
                 ViewDimension.Dimension = Dimension.THREE;
             }
         }
+    }
+
+    public bool CameraRotationGuard()
+    {
+        return false;
     }
 
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ViewHelper;
 
 public class CameraInputController : MonoBehaviour
 {
@@ -11,9 +12,12 @@ public class CameraInputController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.S))
         {
-            _camera.MoveCameraVertically();
+            _camera.MoveCameraVertically(VerticalState.LOWER);
+        } else if (Input.GetKeyDown(KeyCode.W))
+        {
+            _camera.MoveCameraVertically(VerticalState.UPPER);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
@@ -24,4 +28,7 @@ public class CameraInputController : MonoBehaviour
             _camera.MoveCameraHorizontally(-45);
         }
     }
+
+
+
 }

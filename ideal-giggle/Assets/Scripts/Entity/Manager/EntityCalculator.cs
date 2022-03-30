@@ -77,12 +77,14 @@ public class EntityCalculator : MonoBehaviour
                     float widthPoint = entity.transform.position[posWidthIndex];
                     float depthPoint = entity.transform.position[posDepthIndex];
 
+                    /* PLANE GUARD RAUSGENOMMEN
                     bool planeGuard = activePlanePos * negation < depthPoint * negation;
 
                     if (planeGuard)
                     {
                         continue;
                     }
+                    */
 
                     bool horizontalGuard = widthPoint != j;
                     bool verticalGuard = entity.transform.position.y != i;

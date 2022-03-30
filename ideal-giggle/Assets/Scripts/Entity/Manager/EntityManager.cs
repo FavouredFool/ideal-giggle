@@ -71,6 +71,8 @@ public class EntityManager : MonoBehaviour
         return entity;
     }
 
+    
+
     public void UpdateColor()
     {
         foreach (AbstractEntityController ele in _entityList)
