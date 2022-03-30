@@ -5,6 +5,7 @@ using System;
 
 public abstract class AbstractCubeBehaviour : MonoBehaviour
 {
+
     [SerializeField]
     private float _rollSpeed = 3f;
 
@@ -12,13 +13,9 @@ public abstract class AbstractCubeBehaviour : MonoBehaviour
     protected bool _isReversed = false;
     protected Vector3 _direction;
    
-    public IEnumerator MoveCubeVisual(Vector3 fromPosition, Vector3 toPosition)
+    public IEnumerator MoveCubeVisual(Vector3 direction)
     {
-        int xDirection = (int)toPosition.x - (int)fromPosition.x;
-        int zDirection = (int)toPosition.z - (int)fromPosition.z;
-
-        _direction = new Vector3(xDirection, 0, zDirection).normalized;
-
+        _direction = direction;
         yield return SpecificRotations();
     }
 

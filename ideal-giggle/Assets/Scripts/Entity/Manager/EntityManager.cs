@@ -23,8 +23,6 @@ public class EntityManager : MonoBehaviour
     private List<AbstractEntityController> _entityList;
     private EntityCalculator _entityCalculator;
 
-    private Dimension _dimension;
-
 
     public void Awake()
     {
@@ -37,30 +35,22 @@ public class EntityManager : MonoBehaviour
         UpdateColor();
     }
 
+
     public void UpdateReferences()
     {
-        UpdateReferences(_dimension);
-    }
+        List<AbstractEntityController> entityList;
 
-    public void UpdateReferences(Dimension dimension)
-    {
-        _dimension = dimension;
-
-        if (_dimension.Equals(Dimension.THREE))
+        if (ViewDimension.Dimension.Equals(Dimension.THREE))
         {
-            foreach (AbstractEntityController entity in GetEntityList())
-            {
-                entity.SetReferences(_dimension, GetEntityList(), _xPlane, _zPlane);
-            }
-            return;
+            entityList = GetEntityList();
         } else
         {
-            List<AbstractEntityController> pruned2DList = _entityCalculator.Prune2DEntityList(_dimension, _xPlane, _zPlane);
+            entityList = _entityCalculator.Prune2DEntityList(_xPlane, _zPlane);
+        }
 
-            foreach (AbstractEntityController entity in pruned2DList)
-            {
-                entity.SetReferences(dimension, pruned2DList, _xPlane, _zPlane);
-            }
+        foreach (AbstractEntityController entity in entityList)
+        {
+            entity.SetReferences(entityList, _xPlane, _zPlane);
         }
     }
 

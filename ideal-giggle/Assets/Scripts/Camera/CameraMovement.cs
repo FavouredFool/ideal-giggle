@@ -13,15 +13,18 @@ public class CameraMovement : MonoBehaviour
     private Vector3 pivot;
 
     private VerticalState _verticalState;
-    private Dimension _dimension;
+
+    private void Awake()
+    {
+        ViewDimension.Dimension = Dimension.THREE;
+    }
 
     private void Start()
     {
         _verticalState = VerticalState.UPPER;
-        _dimension = Dimension.THREE;
 
-        Vector3 dimensions = _entityManager.GetLevelSize();
-        pivot = new Vector3((dimensions.x-1) / 2f, (dimensions.y-1) / 2f, (dimensions.z-1) / 2f);
+        Vector3 levelSize = _entityManager.GetLevelSize();
+        pivot = new Vector3((levelSize.x-1) / 2f, (levelSize.y-1) / 2f, (levelSize.z-1) / 2f);
     }
 
     public void MoveCameraVertically()
@@ -56,36 +59,36 @@ public class CameraMovement : MonoBehaviour
     void UpdateView()
     {
         UpdateDimension();
-        _entityManager.UpdateReferences(_dimension);
+        _entityManager.UpdateReferences();
     }
 
     void UpdateDimension()
     {
         if (_verticalState.Equals(VerticalState.UPPER))
         {
-            _dimension = Dimension.THREE;
+            ViewDimension.Dimension = Dimension.THREE;
         }
         else
         {
             if (transform.forward.V3Equal(Vector3.forward))
             {
-                _dimension = Dimension.TWO_NZ;
+                ViewDimension.Dimension = Dimension.TWO_NZ;
             }
             else if (transform.forward.V3Equal(Vector3.back))
             {
-                _dimension = Dimension.TWO_Z;
+                ViewDimension.Dimension = Dimension.TWO_Z;
             }
             else if (transform.forward.V3Equal(Vector3.right))
             {
-                _dimension = Dimension.TWO_NX;
+                ViewDimension.Dimension = Dimension.TWO_NX;
             }
             else if (transform.forward.V3Equal(Vector3.left))
             {
-                _dimension = Dimension.TWO_X;
+                ViewDimension.Dimension = Dimension.TWO_X;
             }
             else
             {
-                _dimension = Dimension.THREE;
+                ViewDimension.Dimension = Dimension.THREE;
             }
         }
     }

@@ -14,7 +14,7 @@ public class EntityCalculator : MonoBehaviour
         _entityManager = GetComponent<EntityManager>();
     }
 
-    public List<AbstractEntityController> Prune2DEntityList(Dimension dimension, PlaneController xPlane, PlaneController zPlane)
+    public List<AbstractEntityController> Prune2DEntityList(PlaneController xPlane, PlaneController zPlane)
     {
         List<AbstractEntityController> pruned2DList = new List<AbstractEntityController>();
 
@@ -29,7 +29,7 @@ public class EntityCalculator : MonoBehaviour
         int negation = 0;
         Vector3 lookDirection = Vector3.zero; ;
 
-        switch (dimension)
+        switch (ViewDimension.Dimension)
         {
             case Dimension.TWO_X:
                 width = zLevelSize;

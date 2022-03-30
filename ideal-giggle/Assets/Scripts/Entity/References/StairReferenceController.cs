@@ -151,4 +151,19 @@ public class StairReferenceController : AbstractReferenceController
                 break;
             }
     }
+
+    protected override void EvaluateUpperRow2D(int index)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void EvaluateMiddleRow2D(int index)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void EvaluateLowerRow2D(int index)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -1,11 +1,15 @@
 using System.Collections;
 using UnityEngine;
+using static ViewHelper;
 
 public class PlayerVisualController : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField]
     private PlayerMovementController _playerMovement;
+
+    [SerializeField]
+    private CameraMovement _cameraMovement;
 
     private Step _step;
 
@@ -29,13 +33,38 @@ public class PlayerVisualController : MonoBehaviour
 
     public IEnumerator PlayCubeBehaviour(Vector3 startPosition, Vector3 endPosition)
     {
-        yield return _step.GetCubeBehavior().MoveCubeVisual(startPosition, endPosition);
+        Vector3 direction = Vector3.zero;
+        int xDirection = (int)endPosition.x - (int)startPosition.x;
+        int zDirection = (int)endPosition.z - (int)startPosition.z;
+
+        switch (ViewDimension.Dimension)
+        {
+            case Dimension.THREE:
+                direction = new Vector3(xDirection, 0, zDirection).normalized;
+                break;
+            case Dimension.TWO_X:
+                direction = Vector3.forward * Mathf.Sign((int)endPosition.z - (int)startPosition.z);
+                break;
+            case Dimension.TWO_NX:
+                direction = Vector3.forward * Mathf.Sign((int)endPosition.z - (int)startPosition.z);
+                break;
+            case Dimension.TWO_Z:
+                direction = Vector3.right * Mathf.Sign((int)endPosition.x - (int)startPosition.x);
+                break;
+            case Dimension.TWO_NZ:
+                direction = Vector3.right * Mathf.Sign((int)endPosition.x - (int)startPosition.x);
+                break;
+        }
+
+        
+        yield return _step.GetCubeBehavior().MoveCubeVisual(direction);
         EndAnimation();
     }
 
 
     public void EndAnimation()
     {
+        transform.position = _playerMovement.GetGroundEntity().GetAdjacentPosition(Vector3.up) + _playerMovement.GetGroundEntity().GetVisualPosition();
         _playerMovement.SetIsMoving(false);
     }
 }

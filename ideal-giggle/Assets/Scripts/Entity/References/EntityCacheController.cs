@@ -22,7 +22,7 @@ public class EntityCacheController : MonoBehaviour
         return _surroundingEntities;
     }
 
-    public List<AbstractEntityController> CacheEntityReferences2D(Dimension dimension, List<AbstractEntityController> entityList, Vector3 position)
+    public List<AbstractEntityController> CacheEntityReferences2D(List<AbstractEntityController> entityList)
     {
         List<AbstractEntityController> surroundingEntities = new List<AbstractEntityController>();
 
@@ -30,7 +30,6 @@ public class EntityCacheController : MonoBehaviour
         {
             return surroundingEntities;
         }
-        Debug.Log(_entity);
         surroundingEntities = entityList;
 
         return surroundingEntities;

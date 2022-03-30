@@ -12,7 +12,6 @@ public abstract class AbstractReferenceController : MonoBehaviour
     protected Vector3 _position;
     protected bool _transitionIsSet = false;
     protected Vector3 _referenceDirection;
-    protected Dimension _dimension;
     protected int _posDepthIndex;
     protected int _posWidthIndex;
     
@@ -22,7 +21,6 @@ public abstract class AbstractReferenceController : MonoBehaviour
     {
         _entityCache = entityCache;
         _entityReferences = new List<EntityReference> { null, null, null, null };
-        _dimension = Dimension.THREE;
         _position = position;
 
         for (int i = 0; i < 4; i++)
@@ -54,28 +52,22 @@ public abstract class AbstractReferenceController : MonoBehaviour
         return _entityReferences;
     }
 
-    /*
-    public List<EntityReference> CalculateReferences2D(List<AbstractEntityController> entityCache, Dimension dimension, Vector3 position)
+    
+    public List<EntityReference> CalculateReferences2D(List<AbstractEntityController> entityCache, Vector3 position)
     {
         _entityCache = entityCache;
         _entityReferences = new List<EntityReference> { null, null };
-        _dimension = dimension;
         _position = position;
         
-        switch (dimension)
+        switch (ViewDimension.Dimension)
         {
             case Dimension.TWO_X:
-                _posDepthIndex = 0;
-                _posWidthIndex = 2;
-                break;
             case Dimension.TWO_NX:
                 _posDepthIndex = 0;
                 _posWidthIndex = 2;
                 break;
+
             case Dimension.TWO_Z:
-                _posDepthIndex = 2;
-                _posWidthIndex = 0;
-                break;
             case Dimension.TWO_NZ:
                 _posDepthIndex = 2;
                 _posWidthIndex = 0;
@@ -111,7 +103,7 @@ public abstract class AbstractReferenceController : MonoBehaviour
 
         return _entityReferences;
     }
-    */
+    
 
     public Vector3 SwitchReferenceDirection3D(int index)
     {
@@ -147,7 +139,7 @@ public abstract class AbstractReferenceController : MonoBehaviour
         switch (index)
         {
             case 0:
-                if (_dimension.Equals(Dimension.TWO_NX) || _dimension.Equals(Dimension.TWO_X)) {
+                if (ViewDimension.Dimension.Equals(Dimension.TWO_NX) || ViewDimension.Dimension.Equals(Dimension.TWO_X)) {
                     localReferenceDirection = Vector3.forward;
                 } else
                 {
@@ -155,7 +147,7 @@ public abstract class AbstractReferenceController : MonoBehaviour
                 }
                 break;
             case 1:
-                if (_dimension.Equals(Dimension.TWO_NX) || _dimension.Equals(Dimension.TWO_X))
+                if (ViewDimension.Dimension.Equals(Dimension.TWO_NX) || ViewDimension.Dimension.Equals(Dimension.TWO_X))
                 {
                     localReferenceDirection = Vector3.back;
                 }
@@ -206,11 +198,11 @@ public abstract class AbstractReferenceController : MonoBehaviour
 
     protected abstract void EvaluateLowerRow3D(int index);
 
-    /*
+    
     protected abstract void EvaluateUpperRow2D(int index);
 
     protected abstract void EvaluateMiddleRow2D(int index);
 
     protected abstract void EvaluateLowerRow2D(int index);
-    */
+    
 }
