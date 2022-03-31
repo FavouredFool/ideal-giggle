@@ -72,39 +72,92 @@ public class EntityManager : MonoBehaviour
         return entity;
     }
 
-    public AbstractEntityController GetFrontEntity(Vector3 position)
+    public AbstractEntityController GetFrontEntity(AbstractEntityController entity, EntityType searchedType)
     {
         int posDepthIndex = -1;
         int sign = 0;
+        Vector3 position = entity.GetPosition();
+        Vector3 direction = Vector3.zero;
 
         switch (ViewDimension.Dimension)
         {
             case Dimension.TWO_X:
                 posDepthIndex = 0;
                 sign = 1;
+                direction = Vector3.left;
                 break;
             case Dimension.TWO_NX:
                 posDepthIndex = 0;
                 sign = -1;
+                direction = Vector3.right;
                 break;
 
             case Dimension.TWO_Z:
                 posDepthIndex = 2;
                 sign = 1;
+                direction = Vector3.back;
                 break;
             case Dimension.TWO_NZ:
                 posDepthIndex = 2;
                 sign = -1;
+                direction = Vector3.forward;
                 break;
         }
-        if (sign > 0)
+
+        if (searchedType.Equals(EntityType.BLOCK))
         {
-            return GetEntityList().Where(entity => EntityCheck2D(entity, position)).OrderByDescending(e => e.GetPosition()[posDepthIndex]).FirstOrDefault();
-        } else
+            if (sign > 0)
+            {
+                return GetEntityList().Where(allEntities => allEntities.GetEntityType().Equals(searchedType)).Where(entity => EntityCheck2D(entity, position)).OrderByDescending(e => e.GetPosition()[posDepthIndex]).FirstOrDefault();
+            }
+            else
+            {
+                return GetEntityList().Where(allEntities => allEntities.GetEntityType().Equals(searchedType)).Where(entity => EntityCheck2D(entity, position)).OrderBy(e => e.GetPosition()[posDepthIndex]).FirstOrDefault();
+            }
+        } else if (searchedType.Equals(EntityType.STAIR))
         {
-            return GetEntityList().Where(entity => EntityCheck2D(entity, position)).OrderBy(e => e.GetPosition()[posDepthIndex]).FirstOrDefault();
+            List<AbstractEntityController> list;
+            if (sign > 0)
+            {
+                list = GetEntityList().Where(entity => EntityCheck2D(entity, position)).OrderByDescending(e => e.GetPosition()[posDepthIndex]).ToList();
+            }
+            else
+            {
+                list = GetEntityList().Where(entity => EntityCheck2D(entity, position)).OrderBy(e => e.GetPosition()[posDepthIndex]).ToList();
+            }
+
+            if (list.Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
+            {
+                // Es gibt einen Block in der Reihe, weshalb man die originale Entity zurück gibt
+                return entity;
+            } else
+            {
+                // Check ob alle Stairs korrekt gedreht sind
+                if (list.Any(e => WronglyTurnedStair(e, direction)))
+                {
+                    return entity;
+                }
+
+            }
+
+            return list.FirstOrDefault();
+
         }
+
+        return null;
         
+    }
+
+    protected bool WronglyTurnedStair(AbstractEntityController e, Vector3 direction)
+    {
+        StairController stair = (StairController)e;
+
+        if (stair.GetBottomEnter().V3Equal(direction) || stair.GetTopEnter().V3Equal(direction))
+        {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -113,9 +166,9 @@ public class EntityManager : MonoBehaviour
         return entity.GetPosition().Equals(position);
     }
 
-    public bool GuardPlayerToFront(Vector3 playerPosition)
+    public bool GuardPlayerToFront(Vector3 groundEntityPosition)
     {
-        return GetEntityList().Any(e => EntityCheck2D(e, playerPosition + Vector3.up));
+        return GetEntityList().Any(e => EntityCheck2D(e, groundEntityPosition + Vector3.up));
     }
 
     protected bool EntityCheck2D(AbstractEntityController entity, Vector3 position)

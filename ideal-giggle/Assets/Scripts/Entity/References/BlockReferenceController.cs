@@ -122,6 +122,13 @@ public class BlockReferenceController : AbstractReferenceController
                 break;
 
             case EntityType.STAIR:
+                StairController stairEntity = (StairController)entity;
+                if (StairRotationGuard(stairEntity.GetTopEnter()))
+                {
+                    break;
+                }
+
+                SetReference(index, entity, ReferenceBehaviourType.BLOCK_DOWN);
                 break;
 
             default:

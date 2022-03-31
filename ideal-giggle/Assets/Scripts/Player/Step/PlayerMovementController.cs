@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using static ViewHelper;
+using static EntityHelper;
 
 public class PlayerMovementController : MonoBehaviour
 {
@@ -95,12 +96,36 @@ public class PlayerMovementController : MonoBehaviour
 
     public void MovePlayerToFront()
     {
-        if (_entityManager.GuardPlayerToFront(_groundEntity.GetPosition()))
+        if (_groundEntity.GetEntityType().Equals(EntityType.BLOCK))
+        {
+            if (_entityManager.GuardPlayerToFront(_groundEntity.GetPosition()))
+            {
+                return;
+            }
+        }
+        
+        AbstractEntityController entity = null;
+        if (_groundEntity.GetEntityType().Equals(EntityType.BLOCK))
+        {
+            entity = _entityManager.GetFrontEntity(_groundEntity, EntityType.BLOCK);
+        } else if (_groundEntity.GetEntityType().Equals(EntityType.STAIR))
+        {
+            entity = _entityManager.GetFrontEntity(_groundEntity, EntityType.STAIR);
+        }
+        else
+        {
+            Debug.LogWarning("FEHLER");
+        }
+        
+
+        if (!_groundEntity.GetEntityType().Equals(entity.GetEntityType()))
         {
             return;
         }
 
-        AbstractEntityController entity = _entityManager.GetFrontEntity(_groundEntity.GetPosition());
+        // Guard, dass vor / hinter Stairs keine Blocks mehr sind
+
+        // Guard, dass Stairs richtig stehen -> Orthogonal zur Kamera
 
         MovePlayerToEntity(entity);
     }
