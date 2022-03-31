@@ -56,7 +56,6 @@ public class PlayerVisualController : MonoBehaviour
                 break;
         }
 
-        
         yield return _step.GetCubeBehavior().MoveCubeVisual(direction);
         EndAnimation();
     }

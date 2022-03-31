@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ViewHelper;
 using static EntityHelper;
+using static TWODHelper;
 
 public class EntityCalculator : MonoBehaviour
 {
@@ -18,64 +19,21 @@ public class EntityCalculator : MonoBehaviour
     {
         List<AbstractEntityController> pruned2DList = new List<AbstractEntityController>();
 
-        int xLevelSize = _entityManager.GetLevelSize().x;
-        int yLevelSize = _entityManager.GetLevelSize().y;
-        int zLevelSize = _entityManager.GetLevelSize().z;
+        int width = _entityManager.GetLevelSize()[GetViewWidthIndex()];
+        int height = _entityManager.GetLevelSize()[1];
+        int depth = _entityManager.GetLevelSize()[GetViewDepthIndex()];
+        float activePlanePos = GetViewPlaneValue(xPlane, zPlane);
 
-        int width = 0;
-        float activePlanePos = 0;
-        int posDepthIndex = 0;
-        int posWidthIndex = 0;
-        int negation = 0;
-        Vector3 lookDirection = Vector3.zero; ;
-
-        switch (ViewDimension.Dimension)
-        {
-            case Dimension.TWO_X:
-                width = zLevelSize;
-                activePlanePos = xPlane.transform.position.x;
-                posDepthIndex = 0;
-                posWidthIndex = 2;
-                negation = -1;
-                lookDirection = Vector3.left;
-                break;
-            case Dimension.TWO_NX:
-                width = zLevelSize;
-                activePlanePos = xPlane.transform.position.x;
-                posDepthIndex = 0;
-                posWidthIndex = 2;
-                negation = 1;
-                lookDirection = Vector3.right;
-                break;
-            case Dimension.TWO_Z:
-                width = xLevelSize;
-                activePlanePos = zPlane.transform.position.z;
-                posDepthIndex = 2;
-                posWidthIndex = 0;
-                negation = -1;
-                lookDirection = Vector3.back;
-                break;
-            case Dimension.TWO_NZ:
-                width = xLevelSize;
-                activePlanePos = zPlane.transform.position.z;
-                posDepthIndex = 2;
-                posWidthIndex = 0;
-                negation = 1;
-                lookDirection = Vector3.forward;
-                break;
-        }
-
-        for (int i = 0; i < yLevelSize; i++)
+        for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
             {
                 List<AbstractEntityController> tempEntityList = new List<AbstractEntityController>();
 
-                // Durch jede Entity durchgehen um nur die Relevanten zu finden.
                 foreach (AbstractEntityController entity in _entityManager.GetEntityList())
                 {
-                    float widthPoint = entity.transform.position[posWidthIndex];
-                    float depthPoint = entity.transform.position[posDepthIndex];
+                    float widthPoint = entity.transform.position[GetViewWidthIndex()];
+                    float depthPoint = entity.transform.position[GetViewDepthIndex()];
 
                     /* PLANE GUARD RAUSGENOMMEN
                     bool planeGuard = activePlanePos * negation < depthPoint * negation;
@@ -106,11 +64,11 @@ public class EntityCalculator : MonoBehaviour
 
                 tempEntityList.Sort((AbstractEntityController x, AbstractEntityController y) =>
                 {
-                    if (x.transform.position[posDepthIndex] * negation > y.transform.position[posDepthIndex] * negation)
+                if (x.transform.position[GetViewDepthIndex()] * -GetViewSign() > y.transform.position[GetViewDepthIndex()] * -GetViewSign())
                     {
                         return 1;
                     }
-                    else if (x.transform.position[posDepthIndex] * negation < y.transform.position[posDepthIndex] * negation)
+                    else if (x.transform.position[GetViewDepthIndex()] * -GetViewSign() < y.transform.position[GetViewDepthIndex()] * -GetViewSign())
                     {
                         return -1;
                     }
@@ -120,7 +78,6 @@ public class EntityCalculator : MonoBehaviour
                     }
                 });
 
-                // Check ob Entity eine schlecht rotierte Stair ist. Dann wird das hintere Element gewählt, welches dies nicht ist.
                 entityToAdd = tempEntityList[0];
 
                 for (int k = 0; k < tempEntityList.Count; k++)
@@ -134,7 +91,7 @@ public class EntityCalculator : MonoBehaviour
                     }
 
                     StairController stair = (StairController)tempEntityList[k];
-                    bool isCorrectlyTurned = stair.GetTopEnter().V3Equal(lookDirection) || stair.GetTopEnter().V3Equal(-lookDirection);
+                    bool isCorrectlyTurned = stair.GetTopEnter().V3Equal(GetViewDirection()) || stair.GetTopEnter().V3Equal(-GetViewDirection());
 
                     if (isCorrectlyTurned)
                     {

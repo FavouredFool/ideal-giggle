@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using static ViewHelper;
 using static EntityHelper;
+using static TWODHelper;
 
 public class EntityManager : MonoBehaviour
 {
@@ -74,56 +75,29 @@ public class EntityManager : MonoBehaviour
 
     public AbstractEntityController GetFrontEntity(AbstractEntityController entity, EntityType searchedType)
     {
-        int posDepthIndex = -1;
-        int sign = 0;
         Vector3 position = entity.GetPosition();
-        Vector3 direction = Vector3.zero;
 
-        switch (ViewDimension.Dimension)
-        {
-            case Dimension.TWO_X:
-                posDepthIndex = 0;
-                sign = 1;
-                direction = Vector3.left;
-                break;
-            case Dimension.TWO_NX:
-                posDepthIndex = 0;
-                sign = -1;
-                direction = Vector3.right;
-                break;
-
-            case Dimension.TWO_Z:
-                posDepthIndex = 2;
-                sign = 1;
-                direction = Vector3.back;
-                break;
-            case Dimension.TWO_NZ:
-                posDepthIndex = 2;
-                sign = -1;
-                direction = Vector3.forward;
-                break;
-        }
 
         if (searchedType.Equals(EntityType.BLOCK))
         {
-            if (sign > 0)
+            if (GetViewSign() > 0)
             {
-                return GetEntityList().Where(allEntities => allEntities.GetEntityType().Equals(searchedType)).Where(entity => EntityCheck2D(entity, position)).OrderByDescending(e => e.GetPosition()[posDepthIndex]).FirstOrDefault();
+                return GetEntityList().Where(allEntities => allEntities.GetEntityType().Equals(searchedType)).Where(entity => EntityCheck2D(entity, position)).OrderByDescending(e => e.GetPosition()[GetViewDepthIndex()]).FirstOrDefault();
             }
             else
             {
-                return GetEntityList().Where(allEntities => allEntities.GetEntityType().Equals(searchedType)).Where(entity => EntityCheck2D(entity, position)).OrderBy(e => e.GetPosition()[posDepthIndex]).FirstOrDefault();
+                return GetEntityList().Where(allEntities => allEntities.GetEntityType().Equals(searchedType)).Where(entity => EntityCheck2D(entity, position)).OrderBy(e => e.GetPosition()[GetViewDepthIndex()]).FirstOrDefault();
             }
         } else if (searchedType.Equals(EntityType.STAIR))
         {
             List<AbstractEntityController> list;
-            if (sign > 0)
+            if (GetViewSign() > 0)
             {
-                list = GetEntityList().Where(entity => EntityCheck2D(entity, position)).OrderByDescending(e => e.GetPosition()[posDepthIndex]).ToList();
+                list = GetEntityList().Where(entity => EntityCheck2D(entity, position)).OrderByDescending(e => e.GetPosition()[GetViewDepthIndex()]).ToList();
             }
             else
             {
-                list = GetEntityList().Where(entity => EntityCheck2D(entity, position)).OrderBy(e => e.GetPosition()[posDepthIndex]).ToList();
+                list = GetEntityList().Where(entity => EntityCheck2D(entity, position)).OrderBy(e => e.GetPosition()[GetViewDepthIndex()]).ToList();
             }
 
             if (list.Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
@@ -133,7 +107,7 @@ public class EntityManager : MonoBehaviour
             } else
             {
                 // Check ob alle Stairs korrekt gedreht sind
-                if (list.Any(e => WronglyTurnedStair(e, direction)))
+                if (list.Any(e => WronglyTurnedStair(e, GetViewDirection())))
                 {
                     return entity;
                 }
@@ -173,28 +147,11 @@ public class EntityManager : MonoBehaviour
 
     protected bool EntityCheck2D(AbstractEntityController entity, Vector3 position)
     {
-        int posWidthIndex = -1;
-
-        switch (ViewDimension.Dimension)
-        {
-            case Dimension.TWO_X:
-            case Dimension.TWO_NX:
-                posWidthIndex = 2;
-                break;
-
-            case Dimension.TWO_Z:
-            case Dimension.TWO_NZ:
-                posWidthIndex = 0;
-                break;
-        }
-
-        bool widthGuard = entity.GetPosition()[posWidthIndex].Equals(position[posWidthIndex]);
+        bool widthGuard = entity.GetPosition()[GetViewWidthIndex()].Equals(position[GetViewWidthIndex()]);
         bool heightGuard = entity.GetPosition().y.Equals(position.y);
 
         return widthGuard && heightGuard;
     }
-
-
 
     public void UpdateColor()
     {

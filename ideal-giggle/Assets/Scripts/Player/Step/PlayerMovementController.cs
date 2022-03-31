@@ -132,8 +132,6 @@ public class PlayerMovementController : MonoBehaviour
 
     public void MovePlayerToEntity(AbstractEntityController entity)
     {
-        Debug.Log($"FrontEntity: {entity}");
-
         transform.localPosition = entity.GetAdjacentPosition(Vector3.up);
         SetGroundEntity(entity);
         _endEntity = entity;

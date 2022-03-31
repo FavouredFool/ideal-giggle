@@ -64,21 +64,6 @@ public abstract class AbstractReferenceController : MonoBehaviour
         {
             return _entityReferences;
         }
-        
-        switch (ViewDimension.Dimension)
-        {
-            case Dimension.TWO_X:
-            case Dimension.TWO_NX:
-                _posDepthIndex = 0;
-                _posWidthIndex = 2;
-                break;
-
-            case Dimension.TWO_Z:
-            case Dimension.TWO_NZ:
-                _posDepthIndex = 2;
-                _posWidthIndex = 0;
-                break;
-        }
 
 
         for (int i = 0; i < 2; i++)
