@@ -9,7 +9,7 @@ public class BlockReferenceController : AbstractReferenceController
 
     protected override void EvaluateUpperRow3D(int index)
     {
-        AbstractEntityController entity = _entityCache.Where(entity => EntityCheck(entity, _referenceDirection + Vector3.up)).FirstOrDefault();
+        AbstractEntityController entity = EntityCheck(_referenceDirection + Vector3.up);
 
         if (!entity)
         {
@@ -43,7 +43,7 @@ public class BlockReferenceController : AbstractReferenceController
     protected override void EvaluateMiddleRow3D(int index)
     {
 
-        AbstractEntityController entity = _entityCache.Where(entity => EntityCheck(entity, _referenceDirection)).FirstOrDefault();
+        AbstractEntityController entity = EntityCheck(_referenceDirection);
 
         if (!entity)
         {
@@ -86,17 +86,19 @@ public class BlockReferenceController : AbstractReferenceController
     {
 
         bool widthGuard = entity.GetPosition()[_posWidthIndex].Equals(_position[_posWidthIndex] + desiredDirection[_posWidthIndex]);
-        //bool depthGuard = entity.GetPosition()[_posDepthIndex].Equals(_position[_posDepthIndex] + desiredDirection[_posDepthIndex]);
         bool heightGuard = entity.GetPosition().y.Equals(_position.y + desiredDirection.y);
 
         return widthGuard && heightGuard;
     }
 
+    protected bool BlockGuard2D(Vector3 checkDir)
+    {
+        return _entityCache.Any(e => EntityCheck2D(e, checkDir));
+    }
+
     protected override void EvaluateMiddleRow2D(int index)
     {
         AbstractEntityController entity = _entityCache.Where(entity => EntityCheck2D(entity, _referenceDirection)).FirstOrDefault();
-
-        Debug.Log($"This: {this}, entity: {entity}");
 
         if (!entity)
         {
@@ -106,17 +108,20 @@ public class BlockReferenceController : AbstractReferenceController
         switch (entity.GetEntityType())
         {
             case EntityType.BLOCK:
+
+                if (BlockGuard2D(Vector3.up))
+                {
+                    return;
+                }
+                if (BlockGuard2D(Vector3.up + _referenceDirection))
+                {
+                    return;
+                }
+
                 SetReference(index, entity, ReferenceBehaviourType.EVEN);
                 break;
 
             case EntityType.STAIR:
-                StairController stairEntity = (StairController)entity;
-                if (StairRotationGuard(stairEntity.GetTopEnter()))
-                {
-                    break;
-                }
-
-                SetReference(index, entity, ReferenceBehaviourType.BLOCK_DOWN);
                 break;
 
             default:

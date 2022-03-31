@@ -53,11 +53,17 @@ public abstract class AbstractReferenceController : MonoBehaviour
     }
 
     
-    public List<EntityReference> CalculateReferences2D(List<AbstractEntityController> entityCache, Vector3 position)
+    public List<EntityReference> CalculateReferences2D(List<AbstractEntityController> entityList, Vector3 position)
     {
-        _entityCache = entityCache;
+
+        _entityCache = entityList;
         _entityReferences = new List<EntityReference> { null, null };
         _position = position;
+
+        if (!entityList.Contains(GetComponent<AbstractEntityController>()))
+        {
+            return _entityReferences;
+        }
         
         switch (ViewDimension.Dimension)
         {
@@ -182,14 +188,19 @@ public abstract class AbstractReferenceController : MonoBehaviour
         return _referenceDirection.Equals(stairEnter);
     }
 
-    protected bool EntityCheck(AbstractEntityController entity, Vector3 desiredDirection)
+    protected AbstractEntityController EntityCheck(Vector3 desiredDirection)
     {
-        return entity.GetPosition().Equals(_position + desiredDirection);
+        return _entityCache.Where(entity => EntityExists(entity, desiredDirection)).FirstOrDefault();
     }
 
-    protected bool StairBlockGuard(Vector3 checkPos1, Vector3 checkPos2)
+    protected bool StairBlockGuard(Vector3 checkDir1, Vector3 checkDir2)
     {
-        return _entityCache.Any(e => EntityCheck(e, checkPos1) || EntityCheck(e, checkPos2));
+        return _entityCache.Any(e => EntityExists(e, checkDir1) || EntityExists(e, checkDir2));
+    }
+
+    protected bool EntityExists(AbstractEntityController entity, Vector3 desiredDirection)
+    {
+        return entity.GetPosition().Equals(_position + desiredDirection);
     }
 
     protected abstract void EvaluateUpperRow3D(int index);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using static ViewHelper;
 using static EntityHelper;
 
@@ -48,7 +49,7 @@ public class EntityManager : MonoBehaviour
             entityList = _entityCalculator.Prune2DEntityList(_xPlane, _zPlane);
         }
 
-        foreach (AbstractEntityController entity in entityList)
+        foreach (AbstractEntityController entity in GetEntityList())
         {
             entity.SetReferences(entityList, _xPlane, _zPlane);
         }
@@ -71,7 +72,76 @@ public class EntityManager : MonoBehaviour
         return entity;
     }
 
-    
+    public AbstractEntityController GetFrontEntity(Vector3 position)
+    {
+        int posDepthIndex = -1;
+        int sign = 0;
+
+        switch (ViewDimension.Dimension)
+        {
+            case Dimension.TWO_X:
+                posDepthIndex = 0;
+                sign = 1;
+                break;
+            case Dimension.TWO_NX:
+                posDepthIndex = 0;
+                sign = -1;
+                break;
+
+            case Dimension.TWO_Z:
+                posDepthIndex = 2;
+                sign = 1;
+                break;
+            case Dimension.TWO_NZ:
+                posDepthIndex = 2;
+                sign = -1;
+                break;
+        }
+        if (sign > 0)
+        {
+            return GetEntityList().Where(entity => EntityCheck2D(entity, position)).OrderByDescending(e => e.GetPosition()[posDepthIndex]).FirstOrDefault();
+        } else
+        {
+            return GetEntityList().Where(entity => EntityCheck2D(entity, position)).OrderBy(e => e.GetPosition()[posDepthIndex]).FirstOrDefault();
+        }
+        
+    }
+
+
+    protected bool EntityExists(AbstractEntityController entity, Vector3 position)
+    {
+        return entity.GetPosition().Equals(position);
+    }
+
+    public bool GuardPlayerToFront(Vector3 playerPosition)
+    {
+        return GetEntityList().Any(e => EntityCheck2D(e, playerPosition + Vector3.up));
+    }
+
+    protected bool EntityCheck2D(AbstractEntityController entity, Vector3 position)
+    {
+        int posWidthIndex = -1;
+
+        switch (ViewDimension.Dimension)
+        {
+            case Dimension.TWO_X:
+            case Dimension.TWO_NX:
+                posWidthIndex = 2;
+                break;
+
+            case Dimension.TWO_Z:
+            case Dimension.TWO_NZ:
+                posWidthIndex = 0;
+                break;
+        }
+
+        bool widthGuard = entity.GetPosition()[posWidthIndex].Equals(position[posWidthIndex]);
+        bool heightGuard = entity.GetPosition().y.Equals(position.y);
+
+        return widthGuard && heightGuard;
+    }
+
+
 
     public void UpdateColor()
     {

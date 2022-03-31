@@ -44,7 +44,7 @@ public class CameraMovement : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("FEHLER");
+            return;
         }
 
         UpdateView();
@@ -53,13 +53,7 @@ public class CameraMovement : MonoBehaviour
 
     public void MoveCameraHorizontally(int degrees)
     {
-        if (CameraRotationGuard())
-        {
-
-        }
-
         transform.RotateAround(pivot, Vector3.up, degrees);
-
         UpdateView();
     }
 
@@ -67,6 +61,12 @@ public class CameraMovement : MonoBehaviour
     {
         UpdateDimension();
         _entityManager.UpdateReferences();
+
+        if (!ViewDimension.Dimension.Equals(Dimension.THREE))
+        {
+            _playerMovementController.MovePlayerToFront();
+        }
+        
     }
 
     void UpdateDimension()
@@ -98,11 +98,6 @@ public class CameraMovement : MonoBehaviour
                 ViewDimension.Dimension = Dimension.THREE;
             }
         }
-    }
-
-    public bool CameraRotationGuard()
-    {
-        return false;
     }
 
 }

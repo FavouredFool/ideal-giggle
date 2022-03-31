@@ -93,6 +93,28 @@ public class PlayerMovementController : MonoBehaviour
         _pathCalculating = false;
     }
 
+    public void MovePlayerToFront()
+    {
+        if (_entityManager.GuardPlayerToFront(_groundEntity.GetPosition()))
+        {
+            return;
+        }
+
+        AbstractEntityController entity = _entityManager.GetFrontEntity(_groundEntity.GetPosition());
+
+        MovePlayerToEntity(entity);
+    }
+
+    public void MovePlayerToEntity(AbstractEntityController entity)
+    {
+        Debug.Log($"FrontEntity: {entity}");
+
+        transform.localPosition = entity.GetAdjacentPosition(Vector3.up);
+        SetGroundEntity(entity);
+        _endEntity = entity;
+
+    }
+
     public void SetIsMoving(bool isMoving)
     {
         _isMoving = isMoving;

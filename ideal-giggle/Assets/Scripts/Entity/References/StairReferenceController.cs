@@ -16,7 +16,7 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateUpperRow3D(int index)
     {
-        AbstractEntityController entity = _entityCache.Where(entity => EntityCheck(entity, _referenceDirection + Vector3.up)).FirstOrDefault();
+        AbstractEntityController entity = EntityCheck(_referenceDirection + Vector3.up);
 
         if (!entity)
         {
@@ -53,7 +53,7 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateMiddleRow3D(int index)
     {
-        AbstractEntityController entity = _entityCache.Where(entity => EntityCheck(entity, _referenceDirection)).FirstOrDefault();
+        AbstractEntityController entity = EntityCheck(_referenceDirection);
 
         if (!entity)
         {
@@ -103,7 +103,7 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateLowerRow3D(int index)
     {
-        AbstractEntityController entity = _entityCache.Where(entity => EntityCheck(entity, _referenceDirection + Vector3.down)).FirstOrDefault();
+        AbstractEntityController entity = EntityCheck(_referenceDirection + Vector3.down);
 
         if (!entity)
         {

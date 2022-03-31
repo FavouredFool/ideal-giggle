@@ -22,19 +22,6 @@ public class EntityCacheController : MonoBehaviour
         return _surroundingEntities;
     }
 
-    public List<AbstractEntityController> CacheEntityReferences2D(List<AbstractEntityController> entityList)
-    {
-        List<AbstractEntityController> surroundingEntities = new List<AbstractEntityController>();
-
-        if (!entityList.Contains(_entity))
-        {
-            return surroundingEntities;
-        }
-        surroundingEntities = entityList;
-
-        return surroundingEntities;
-    }
-
     private List<AbstractEntityController> CacheSurroundingEntities3D()
     {
         List<AbstractEntityController> surroundingEntities = new List<AbstractEntityController>();
