@@ -681,6 +681,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5277545954369560392}
     - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _visualise
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 5277545954369560392}

@@ -11,7 +11,7 @@ public class BlockReferenceController : AbstractReferenceController
 
     protected override void EvaluateUpperRow3D(int index)
     {
-        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection + Vector3.up);
+        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection + Vector3.up);
 
         if (!entity)
         {
@@ -49,7 +49,7 @@ public class BlockReferenceController : AbstractReferenceController
 
     protected override void EvaluateMiddleRow3D(int index)
     {
-        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection);
+        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection);
 
         if (!entity)
         {
@@ -83,28 +83,15 @@ public class BlockReferenceController : AbstractReferenceController
     {
         return;
     }
+
     protected override void EvaluateUpperRow2D(int index)
     {
         //throw new System.NotImplementedException();
     }
 
-    protected bool EntityCheck2D(AbstractEntityController entity, Vector3 desiredDirection)
-    {
-
-        bool widthGuard = entity.GetPosition()[GetViewWidthIndex()].Equals(_position[GetViewWidthIndex()] + desiredDirection[GetViewWidthIndex()]);
-        bool heightGuard = entity.GetPosition().y.Equals(_position.y + desiredDirection.y);
-
-        return widthGuard && heightGuard;
-    }
-
-    protected bool BlockGuard2D(Vector3 checkDir)
-    {
-        return _entityCache.Any(e => EntityCheck2D(e, checkDir));
-    }
-
     protected override void EvaluateMiddleRow2D(int index)
     {
-        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection);
+        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection);
 
         if (!entity)
         {
@@ -115,11 +102,11 @@ public class BlockReferenceController : AbstractReferenceController
         {
             case EntityType.BLOCK:
 
-                if (BlockGuard2D(Vector3.up))
+                if (EntityExistsInList(_entityCache, _position + Vector3.up))
                 {
                     return;
                 }
-                if (BlockGuard2D(Vector3.up + _referenceDirection))
+                if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up))
                 {
                     return;
                 }

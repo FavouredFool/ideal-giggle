@@ -1,20 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 using static TWODHelper;
 using static ViewHelper;
 
 public class CheckHelper : MonoBehaviour
 {
-    protected static bool EntityCheck2D(AbstractEntityController entity, Vector3 position)
-    {
-        bool widthGuard = entity.GetPosition()[GetViewWidthIndex()].Equals(position[GetViewWidthIndex()]);
-        bool heightGuard = entity.GetPosition().y.Equals(position.y);
-
-        return widthGuard && heightGuard;
-    }
-
 
     public static bool StairRotatedInDirection(Vector3 stairEnter, Vector3 referenceDirection)
     {
@@ -23,33 +14,52 @@ public class CheckHelper : MonoBehaviour
 
     public static bool EntityExistsInList(List<AbstractEntityController> list, Vector3 checkPosition)
     {
-        return list.Any(e => EntityExists3D(e, checkPosition));
+        if (ViewDimension.Dimension.Equals(Dimension.THREE))
+        {
+            return list.Any(e => EntityExists3D(e, checkPosition));
+        }
+        else
+        {
+            return list.Any(e => EntityExists2D(e, checkPosition));
+        }
     }
 
-    public static AbstractEntityController EntityGetInList(List<AbstractEntityController> list, Vector3 checkPosition)
+    public static AbstractEntityController GetEntityInListFromPos(List<AbstractEntityController> list, Vector3 checkPosition)
     {
         if (ViewDimension.Dimension.Equals(Dimension.THREE))
         {
             return list.Where(entity => EntityExists3D(entity, checkPosition)).FirstOrDefault();
-        }
-        else
+        } else
         {
-            return list.Where(entity => EntityExists2D(entity, checkPosition)).FirstOrDefault();
+            return GetEntityListFromPos2D(list, checkPosition).FirstOrDefault();
         }
+
+        
     }
 
-    public static bool EntityExists3D(AbstractEntityController entity, Vector3 checkPosition)
+    public static List<AbstractEntityController> GetEntityListFromPos2D(List<AbstractEntityController> list, Vector3 checkPosition)
+    {
+        List<AbstractEntityController> entityList;
+        entityList = list.Where(entity => EntityExists2D(entity, checkPosition)).OrderBy(e => e.GetPosition()[GetViewDepthIndex()]).ToList();
+
+        if (GetViewSign() > 0)
+        {
+            entityList.Reverse();
+        }
+
+        return entityList;
+    }
+
+    protected static bool EntityExists3D(AbstractEntityController entity, Vector3 checkPosition)
     {
         return entity.GetPosition().Equals(checkPosition);
     }
 
-    public static bool EntityExists2D(AbstractEntityController entity, Vector3 checkPosition)
+    protected static bool EntityExists2D(AbstractEntityController entity, Vector3 checkPosition)
     {
         bool widthGuard = entity.GetPosition()[GetViewWidthIndex()].Equals(checkPosition[GetViewWidthIndex()]);
         bool heightGuard = entity.GetPosition().y.Equals(checkPosition.y);
 
         return widthGuard && heightGuard;
     }
-
-
 }

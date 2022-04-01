@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using static EntityHelper;
+using static CheckHelper;
+using static TWODHelper;
+
 
 public class PlayerToFrontCalculator : MonoBehaviour
 {
@@ -22,38 +26,47 @@ public class PlayerToFrontCalculator : MonoBehaviour
         _groundEntity = _playerMovementController.GetGroundEntity();
 
         if (_groundEntity.GetEntityType().Equals(EntityType.BLOCK))
-        {
-            if (_entityManager.GuardPlayerToFront(_groundEntity.GetPosition()))
+        {            
+            if (EntityExistsInList(_entityManager.GetEntityList(), _groundEntity.GetPosition() + Vector3.up))
             {
                 return;
             }
         }
 
-        AbstractEntityController entity = null;
-        if (_groundEntity.GetEntityType().Equals(EntityType.BLOCK))
-        {
-            entity = _entityManager.GetFrontEntity(_groundEntity, EntityType.BLOCK);
-        }
-        else if (_groundEntity.GetEntityType().Equals(EntityType.STAIR))
-        {
-            entity = _entityManager.GetFrontEntity(_groundEntity, EntityType.STAIR);
-        }
-        else
-        {
-            Debug.LogWarning("FEHLER");
-        }
-
-
-        if (!_groundEntity.GetEntityType().Equals(entity.GetEntityType()))
-        {
-            return;
-        }
-
-        // Guard, dass vor / hinter Stairs keine Blocks mehr sind
-
-        // Guard, dass Stairs richtig stehen -> Orthogonal zur Kamera
+        AbstractEntityController entity = GetFrontEntity(_groundEntity, _groundEntity.GetEntityType());
 
         _playerMovementController.MovePlayerToEntity(entity);
+    }
+
+    public AbstractEntityController GetFrontEntity(AbstractEntityController entity, EntityType searchedType)
+    {
+        List<AbstractEntityController> entityList = GetEntityListFromPos2D(_entityManager.GetEntityList(), entity.GetPosition());
+
+        if (searchedType.Equals(EntityType.BLOCK))
+        {
+            return entityList.Where(e => e.GetEntityType().Equals(EntityType.BLOCK)).FirstOrDefault();
+        }
+        else if (searchedType.Equals(EntityType.STAIR))
+        {
+            if (entityList.Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
+            {
+                return entity;
+            }
+            else
+            {
+                if (entityList.Cast<StairController>().Any(stair => StairRotatedInDirection(stair.GetBottomEnter(), GetViewDirection())))
+                {
+                    return entity;
+                }
+
+                if (entityList.Cast<StairController>().Any(stair => StairRotatedInDirection(stair.GetTopEnter(), GetViewDirection())))
+                {
+                    return entity;
+                }
+            }
+            return entityList.FirstOrDefault();
+        }
+        return null;
     }
 
 }

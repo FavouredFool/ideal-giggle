@@ -17,7 +17,7 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateUpperRow3D(int index)
     {
-        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection + Vector3.up);
+        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection + Vector3.up);
 
         if (!entity)
         {
@@ -59,7 +59,7 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateMiddleRow3D(int index)
     {
-        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection);
+        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection);
 
         if (!entity)
         {
@@ -109,7 +109,7 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateLowerRow3D(int index)
     {
-        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection + Vector3.down);
+        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection + Vector3.down);
 
         if (!entity)
         {
