@@ -17,7 +17,7 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateUpperRow3D(int index)
     {
-        AbstractEntityController entity = EntityCheck(_referenceDirection + Vector3.up);
+        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection + Vector3.up);
 
         if (!entity)
         {
@@ -39,7 +39,12 @@ public class StairReferenceController : AbstractReferenceController
                     break;
                 }
 
-                if (StairBlockGuard(Vector3.up * 2, _referenceDirection + Vector3.up * 2))
+                if (EntityExistsInList(_entityCache, Vector3.up * 2))
+                {
+                    break;
+                }
+
+                if (EntityExistsInList(_entityCache, _referenceDirection + Vector3.up * 2))
                 {
                     break;
                 }
@@ -54,7 +59,7 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateMiddleRow3D(int index)
     {
-        AbstractEntityController entity = EntityCheck(_referenceDirection);
+        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection);
 
         if (!entity)
         {
@@ -104,7 +109,7 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateLowerRow3D(int index)
     {
-        AbstractEntityController entity = EntityCheck(_referenceDirection + Vector3.down);
+        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection + Vector3.down);
 
         if (!entity)
         {
@@ -120,10 +125,16 @@ public class StairReferenceController : AbstractReferenceController
                     break;
                 }
 
-                if (StairBlockGuard(Vector3.up, _referenceDirection + Vector3.up))
+                if (EntityExistsInList(_entityCache, Vector3.up))
                 {
                     break;
                 }
+
+                if (EntityExistsInList(_entityCache, _referenceDirection + Vector3.up))
+                {
+                    break;
+                }
+
 
                 SetReference(index, entity, ReferenceBehaviourType.STAIR_BLOCK_DOWN);
                 break;
@@ -140,7 +151,12 @@ public class StairReferenceController : AbstractReferenceController
                     break;
                 }
 
-                if (StairBlockGuard(Vector3.up, _referenceDirection + Vector3.up))
+                if (EntityExistsInList(_entityCache, Vector3.up))
+                {
+                    break;
+                }
+
+                if (EntityExistsInList(_entityCache, _referenceDirection + Vector3.up))
                 {
                     break;
                 }

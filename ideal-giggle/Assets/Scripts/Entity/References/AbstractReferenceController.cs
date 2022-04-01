@@ -12,8 +12,6 @@ public abstract class AbstractReferenceController : MonoBehaviour
     protected Vector3 _position;
     protected bool _transitionIsSet = false;
     protected Vector3 _referenceDirection;
-    protected int _posDepthIndex;
-    protected int _posWidthIndex;
     
 
 
@@ -160,21 +158,6 @@ public abstract class AbstractReferenceController : MonoBehaviour
     {
         _entityReferences[index] = new EntityReference(referencedEntity, referenceBehaviour);
         _transitionIsSet = true;
-    }
-
-    protected AbstractEntityController EntityCheck(Vector3 desiredDirection)
-    {
-        return _entityCache.Where(entity => EntityExists(entity, desiredDirection)).FirstOrDefault();
-    }
-
-    protected bool StairBlockGuard(Vector3 checkDir1, Vector3 checkDir2)
-    {
-        return _entityCache.Any(e => EntityExists(e, checkDir1) || EntityExists(e, checkDir2));
-    }
-
-    protected bool EntityExists(AbstractEntityController entity, Vector3 desiredDirection)
-    {
-        return entity.GetPosition().Equals(_position + desiredDirection);
     }
 
     protected abstract void EvaluateUpperRow3D(int index);

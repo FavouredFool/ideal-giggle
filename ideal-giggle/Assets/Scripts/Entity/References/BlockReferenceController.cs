@@ -4,13 +4,14 @@ using System.Linq;
 using static EntityHelper;
 using static ReferenceHelper;
 using static CheckHelper;
+using static TWODHelper;
 
 public class BlockReferenceController : AbstractReferenceController
 {
 
     protected override void EvaluateUpperRow3D(int index)
     {
-        AbstractEntityController entity = EntityCheck(_referenceDirection + Vector3.up);
+        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection + Vector3.up);
 
         if (!entity)
         {
@@ -27,7 +28,12 @@ public class BlockReferenceController : AbstractReferenceController
                     break;
                 }
 
-                if (StairBlockGuard(Vector3.up*2, _referenceDirection + Vector3.up*2))
+                if (EntityExistsInList(_entityCache, Vector3.up*2))
+                {
+                    break;
+                }
+
+                if (EntityExistsInList(_entityCache, _referenceDirection + Vector3.up * 2))
                 {
                     break;
                 }
@@ -43,8 +49,7 @@ public class BlockReferenceController : AbstractReferenceController
 
     protected override void EvaluateMiddleRow3D(int index)
     {
-
-        AbstractEntityController entity = EntityCheck(_referenceDirection);
+        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection);
 
         if (!entity)
         {
@@ -86,7 +91,7 @@ public class BlockReferenceController : AbstractReferenceController
     protected bool EntityCheck2D(AbstractEntityController entity, Vector3 desiredDirection)
     {
 
-        bool widthGuard = entity.GetPosition()[_posWidthIndex].Equals(_position[_posWidthIndex] + desiredDirection[_posWidthIndex]);
+        bool widthGuard = entity.GetPosition()[GetViewWidthIndex()].Equals(_position[GetViewWidthIndex()] + desiredDirection[GetViewWidthIndex()]);
         bool heightGuard = entity.GetPosition().y.Equals(_position.y + desiredDirection.y);
 
         return widthGuard && heightGuard;
@@ -99,7 +104,7 @@ public class BlockReferenceController : AbstractReferenceController
 
     protected override void EvaluateMiddleRow2D(int index)
     {
-        AbstractEntityController entity = _entityCache.Where(entity => EntityCheck2D(entity, _referenceDirection)).FirstOrDefault();
+        AbstractEntityController entity = EntityGetInList(_entityCache, _position + _referenceDirection);
 
         if (!entity)
         {
