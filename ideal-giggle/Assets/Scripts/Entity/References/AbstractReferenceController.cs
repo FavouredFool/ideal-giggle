@@ -162,17 +162,6 @@ public abstract class AbstractReferenceController : MonoBehaviour
         _transitionIsSet = true;
     }
 
-
-    protected bool StairRotationGuard(Vector3 stairEnter)
-    {
-        return !_referenceDirection.Equals(stairEnter);
-    }
-
-    protected bool StairRotationGuardNegated(Vector3 stairEnter)
-    {
-        return _referenceDirection.Equals(stairEnter);
-    }
-
     protected AbstractEntityController EntityCheck(Vector3 desiredDirection)
     {
         return _entityCache.Where(entity => EntityExists(entity, desiredDirection)).FirstOrDefault();

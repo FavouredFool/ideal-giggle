@@ -680,42 +680,14 @@ PrefabInstance:
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 5277545954369560392}
-    - target: {fileID: -2767820811278810729, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: _entityManager
-      value: 
-      objectReference: {fileID: 5277545954369560392}
-    - target: {fileID: 426199587, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: _cameraMovement
-      value: 
-      objectReference: {fileID: 279111416}
-    - target: {fileID: 426199592, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: _cameraMovement
-      value: 
-      objectReference: {fileID: 279111416}
-    - target: {fileID: 1629877486, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: _cameraMovement
-      value: 
-      objectReference: {fileID: 279111416}
-    - target: {fileID: 1629877490, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: _cameraMovement
-      value: 
-      objectReference: {fileID: 279111416}
-    - target: {fileID: 1629877491, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: _cameraMovement
-      value: 
-      objectReference: {fileID: 279111416}
-    - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: _visualise
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 5277545954369560392}
-    - target: {fileID: 2123574841458104125, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: _createPathTimeInSeconds
-      value: 0.05
-      objectReference: {fileID: 0}
+    - target: {fileID: 2869177280133322052, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _entityManager
+      value: 
+      objectReference: {fileID: 5277545954369560392}
     - target: {fileID: 4037893136254092438, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: _cameraMovement
       value: 
@@ -768,20 +740,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5760897010274260428, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5760897010274260428, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 5760897010274260428, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -2767820811278810729, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
 --- !u!114 &330510518 stripped
 MonoBehaviour:

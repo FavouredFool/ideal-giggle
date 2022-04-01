@@ -56,7 +56,6 @@ public class TWODHelper : MonoBehaviour
         {
             case Dimension.TWO_X:
             case Dimension.TWO_Z:
-            
                 sign = 1;
                 break;
 

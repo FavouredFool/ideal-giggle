@@ -16,6 +16,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private PlayerStepCalculator _stepCalculator;
     private PlayerPathCalculator _pathCalculator;
+    private PlayerToFrontCalculator _playerToFrontCalculator;
 
     private List<AbstractEntityController> _playerMovementPath;
 
@@ -34,6 +35,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         _stepCalculator = GetComponent<PlayerStepCalculator>();
         _pathCalculator = GetComponent<PlayerPathCalculator>();
+        _playerToFrontCalculator = GetComponent<PlayerToFrontCalculator>();
 
         _groundEntity = _entityManager.GetEntityFromCoordiantes(transform.position + Vector3.down);
     }
@@ -96,38 +98,7 @@ public class PlayerMovementController : MonoBehaviour
 
     public void MovePlayerToFront()
     {
-        if (_groundEntity.GetEntityType().Equals(EntityType.BLOCK))
-        {
-            if (_entityManager.GuardPlayerToFront(_groundEntity.GetPosition()))
-            {
-                return;
-            }
-        }
-        
-        AbstractEntityController entity = null;
-        if (_groundEntity.GetEntityType().Equals(EntityType.BLOCK))
-        {
-            entity = _entityManager.GetFrontEntity(_groundEntity, EntityType.BLOCK);
-        } else if (_groundEntity.GetEntityType().Equals(EntityType.STAIR))
-        {
-            entity = _entityManager.GetFrontEntity(_groundEntity, EntityType.STAIR);
-        }
-        else
-        {
-            Debug.LogWarning("FEHLER");
-        }
-        
-
-        if (!_groundEntity.GetEntityType().Equals(entity.GetEntityType()))
-        {
-            return;
-        }
-
-        // Guard, dass vor / hinter Stairs keine Blocks mehr sind
-
-        // Guard, dass Stairs richtig stehen -> Orthogonal zur Kamera
-
-        MovePlayerToEntity(entity);
+        _playerToFrontCalculator.MovePlayerToFront();
     }
 
     public void MovePlayerToEntity(AbstractEntityController entity)
@@ -153,4 +124,6 @@ public class PlayerMovementController : MonoBehaviour
         _groundEntity = groundEntity;
     }
 }
+
+
 

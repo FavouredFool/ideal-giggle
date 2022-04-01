@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using static EntityHelper;
 using static ReferenceHelper;
+using static CheckHelper;
 
 public class BlockReferenceController : AbstractReferenceController
 {
@@ -21,7 +22,7 @@ public class BlockReferenceController : AbstractReferenceController
             case EntityType.STAIR:
 
                 StairController stairEntity = (StairController)entity;
-                if (StairRotationGuard(stairEntity.GetBottomEnter()))
+                if (!StairRotatedInDirection(stairEntity.GetBottomEnter(), _referenceDirection))
                 {
                     break;
                 }
@@ -58,7 +59,7 @@ public class BlockReferenceController : AbstractReferenceController
 
             case EntityType.STAIR:
                 StairController stairEntity = (StairController)entity;
-                if (StairRotationGuard(stairEntity.GetTopEnter()))
+                if (!StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection))
                 {
                     break;
                 }
@@ -123,7 +124,7 @@ public class BlockReferenceController : AbstractReferenceController
 
             case EntityType.STAIR:
                 StairController stairEntity = (StairController)entity;
-                if (StairRotationGuard(stairEntity.GetTopEnter()))
+                if (!StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection))
                 {
                     break;
                 }

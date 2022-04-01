@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5760897009634157107}
-  - component: {fileID: -2767820811278810729}
   - component: {fileID: -4579840251287570326}
   - component: {fileID: 341716127005054490}
   - component: {fileID: 6025138495081301373}
   - component: {fileID: 995190126873025134}
   - component: {fileID: 2123574841458104125}
+  - component: {fileID: 2869177280133322052}
   m_Layer: 0
   m_Name: PlayerTarget
   m_TagString: Untagged
@@ -37,19 +37,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-2767820811278810729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5760897009634157104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 491af87fce704cd4caa41e124e818b91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _entityManager: {fileID: 0}
 --- !u!114 &-4579840251287570326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,8 +104,22 @@ MonoBehaviour:
   pathFinalMaterial: {fileID: 2100000, guid: 9c331fc858f41d94b91a2edb6464a16a, type: 2}
   pathCheckMaterial: {fileID: 2100000, guid: e82b856867668ba4089a7d44421f6e13, type: 2}
   pathCheckedMaterial: {fileID: 2100000, guid: 08d5ef6781b72a149b93c91803505814, type: 2}
-  _visualise: 1
-  _createPathTimeInMS: 50
+  _visualise: 0
+  _createPathTimeInSeconds: 0.05
+--- !u!114 &2869177280133322052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5760897009634157104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48a5090f0c34bfd4a81f757ded039f2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerMovementController: {fileID: -4579840251287570326}
+  _entityManager: {fileID: 0}
 --- !u!1 &5760897010274260429
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,6 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerMovement: {fileID: -4579840251287570326}
+  _cameraMovement: {fileID: 0}
 --- !u!114 &426199587
 MonoBehaviour:
   m_ObjectHideFlags: 0

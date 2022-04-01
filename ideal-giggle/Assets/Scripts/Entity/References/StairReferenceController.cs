@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using static EntityHelper;
 using static ReferenceHelper;
+using static CheckHelper;
 
 public class StairReferenceController : AbstractReferenceController
 {
@@ -27,13 +28,13 @@ public class StairReferenceController : AbstractReferenceController
             {
             case EntityType.STAIR:
 
-                if (StairRotationGuard(_thisStairEntity.GetBottomEnter()))
+                if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
                 {
                     break;
                 }
 
                 StairController stairEntity = (StairController)entity;
-                if (StairRotationGuard(stairEntity.GetBottomEnter()))
+                if (!StairRotatedInDirection(stairEntity.GetBottomEnter(), _referenceDirection))
                 {
                     break;
                 }
@@ -64,7 +65,7 @@ public class StairReferenceController : AbstractReferenceController
             {
                 case EntityType.BLOCK:
 
-                if (StairRotationGuard(_thisStairEntity.GetBottomEnter()))
+                if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
                 {
                     break;
                 }
@@ -74,18 +75,18 @@ public class StairReferenceController : AbstractReferenceController
 
                 case EntityType.STAIR:
 
-                if (StairRotationGuardNegated(_thisStairEntity.GetTopEnter()))
+                if (StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
                 {
                     break;
                 }
 
                 StairController stairEntity = (StairController)entity;
-                if (StairRotationGuardNegated(stairEntity.GetBottomEnter()))
+                if (StairRotatedInDirection(stairEntity.GetBottomEnter(), _referenceDirection))
                 {
                     break;
                 }
 
-                if (StairRotationGuard(_thisStairEntity.GetBottomEnter()))
+                if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
                 {
                     SetReference(index, entity, ReferenceBehaviourType.EVEN);
                 } else
@@ -114,7 +115,7 @@ public class StairReferenceController : AbstractReferenceController
             {
                 case EntityType.BLOCK:
 
-                if (StairRotationGuard(_thisStairEntity.GetTopEnter()))
+                if (!StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
                 {
                     break;
                 }
@@ -129,12 +130,12 @@ public class StairReferenceController : AbstractReferenceController
 
                 case EntityType.STAIR:
 
-                if (StairRotationGuard(_thisStairEntity.GetTopEnter()))
+                if (!StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
                 {
                     break;
                 }
                 StairController stairEntity = (StairController)entity;
-                if (StairRotationGuard(stairEntity.GetTopEnter()))
+                if (!StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection))
                 {
                     break;
                 }
