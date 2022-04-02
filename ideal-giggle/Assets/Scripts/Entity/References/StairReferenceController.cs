@@ -175,6 +175,33 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateMiddleRow2D(int index)
     {
+        
+        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection);
+
+        if (!entity)
+        {
+            return;
+        }
+
+        switch (entity.GetEntityType2D())
+        {
+            case EntityType.BLOCK:
+
+                if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
+                {
+                    break;
+                }
+
+                SetReference(index, entity, ReferenceBehaviourType.STAIR_BLOCK_UP);
+                break;
+
+            case EntityType.STAIR:
+                break;
+            default:
+                Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
+                break;
+        }
+        
     }
 
     protected override void EvaluateLowerRow2D(int index)

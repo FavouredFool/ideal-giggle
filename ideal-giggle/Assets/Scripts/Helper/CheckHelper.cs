@@ -33,8 +33,6 @@ public class CheckHelper : MonoBehaviour
         {
             return GetEntityListFromPos2D(list, checkPosition).FirstOrDefault();
         }
-
-        
     }
 
     public static List<AbstractEntityController> GetEntityListFromPos2D(List<AbstractEntityController> list, Vector3 checkPosition)

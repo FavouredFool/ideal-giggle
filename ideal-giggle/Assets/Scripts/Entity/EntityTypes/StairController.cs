@@ -11,6 +11,7 @@ public class StairController : AbstractEntityController
     {
         base.Awake();
         _entityType = EntityType.STAIR;
+        _entityType2D = EntityType.STAIR;
         _visualPosition = new Vector3(0, -0.75f, 0);
 
         Vector3 rotation = transform.eulerAngles;
@@ -54,5 +55,7 @@ public class StairController : AbstractEntityController
     {
         return _bottomEnter;
     }
+
+
 }
 

@@ -9,6 +9,8 @@ public abstract class AbstractEntityController : MonoBehaviour
 {
     protected EntityType _entityType;
 
+    protected EntityType _entityType2D;
+
     protected List<AbstractEntityController> _entityCache;
 
     protected List<AbstractEntityController> _entityReferences2D = new List<AbstractEntityController> { null, null, null, null };
@@ -127,7 +129,17 @@ public abstract class AbstractEntityController : MonoBehaviour
         return _colorCalculator;
     }
 
-    
+    public EntityType GetEntityType2D()
+    {
+        return _entityType2D;
+    }
+
+    public void SetEntityType2D(EntityType entityType2D)
+    {
+        _entityType2D = entityType2D;
+    }
+
+
 
 }
 

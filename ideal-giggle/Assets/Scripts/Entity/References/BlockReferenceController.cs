@@ -91,6 +91,7 @@ public class BlockReferenceController : AbstractReferenceController
 
     protected override void EvaluateMiddleRow2D(int index)
     {
+        
         AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection);
 
         if (!entity)
@@ -98,10 +99,9 @@ public class BlockReferenceController : AbstractReferenceController
             return;
         }
 
-        switch (entity.GetEntityType())
+        switch (entity.GetEntityType2D())
         {
             case EntityType.BLOCK:
-
                 if (EntityExistsInList(_entityCache, _position + Vector3.up))
                 {
                     return;

@@ -53,7 +53,6 @@ public abstract class AbstractReferenceController : MonoBehaviour
     
     public List<EntityReference> CalculateReferences2D(List<AbstractEntityController> entityList, Vector3 position)
     {
-
         _entityCache = entityList;
         _entityReferences = new List<EntityReference> { null, null };
         _position = position;

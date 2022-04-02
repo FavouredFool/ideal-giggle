@@ -21,12 +21,6 @@ public class PlayerPathCalculator : MonoBehaviour
 
     private Material defaultMaterial;
 
-    [Header("Visualisation")]
-    [SerializeField]
-    bool _visualise = true;
-
-    [SerializeField]
-    float _createPathTimeInSeconds = 0.05f;
 
     AbstractEntityController _startEntity;
     AbstractEntityController _endEntity;
@@ -62,12 +56,6 @@ public class PlayerPathCalculator : MonoBehaviour
 
             _processedList.Add(current);
             _toSearchList.Remove(current);
-
-            if(_visualise)
-            {
-                current.ChangeMaterial(pathCheckedMaterial);
-                yield return null;
-            }
             
             if (current.Equals(endEntity))
             {
@@ -78,12 +66,6 @@ public class PlayerPathCalculator : MonoBehaviour
                 while (currentPathTile != _startEntity)
                 {
                     path.Add(currentPathTile);
-
-                    if (_visualise)
-                    {
-                        currentPathTile.ChangeMaterial(pathFinalMaterial);
-                        yield return new WaitForSeconds(_createPathTimeInSeconds);
-                    }
 
                     currentPathTile = currentPathTile.Connection;
                     loopCount--;
@@ -96,16 +78,7 @@ public class PlayerPathCalculator : MonoBehaviour
                 path.Add(currentPathTile);
                 path.Reverse();
 
-                if (_visualise)
-                {
-                    currentPathTile.ChangeMaterial(pathFinalMaterial);
-                    yield return new WaitForSeconds(_createPathTimeInSeconds);
-                }
-
                 yield return path;
-
-                RevertMaterial(defaultMaterial);
-                yield break;
             }
             
             foreach (EntityReference neighbor in current.GetActiveEntityReferences())
@@ -116,10 +89,7 @@ public class PlayerPathCalculator : MonoBehaviour
                 }
                 
             }
-
         }
-
-        RevertMaterial(defaultMaterial);
         
     }
 
@@ -163,25 +133,8 @@ public class PlayerPathCalculator : MonoBehaviour
                 neighbor.SetH(Vector3.Distance(neighbor.GetPosition(), _endEntity.GetPosition()));
                 _toSearchList.Add(neighbor);
 
-                if (_visualise)
-                {
-                    neighbor.ChangeMaterial(pathCheckMaterial);
-                }
-
             }
         }
         
     }
-
-    private void RevertMaterial(Material defaultMaterial)
-    {
-        if (_visualise)
-        {
-            foreach (AbstractEntityController entity in _entityManager.GetEntityList())
-            {
-                entity.ChangeMaterial(defaultMaterial);
-            }
-        }
-    }
-
 }
