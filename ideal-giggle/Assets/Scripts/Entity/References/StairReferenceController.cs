@@ -196,9 +196,8 @@ public class StairReferenceController : AbstractReferenceController
         switch (_thisStairEntity.GetEntityType2D())
         {
             case EntityType.BLOCK:
-
                 // OBJEKT WIRD ALS BLOCK GESEHEN
-                switch (entity.GetEntityType())
+                switch (entity.GetEntityType2D())
                 {
                     case EntityType.BLOCK:
                         SetReference(index, entity, ReferenceBehaviourType.EVEN);

@@ -25,17 +25,17 @@ public class PlayerToFrontCalculator : MonoBehaviour
     {
         _groundEntity = _playerMovementController.GetGroundEntity();
 
-        EntityType groundEntityType;
         AbstractEntityController entity;
         if (relative)
         {
-            groundEntityType = _groundEntity.GetEntityType2D();
             entity = GetFrontEntityRelative(_groundEntity);
         }
         else
         {
             entity = GetFrontEntityAbsolute(_groundEntity);
         }
+
+        Debug.Log(entity);
 
         _playerMovementController.MovePlayerToEntity(entity);
     }

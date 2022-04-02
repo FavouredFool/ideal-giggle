@@ -116,7 +116,26 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public Vector3 GetVisualPosition()
     {
-        return _visualPosition;
+        if (ViewDimension.Dimension.Equals(Dimension.THREE))
+        {
+            return _visualPosition;
+        } else
+        {
+            switch (GetEntityType2D())
+            {
+                case EntityType.BLOCK:
+                    return new Vector3(0, -0.25f, 0);
+                    
+                case EntityType.STAIR:
+                    return new Vector3(0, -0.75f, 0);
+
+                default:
+                    Debug.LogWarning("Fehler");
+                    return Vector3.zero;
+            }
+        }
+
+        
     }
 
     public Vector3 GetAdjacentPosition(Vector3 addedVector)
@@ -136,6 +155,7 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public void SetEntityType2D(EntityType entityType2D)
     {
+        
         _entityType2D = entityType2D;
     }
 
