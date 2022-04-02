@@ -66,9 +66,9 @@ public class StairReferenceController : AbstractReferenceController
             return;
         }
 
-            switch (entity.GetEntityType())
-            {
-                case EntityType.BLOCK:
+        switch (entity.GetEntityType())
+        {
+            case EntityType.BLOCK:
 
                 if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
                 {
@@ -76,34 +76,44 @@ public class StairReferenceController : AbstractReferenceController
                 }
 
                 SetReference(index, entity, ReferenceBehaviourType.STAIR_BLOCK_UP);
-                break;
+            break;
 
-                case EntityType.STAIR:
+            case EntityType.STAIR:
 
-                if (StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
+                if (StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
                 {
-                    break;
-                }
+                    StairController stairEntity = (StairController)entity;
 
-                StairController stairEntity = (StairController)entity;
-                if (StairRotatedInDirection(stairEntity.GetBottomEnter(), _referenceDirection))
-                {
-                    break;
-                }
+                    if (!StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection))
+                    {
+                        break;
+                    }
 
-                if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
-                {
-                    SetReference(index, entity, ReferenceBehaviourType.EVEN);
-                } else
-                {
                     SetReference(index, entity, ReferenceBehaviourType.STAIR_STAIR_EVEN);
+
+                }
+                else if (!StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
+                {
+                    // Test ob anderer auch korrekt gedreht ist
+                    StairController stairEntity = (StairController)entity;
+
+                    if (StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection) || StairRotatedInDirection(stairEntity.GetBottomEnter(), _referenceDirection))
+                    {
+                        break;
+                    }
+
+                    SetReference(index, entity, ReferenceBehaviourType.EVEN);
+                }
+                else
+                {
+                    break;
                 }
                 
-                break;
-                default:
-                    Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
-                break;
-            }
+            break;
+            default:
+                Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
+            break;
+        }
 
     }
 
