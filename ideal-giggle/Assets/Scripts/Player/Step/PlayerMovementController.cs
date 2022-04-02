@@ -96,9 +96,13 @@ public class PlayerMovementController : MonoBehaviour
         _pathCalculating = false;
     }
 
-    public void MovePlayerToFront()
+    public void MovePlayerIntelligentlyToFront()
     {
-        _playerToFrontCalculator.MovePlayerToFront();
+        _playerToFrontCalculator.MovePlayerToFront(true);
+    }
+    public void MovePlayerDumblyToFront()
+    {
+        _playerToFrontCalculator.MovePlayerToFront(false);
     }
 
     public void MovePlayerToEntity(AbstractEntityController entity)

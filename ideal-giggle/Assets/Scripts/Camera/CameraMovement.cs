@@ -30,6 +30,11 @@ public class CameraMovement : MonoBehaviour
         pivot = new Vector3((levelSize.x-1) / 2f, (levelSize.y-1) / 2f, (levelSize.z-1) / 2f);
     }
 
+    private void Update()
+    {
+        
+    }
+
     public void MoveCameraVertically(VerticalState desiredVerticalState)
     {
         if (desiredVerticalState.Equals(VerticalState.UPPER) && !_verticalState.Equals(VerticalState.UPPER))
@@ -59,12 +64,20 @@ public class CameraMovement : MonoBehaviour
 
     void UpdateView()
     {
+        if (!ViewDimension.Dimension.Equals(Dimension.THREE))
+        {
+            Debug.Log("Move Player Intelligently");
+            _playerMovementController.MovePlayerIntelligentlyToFront();
+        }
+        
+
+
         UpdateDimension();
         _entityManager.UpdateReferences();
 
         if (!ViewDimension.Dimension.Equals(Dimension.THREE))
         {
-            _playerMovementController.MovePlayerToFront();
+            _playerMovementController.MovePlayerDumblyToFront();
         }
         
     }

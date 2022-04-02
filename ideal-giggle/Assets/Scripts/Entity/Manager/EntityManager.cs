@@ -67,16 +67,17 @@ public class EntityManager : MonoBehaviour
         {
             if (!entity.GetEntityType().Equals(EntityType.STAIR))
             {
+                entity.SetEntityType2D(EntityType.BLOCK);
+                continue;
+            }
+
+            if (!entityList.Contains(entity))
+            {
+                entity.SetEntityType2D(EntityType.STAIR);
                 continue;
             }
 
             StairController stairEntity = (StairController)entity;
-
-            if (!entityList.Contains(stairEntity))
-            {
-                stairEntity.SetEntityType2D(stairEntity.GetEntityType());
-                continue;
-            }
 
             List<AbstractEntityController> depthList = GetEntityListFromPos2D(GetEntityList(), stairEntity.GetPosition());
 

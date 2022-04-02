@@ -182,25 +182,68 @@ public class StairReferenceController : AbstractReferenceController
         {
             return;
         }
-
-        switch (entity.GetEntityType2D())
+        
+        switch (_thisStairEntity.GetEntityType2D())
         {
             case EntityType.BLOCK:
 
-                if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
+                // OBJEKT WIRD ALS BLOCK GESEHEN
+                switch (entity.GetEntityType())
                 {
-                    break;
+                    case EntityType.BLOCK:
+                        SetReference(index, entity, ReferenceBehaviourType.EVEN);
+                        break;
+
+                    case EntityType.STAIR:
+                        StairController stairEntity = (StairController)entity;
+                        if (!StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection))
+                        {
+                            break;
+                        }
+
+                        SetReference(index, entity, ReferenceBehaviourType.BLOCK_DOWN);
+                        break;
+
+                    default:
+                        Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
+                        break;
                 }
 
-                SetReference(index, entity, ReferenceBehaviourType.STAIR_BLOCK_UP);
+
                 break;
 
+
             case EntityType.STAIR:
+
+                // OBJEKT WIRD ALS STAIR GESEHEN
+                switch (entity.GetEntityType2D())
+                {
+                    case EntityType.BLOCK:
+
+                        if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
+                        {
+                            break;
+                        }
+
+                        SetReference(index, entity, ReferenceBehaviourType.STAIR_BLOCK_UP);
+                        break;
+
+                    case EntityType.STAIR:
+                        break;
+                    default:
+                        Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
+                        break;
+                }
+
                 break;
-            default:
-                Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
+
+
+            case EntityType.NONE:
+                Debug.LogWarning("FEHLER");
                 break;
         }
+
+        
         
     }
 

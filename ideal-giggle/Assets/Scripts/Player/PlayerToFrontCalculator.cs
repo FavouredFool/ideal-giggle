@@ -21,32 +21,62 @@ public class PlayerToFrontCalculator : MonoBehaviour
 
 
 
-    public void MovePlayerToFront()
+    public void MovePlayerToFront(bool relative)
     {
         _groundEntity = _playerMovementController.GetGroundEntity();
 
-        if (_groundEntity.GetEntityType().Equals(EntityType.BLOCK))
-        {            
-            if (EntityExistsInList(_entityManager.GetEntityList(), _groundEntity.GetPosition() + Vector3.up))
-            {
-                return;
-            }
+        EntityType groundEntityType;
+        AbstractEntityController entity;
+        if (relative)
+        {
+            groundEntityType = _groundEntity.GetEntityType2D();
+            entity = GetFrontEntityRelative(_groundEntity);
         }
-
-        AbstractEntityController entity = GetFrontEntity(_groundEntity, _groundEntity.GetEntityType());
+        else
+        {
+            entity = GetFrontEntityAbsolute(_groundEntity);
+        }
 
         _playerMovementController.MovePlayerToEntity(entity);
     }
 
-    public AbstractEntityController GetFrontEntity(AbstractEntityController entity, EntityType searchedType)
+    public AbstractEntityController GetFrontEntityAbsolute(AbstractEntityController entity)
     {
         List<AbstractEntityController> entityList = GetEntityListFromPos2D(_entityManager.GetEntityList(), entity.GetPosition());
 
-        if (searchedType.Equals(EntityType.BLOCK))
+        if (entity.GetEntityType2D().Equals(EntityType.BLOCK))
         {
+            if (EntityExistsInList(_entityManager.GetEntityList(), _groundEntity.GetPosition() + Vector3.up))
+            {
+                return entity;
+            }
+
+        } else if (entity.GetEntityType2D().Equals(EntityType.STAIR))
+        {
+            if (entityList.Any(e => e.GetEntityType2D().Equals(EntityType.BLOCK)))
+            {
+                return entity;
+            }
+        }
+
+        return entityList.FirstOrDefault();
+    }
+
+
+    public AbstractEntityController GetFrontEntityRelative(AbstractEntityController entity)
+    {
+        List<AbstractEntityController> entityList = GetEntityListFromPos2D(_entityManager.GetEntityList(), entity.GetPosition());
+
+        if (entity.GetEntityType2D().Equals(EntityType.BLOCK))
+        {
+            if (EntityExistsInList(_entityManager.GetEntityList(), _groundEntity.GetPosition() + Vector3.up))
+            {
+                return entity;
+            }
+
             return entityList.Where(e => e.GetEntityType().Equals(EntityType.BLOCK)).FirstOrDefault();
         }
-        else if (searchedType.Equals(EntityType.STAIR))
+        else if (entity.GetEntityType2D().Equals(EntityType.STAIR))
         {
             if (entityList.Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
             {
