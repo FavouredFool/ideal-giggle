@@ -16,7 +16,6 @@ public class CameraInputController : MonoBehaviour
 
         if (!InputValid())
         {
-            Debug.Log("Not Valid");
             return;
         }
 

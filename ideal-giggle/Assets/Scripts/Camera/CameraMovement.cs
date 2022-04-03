@@ -121,12 +121,16 @@ public class CameraMovement : MonoBehaviour
         {
             if (_playerMovementController.GetGroundEntity().GetEntityType2D().Equals(EntityType.BLOCK))
             {
-                if (GetEntityListFromPos2D(_entityManager.GetEntityList(), _playerMovementController.GetGroundEntity().GetPosition()).Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
+                if (_playerMovementController.GetEntityPositionRelation().Equals(EntityType.BLOCK))
                 {
-                    return true;
-                } else
-                {
-                    return false;
+                    if (GetEntityListFromPos2D(_entityManager.GetEntityList(), _playerMovementController.GetGroundEntity().GetPosition()).Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
         }
