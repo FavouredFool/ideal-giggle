@@ -39,12 +39,12 @@ public class StairReferenceController : AbstractReferenceController
                     break;
                 }
 
-                if (EntityExistsInList(_entityCache, Vector3.up * 2))
+                if (EntityExistsInList(_entityCache, _position + Vector3.up * 2))
                 {
                     break;
                 }
 
-                if (EntityExistsInList(_entityCache, _referenceDirection + Vector3.up * 2))
+                if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up * 2))
                 {
                     break;
                 }
@@ -135,12 +135,12 @@ public class StairReferenceController : AbstractReferenceController
                     break;
                 }
 
-                if (EntityExistsInList(_entityCache, Vector3.up))
+                if (EntityExistsInList(_entityCache, _position + Vector3.up))
                 {
                     break;
                 }
 
-                if (EntityExistsInList(_entityCache, _referenceDirection + Vector3.up))
+                if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up))
                 {
                     break;
                 }
@@ -161,12 +161,12 @@ public class StairReferenceController : AbstractReferenceController
                     break;
                 }
 
-                if (EntityExistsInList(_entityCache, Vector3.up))
+                if (EntityExistsInList(_entityCache, _position + Vector3.up))
                 {
                     break;
                 }
 
-                if (EntityExistsInList(_entityCache, _referenceDirection + Vector3.up))
+                if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up))
                 {
                     break;
                 }
@@ -181,6 +181,78 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateUpperRow2D(int index)
     {
+        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection + Vector3.up);
+
+        if (!entity)
+        {
+            return;
+        }
+
+        switch (_thisStairEntity.GetEntityType2D())
+        {
+            case EntityType.BLOCK:
+
+                switch (entity.GetEntityType2D())
+                {
+                    case EntityType.STAIR:
+                        StairController stairEntity = (StairController)entity;
+
+                        if (!StairRotatedInDirection(stairEntity.GetBottomEnter(), _referenceDirection))
+                        {
+                            break;
+                        }
+
+                        if (EntityExistsInList(_entityCache, _position + Vector3.up * 2))
+                        {
+                            break;
+                        }
+
+                        if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up * 2))
+                        {
+                            break;
+                        }
+
+                        SetReference(index, entity, ReferenceBehaviourType.BLOCK_UP);
+                        break;
+                }
+                break;
+
+            case EntityType.STAIR:
+
+                switch(entity.GetEntityType2D())
+                {
+                    case EntityType.STAIR:
+
+                        if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
+                        {
+                            break;
+                        }
+
+                        StairController stairEntity = (StairController)entity;
+                        if (!StairRotatedInDirection(stairEntity.GetBottomEnter(), _referenceDirection))
+                        {
+                            break;
+                        }
+
+                        if (EntityExistsInList(_entityCache, _position + Vector3.up * 2))
+                        {
+                            break;
+                        }
+
+                        if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up * 2))
+                        {
+                            break;
+                        }
+
+                        SetReference(index, entity, ReferenceBehaviourType.STAIR_STAIR_UP);
+                        break;
+                }
+                break;
+
+            case EntityType.NONE:
+                Debug.LogWarning("FEHLER");
+                break;
+        }
     }
 
     protected override void EvaluateMiddleRow2D(int index)
@@ -196,10 +268,20 @@ public class StairReferenceController : AbstractReferenceController
         switch (_thisStairEntity.GetEntityType2D())
         {
             case EntityType.BLOCK:
-                // OBJEKT WIRD ALS BLOCK GESEHEN
+
                 switch (entity.GetEntityType2D())
                 {
                     case EntityType.BLOCK:
+
+                        if (EntityExistsInList(_entityCache, _position + Vector3.up))
+                        {
+                            return;
+                        }
+                        if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up))
+                        {
+                            return;
+                        }
+
                         SetReference(index, entity, ReferenceBehaviourType.EVEN);
                         break;
 
@@ -224,10 +306,19 @@ public class StairReferenceController : AbstractReferenceController
 
             case EntityType.STAIR:
 
-                // OBJEKT WIRD ALS STAIR GESEHEN
                 switch (entity.GetEntityType2D())
                 {
                     case EntityType.BLOCK:
+
+                        if (EntityExistsInList(_entityCache, _position + Vector3.up))
+                        {
+                            return;
+                        }
+
+                        if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up))
+                        {
+                            return;
+                        }
 
                         if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
                         {
@@ -258,5 +349,79 @@ public class StairReferenceController : AbstractReferenceController
 
     protected override void EvaluateLowerRow2D(int index)
     {
+
+        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection + Vector3.down);
+
+        if (!entity)
+        {
+            return;
+        }
+
+        switch (_thisStairEntity.GetEntityType2D())
+        {
+            case EntityType.STAIR:
+
+                switch (entity.GetEntityType2D())
+                {
+                    case EntityType.BLOCK:
+
+                        if (!StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
+                        {
+                            break;
+                        }
+
+                        if (EntityExistsInList(_entityCache, _position + Vector3.up))
+                        {
+                            break;
+                        }
+
+                        if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up))
+                        {
+                            break;
+                        }
+
+
+                        SetReference(index, entity, ReferenceBehaviourType.STAIR_BLOCK_DOWN);
+                        break;
+
+                    case EntityType.STAIR:
+
+                        if (!StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
+                        {
+                            break;
+                        }
+                        StairController stairEntity = (StairController)entity;
+                        if (!StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection))
+                        {
+                            break;
+                        }
+
+                        if (EntityExistsInList(_entityCache, _position + Vector3.up))
+                        {
+                            break;
+                        }
+
+                        if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up))
+                        {
+                            break;
+                        }
+
+                        SetReference(index, entity, ReferenceBehaviourType.STAIR_STAIR_DOWN);
+                        break;
+
+                    default:
+                        Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
+                        break;
+                }
+
+
+                break;
+
+
+            case EntityType.NONE:
+                Debug.LogWarning("FEHLER");
+                break;
+        }
+
     }
 }

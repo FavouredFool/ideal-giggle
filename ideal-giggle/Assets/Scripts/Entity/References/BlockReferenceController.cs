@@ -28,12 +28,12 @@ public class BlockReferenceController : AbstractReferenceController
                     break;
                 }
 
-                if (EntityExistsInList(_entityCache, Vector3.up*2))
+                if (EntityExistsInList(_entityCache, _position + Vector3.up*2))
                 {
                     break;
                 }
 
-                if (EntityExistsInList(_entityCache, _referenceDirection + Vector3.up * 2))
+                if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up * 2))
                 {
                     break;
                 }
@@ -59,6 +59,10 @@ public class BlockReferenceController : AbstractReferenceController
         switch (entity.GetEntityType())
         {
             case EntityType.BLOCK:
+                if (EntityExistsInList(_entityCache,_position + _referenceDirection + Vector3.up))
+                {
+                    break;
+                }
                 SetReference(index, entity, ReferenceBehaviourType.EVEN);
                 break;
 
@@ -86,7 +90,44 @@ public class BlockReferenceController : AbstractReferenceController
 
     protected override void EvaluateUpperRow2D(int index)
     {
-        //throw new System.NotImplementedException();
+        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection + Vector3.up);
+
+        if (!entity)
+        {
+            return;
+        }
+
+        switch (entity.GetEntityType2D())
+        {
+            case EntityType.STAIR:
+                StairController stairEntity = (StairController)entity;
+
+                if (!StairRotatedInDirection(stairEntity.GetBottomEnter(), _referenceDirection))
+                {
+                    break;
+                }
+
+                if (EntityExistsInList(_entityCache, _position + Vector3.up * 2))
+                {
+                    break;
+                }
+
+                if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up * 2))
+                {
+                    break;
+                }
+
+                SetReference(index, entity, ReferenceBehaviourType.BLOCK_UP);
+                break;
+
+            case EntityType.BLOCK:
+                break;
+
+
+            default:
+                Debug.LogWarning($"FEHLER: activeEntity.GetEntityType2D() darf nicht {entity.GetEntityType2D()} sein");
+                break;
+        }
     }
 
     protected override void EvaluateMiddleRow2D(int index)
