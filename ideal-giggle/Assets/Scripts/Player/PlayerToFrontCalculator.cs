@@ -5,6 +5,7 @@ using System.Linq;
 using static EntityHelper;
 using static CheckHelper;
 using static TWODHelper;
+using static ViewHelper;
 
 
 public class PlayerToFrontCalculator : MonoBehaviour
@@ -23,9 +24,18 @@ public class PlayerToFrontCalculator : MonoBehaviour
 
     public void MovePlayerToFront(bool relative)
     {
+        if (!ViewDimension.Dimension.Equals(Dimension.THREE))
+        {
+            if (!_playerMovementController.GetGroundEntity().GetEntityType2D().Equals(_playerMovementController.GetEntityPositionRelation()))
+            {
+                return;
+            }
+        }
+
         _groundEntity = _playerMovementController.GetGroundEntity();
 
         AbstractEntityController entity;
+
         if (relative)
         {
             entity = GetFrontEntityRelative(_groundEntity);
@@ -35,7 +45,7 @@ public class PlayerToFrontCalculator : MonoBehaviour
             entity = GetFrontEntityAbsolute(_groundEntity);
         }
 
-        Debug.Log(entity);
+        
 
         _playerMovementController.MovePlayerToEntity(entity);
     }

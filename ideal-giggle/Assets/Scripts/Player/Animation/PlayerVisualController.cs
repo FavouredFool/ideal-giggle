@@ -27,6 +27,15 @@ public class PlayerVisualController : MonoBehaviour
         _playerMovement.SetGroundEntity(goalEntity);
         transform.position = startPosition + startEntity.GetVisualPosition();
 
+        if (ViewDimension.Dimension.Equals(Dimension.THREE))
+        {
+            _playerMovement.SetEntityPositionRelation(_playerMovement.GetGroundEntity().GetEntityType());
+        }
+        else
+        {
+            _playerMovement.SetEntityPositionRelation(_playerMovement.GetGroundEntity().GetEntityType2D());
+        }
+
         StartCoroutine(PlayCubeBehaviour(startPosition, endPosition));
     }
 

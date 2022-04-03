@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using static ViewHelper;
+using static EntityHelper;
+using static CheckHelper;
+
 
 public class CameraMovement : MonoBehaviour
 {
@@ -66,18 +70,15 @@ public class CameraMovement : MonoBehaviour
     {
         if (!ViewDimension.Dimension.Equals(Dimension.THREE))
         {
-            Debug.Log("Move Player Intelligently");
-            _playerMovementController.MovePlayerIntelligentlyToFront();
+            _playerMovementController.MovePlayerToFront(true);
         }
-        
-
 
         UpdateDimension();
         _entityManager.UpdateReferences();
 
         if (!ViewDimension.Dimension.Equals(Dimension.THREE))
         {
-            _playerMovementController.MovePlayerDumblyToFront();
+            _playerMovementController.MovePlayerToFront(false);
         }
         
     }
@@ -111,6 +112,26 @@ public class CameraMovement : MonoBehaviour
                 ViewDimension.Dimension = Dimension.THREE;
             }
         }
+    }
+
+    public bool InputValid()
+    {
+
+        if (!ViewDimension.Dimension.Equals(Dimension.THREE))
+        {
+            if (_playerMovementController.GetGroundEntity().GetEntityType2D().Equals(EntityType.BLOCK))
+            {
+                if (GetEntityListFromPos2D(_entityManager.GetEntityList(), _playerMovementController.GetGroundEntity().GetPosition()).Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 }

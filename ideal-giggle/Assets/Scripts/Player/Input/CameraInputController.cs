@@ -10,8 +10,16 @@ public class CameraInputController : MonoBehaviour
     [SerializeField]
     private CameraMovement _camera;
 
+
     private void Update()
     {
+
+        if (!InputValid())
+        {
+            Debug.Log("Not Valid");
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.S))
         {
             _camera.MoveCameraVertically(VerticalState.LOWER);
@@ -27,6 +35,12 @@ public class CameraInputController : MonoBehaviour
         {
             _camera.MoveCameraHorizontally(-45);
         }
+    }
+
+
+    public bool InputValid()
+    {
+        return _camera.InputValid();
     }
 
 

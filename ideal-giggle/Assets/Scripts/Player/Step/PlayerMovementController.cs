@@ -22,9 +22,12 @@ public class PlayerMovementController : MonoBehaviour
 
     private bool _isMoving = false;
     private bool _pathCalculating = false;
+    private bool _isBlocked = false;
 
     private AbstractEntityController _endEntity;
     private AbstractEntityController _groundEntity;
+
+    private EntityType _entityPositionRelation = EntityType.BLOCK;
 
     public void Awake()
     {
@@ -42,6 +45,12 @@ public class PlayerMovementController : MonoBehaviour
 
     public void Update()
     {
+        
+        if (CalculateBlocked())
+        {
+            return;
+        }
+
         if (_groundEntity.Equals(_endEntity))
         {
             return;
@@ -73,7 +82,11 @@ public class PlayerMovementController : MonoBehaviour
 
     public void SetEndEntity(AbstractEntityController endEntity)
     {
-        
+        if (_isBlocked)
+        {
+            return;
+        }
+
         if (_pathCalculating)
         {
             return;
@@ -96,13 +109,9 @@ public class PlayerMovementController : MonoBehaviour
         _pathCalculating = false;
     }
 
-    public void MovePlayerIntelligentlyToFront()
+    public void MovePlayerToFront(bool relative)
     {
-        _playerToFrontCalculator.MovePlayerToFront(true);
-    }
-    public void MovePlayerDumblyToFront()
-    {
-        _playerToFrontCalculator.MovePlayerToFront(false);
+        _playerToFrontCalculator.MovePlayerToFront(relative);
     }
 
     public void MovePlayerToEntity(AbstractEntityController entity)
@@ -111,6 +120,20 @@ public class PlayerMovementController : MonoBehaviour
         SetGroundEntity(entity);
         _endEntity = entity;
 
+    }
+
+    public bool CalculateBlocked()
+    {
+        if (!ViewDimension.Dimension.Equals(Dimension.THREE))
+        {
+            if (!_groundEntity.GetEntityType2D().Equals(_entityPositionRelation))
+            {
+                _isBlocked = true;
+                return _isBlocked;
+            }
+        }
+        _isBlocked = false;
+        return _isBlocked;
     }
 
     public void SetIsMoving(bool isMoving)
@@ -126,6 +149,16 @@ public class PlayerMovementController : MonoBehaviour
     public void SetGroundEntity(AbstractEntityController groundEntity)
     {
         _groundEntity = groundEntity;
+    }
+
+    public EntityType GetEntityPositionRelation()
+    {
+        return _entityPositionRelation;
+    }
+
+    public void SetEntityPositionRelation(EntityType entityPositionRelation)
+    {
+        _entityPositionRelation = entityPositionRelation;
     }
 }
 
