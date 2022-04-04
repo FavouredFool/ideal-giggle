@@ -17,9 +17,14 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private PlayerMovementController _playerMovementController;
 
-    private Vector3 pivot;
+    [SerializeField]
+    private bool[] _lockedHorizontalState;
+
+    private Vector3 _pivot;
 
     private VerticalState _verticalState;
+
+    private HorizontalState _horizontalState;
 
     private void Awake()
     {
@@ -29,26 +34,28 @@ public class CameraMovement : MonoBehaviour
     private void Start()
     {
         _verticalState = VerticalState.UPPER;
+        _horizontalState = HorizontalState.X_Z;
 
         Vector3 levelSize = _entityManager.GetLevelSize();
-        pivot = new Vector3((levelSize.x-1) / 2f, (levelSize.y-1) / 2f, (levelSize.z-1) / 2f);
+        _pivot = new Vector3((levelSize.x - 1) / 2f, (levelSize.y - 1) / 2f, (levelSize.z - 1) / 2f);
     }
 
-    private void Update()
-    {
-        
-    }
 
-    public void MoveCameraVertically(VerticalState desiredVerticalState)
+    public void InterpretVerticalInput(VerticalState desiredVerticalState)
     {
+        if (!InputValid())
+        {
+            return;
+        }
+
         if (desiredVerticalState.Equals(VerticalState.UPPER) && !_verticalState.Equals(VerticalState.UPPER))
         {
-            transform.RotateAround(pivot, Vector3.Cross(transform.forward, Vector3.up), -45);
+            transform.RotateAround(_pivot, Vector3.Cross(transform.forward, Vector3.up), -45);
             _verticalState = VerticalState.UPPER;
         }
         else if (desiredVerticalState.Equals(VerticalState.LOWER) && !_verticalState.Equals(VerticalState.LOWER))
         {
-            transform.RotateAround(pivot, Vector3.Cross(transform.forward, Vector3.up), 45);
+            transform.RotateAround(_pivot, Vector3.Cross(transform.forward, Vector3.up), 45);
             _verticalState = VerticalState.LOWER;
         }
         else
@@ -60,14 +67,28 @@ public class CameraMovement : MonoBehaviour
     }
 
 
-    public void MoveCameraHorizontally(int degrees)
+    public void InterpretHorizontalInput(HorizontalDirection direction)
     {
-        transform.RotateAround(pivot, Vector3.up, degrees);
+        if (!InputValid())
+        {
+            return;
+        }
+
+        HorizontalState desiredHorizontalState = CalculateHorizontalStateFromDirection(direction);
+
+        int degrees = CalculateDegreesRelativeToHorizontalState(desiredHorizontalState);
+        transform.RotateAround(_pivot, Vector3.up, degrees);
+
+        _horizontalState = desiredHorizontalState;
+
         UpdateView();
     }
 
+
+
     void UpdateView()
     {
+        // Wenn aus 2D heraus geswapped wird
         if (!ViewDimension.Dimension.Equals(Dimension.THREE))
         {
             _playerMovementController.MovePlayerToFront(true);
@@ -76,11 +97,12 @@ public class CameraMovement : MonoBehaviour
         UpdateDimension();
         _entityManager.UpdateReferences();
 
+        // Wenn in 2D herein geswapped wurde
         if (!ViewDimension.Dimension.Equals(Dimension.THREE))
         {
             _playerMovementController.MovePlayerToFront(false);
         }
-        
+
     }
 
     void UpdateDimension()
@@ -116,7 +138,7 @@ public class CameraMovement : MonoBehaviour
 
     public bool InputValid()
     {
-
+        // DAS SOLLTE HIER EIGENTLICH NICHT BLEIBEN
         if (!ViewDimension.Dimension.Equals(Dimension.THREE))
         {
             if (_playerMovementController.GetGroundEntity().GetEntityType2D().Equals(EntityType.BLOCK))
@@ -138,4 +160,67 @@ public class CameraMovement : MonoBehaviour
         return true;
     }
 
+    public HorizontalState CalculateHorizontalStateFromDirection(HorizontalDirection direction)
+    {
+        int tempState = (int)_horizontalState;
+
+        for (int i = 0; i < 8; i++)
+        {
+            if (direction.Equals(HorizontalDirection.LEFT))
+            {
+                tempState--;
+                tempState %= 8;
+
+                if (tempState < 0)
+                {
+                    tempState = 8 + tempState;
+                }
+            }
+            else
+            {
+                tempState++;
+                tempState %= 8;
+
+                if (tempState < 0)
+                {
+                    tempState = 8 + tempState;
+                }
+            }
+
+            if (_lockedHorizontalState.Length < 8)
+            {
+                Debug.LogWarning("FEHLER: keine korrekten LockedStates definiert");
+            }
+
+            if (!_lockedHorizontalState[tempState])
+            {
+                return (HorizontalState)tempState;
+            }
+
+        }
+
+        Debug.LogWarning("FEHLER");
+        return _horizontalState;
+    }
+
+    public int CalculateDegreesRelativeToHorizontalState(HorizontalState desiredHorizontalState)
+    {
+        int tempState = (int)_horizontalState;
+
+        for (int i = 0; i < 8; i++)
+        {
+            if (tempState != (int)desiredHorizontalState)
+            {
+                tempState++;
+                tempState %= 8;
+            }
+            else
+            {
+                return i * -45;
+            }
+        }
+
+        Debug.LogWarning("FEHLER");
+        return 0;
+    }
 }

@@ -1,185 +1,96 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using static EntityHelper;
 using static ReferenceHelper;
+using static ViewHelper;
+using static EntityHelper;
 using static CheckHelper;
 
-public class StairReferenceController : AbstractReferenceController
+public class ReferenceController2D : AbstractReferenceController
 {
-    StairController _thisStairEntity;
 
-    void Awake()
+    [Header("Dependencies")]
+
+    [SerializeField]
+    AbstractEntityController _thisEntity;
+
+
+    public List<EntityReference> CalculateReferences2D(List<AbstractEntityController> entityList, Vector3 position)
     {
-        _thisStairEntity = GetComponent<StairController>();
-    }
+        _entityCache = entityList;
+        _entityReferences = new List<EntityReference> { null, null };
+        _position = position;
 
-    protected override void EvaluateUpperRow3D(int index)
-    {
-        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection + Vector3.up);
-
-        if (!entity)
+        if (!entityList.Contains(GetComponent<AbstractEntityController>()))
         {
-            return;
+            return _entityReferences;
         }
 
-        switch (entity.GetEntityType())
+        for (int i = 0; i < 2; i++)
+        {
+            _referenceDirection = SwitchReferenceDirection2D(i);
+            _transitionIsSet = false;
+
+            EvaluateUpperRow2D(i);
+            if (_transitionIsSet)
             {
-            case EntityType.STAIR:
-
-                if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
-                {
-                    break;
-                }
-
-                StairController stairEntity = (StairController)entity;
-                if (!StairRotatedInDirection(stairEntity.GetBottomEnter(), _referenceDirection))
-                {
-                    break;
-                }
-
-                if (EntityExistsInList(_entityCache, _position + Vector3.up * 2))
-                {
-                    break;
-                }
-
-                if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up * 2))
-                {
-                    break;
-                }
-
-                SetReference(index, entity, ReferenceBehaviourType.STAIR_STAIR_UP);
-                break;
-
-            default:
-                break;
+                continue;
             }
-    }
 
-    protected override void EvaluateMiddleRow3D(int index)
-    {
-        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection);
+            EvaluateMiddleRow2D(i);
+            if (_transitionIsSet)
+            {
+                continue;
+            }
 
-        if (!entity)
-        {
-            return;
+            EvaluateLowerRow2D(i);
+            if (_transitionIsSet)
+            {
+                continue;
+            }
+
+            _entityReferences[i] = null;
         }
 
-        switch (entity.GetEntityType())
+        return _entityReferences;
+    }
+
+    public Vector3 SwitchReferenceDirection2D(int index)
+    {
+        Vector3 localReferenceDirection;
+
+        switch (index)
         {
-            case EntityType.BLOCK:
-
-                if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
+            case 0:
+                if (ViewDimension.Dimension.Equals(Dimension.TWO_NX) || ViewDimension.Dimension.Equals(Dimension.TWO_X))
                 {
-                    break;
-                }
-
-                SetReference(index, entity, ReferenceBehaviourType.STAIR_BLOCK_UP);
-            break;
-
-            case EntityType.STAIR:
-
-                if (StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
-                {
-                    StairController stairEntity = (StairController)entity;
-
-                    if (!StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection))
-                    {
-                        break;
-                    }
-
-                    SetReference(index, entity, ReferenceBehaviourType.STAIR_STAIR_EVEN);
-
-                }
-                else if (!StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
-                {
-                    // Test ob anderer auch korrekt gedreht ist
-                    StairController stairEntity = (StairController)entity;
-
-                    if (StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection) || StairRotatedInDirection(stairEntity.GetBottomEnter(), _referenceDirection))
-                    {
-                        break;
-                    }
-
-                    SetReference(index, entity, ReferenceBehaviourType.EVEN);
+                    localReferenceDirection = Vector3.forward;
                 }
                 else
                 {
-                    break;
+                    localReferenceDirection = Vector3.right;
                 }
-                
-            break;
+                break;
+            case 1:
+                if (ViewDimension.Dimension.Equals(Dimension.TWO_NX) || ViewDimension.Dimension.Equals(Dimension.TWO_X))
+                {
+                    localReferenceDirection = Vector3.back;
+                }
+                else
+                {
+                    localReferenceDirection = Vector3.left;
+                }
+                break;
             default:
-                Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
-            break;
+                localReferenceDirection = Vector3.zero;
+                Debug.LogWarning($"FEHLER: referenceDirection darf niemals {localReferenceDirection} sein.");
+                break;
         }
 
+        return localReferenceDirection;
     }
 
-    protected override void EvaluateLowerRow3D(int index)
-    {
-        AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection + Vector3.down);
-
-        if (!entity)
-        {
-            return;
-        }
-
-        switch (entity.GetEntityType())
-            {
-                case EntityType.BLOCK:
-
-                if (!StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
-                {
-                    break;
-                }
-
-                if (EntityExistsInList(_entityCache, _position + Vector3.up))
-                {
-                    break;
-                }
-
-                if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up))
-                {
-                    break;
-                }
-
-
-                SetReference(index, entity, ReferenceBehaviourType.STAIR_BLOCK_DOWN);
-                break;
-
-                case EntityType.STAIR:
-
-                if (!StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
-                {
-                    break;
-                }
-                StairController stairEntity = (StairController)entity;
-                if (!StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection))
-                {
-                    break;
-                }
-
-                if (EntityExistsInList(_entityCache, _position + Vector3.up))
-                {
-                    break;
-                }
-
-                if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up))
-                {
-                    break;
-                }
-
-                SetReference(index, entity, ReferenceBehaviourType.STAIR_STAIR_DOWN);
-                    break;
-                default:
-                    Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
-                break;
-            }
-    }
-
-    protected override void EvaluateUpperRow2D(int index)
+    protected void EvaluateUpperRow2D(int index)
     {
         AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection + Vector3.up);
 
@@ -188,7 +99,7 @@ public class StairReferenceController : AbstractReferenceController
             return;
         }
 
-        switch (_thisStairEntity.GetEntityType2D())
+        switch (_thisEntity.GetEntityType2D())
         {
             case EntityType.BLOCK:
 
@@ -219,11 +130,13 @@ public class StairReferenceController : AbstractReferenceController
 
             case EntityType.STAIR:
 
-                switch(entity.GetEntityType2D())
+                switch (entity.GetEntityType2D())
                 {
                     case EntityType.STAIR:
 
-                        if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
+                        StairController thisStair = (StairController)_thisEntity;
+
+                        if (!StairRotatedInDirection(thisStair.GetBottomEnter(), _referenceDirection))
                         {
                             break;
                         }
@@ -255,17 +168,17 @@ public class StairReferenceController : AbstractReferenceController
         }
     }
 
-    protected override void EvaluateMiddleRow2D(int index)
+    protected void EvaluateMiddleRow2D(int index)
     {
-        
+
         AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection);
 
         if (!entity)
         {
             return;
         }
-        
-        switch (_thisStairEntity.GetEntityType2D())
+
+        switch (_thisEntity.GetEntityType2D())
         {
             case EntityType.BLOCK:
 
@@ -287,6 +200,16 @@ public class StairReferenceController : AbstractReferenceController
 
                     case EntityType.STAIR:
                         StairController stairEntity = (StairController)entity;
+
+                        if (EntityExistsInList(_entityCache, _position + Vector3.up))
+                        {
+                            return;
+                        }
+                        if (EntityExistsInList(_entityCache, _position + _referenceDirection + Vector3.up))
+                        {
+                            return;
+                        }
+
                         if (!StairRotatedInDirection(stairEntity.GetTopEnter(), _referenceDirection))
                         {
                             break;
@@ -306,6 +229,8 @@ public class StairReferenceController : AbstractReferenceController
 
             case EntityType.STAIR:
 
+                StairController thisStair = (StairController)_thisEntity;
+
                 switch (entity.GetEntityType2D())
                 {
                     case EntityType.BLOCK:
@@ -320,7 +245,7 @@ public class StairReferenceController : AbstractReferenceController
                             return;
                         }
 
-                        if (!StairRotatedInDirection(_thisStairEntity.GetBottomEnter(), _referenceDirection))
+                        if (!StairRotatedInDirection(thisStair.GetBottomEnter(), _referenceDirection))
                         {
                             break;
                         }
@@ -343,11 +268,11 @@ public class StairReferenceController : AbstractReferenceController
                 break;
         }
 
-        
-        
+
+
     }
 
-    protected override void EvaluateLowerRow2D(int index)
+    protected void EvaluateLowerRow2D(int index)
     {
 
         AbstractEntityController entity = GetEntityInListFromPos(_entityCache, _position + _referenceDirection + Vector3.down);
@@ -357,15 +282,17 @@ public class StairReferenceController : AbstractReferenceController
             return;
         }
 
-        switch (_thisStairEntity.GetEntityType2D())
+        switch (_thisEntity.GetEntityType2D())
         {
             case EntityType.STAIR:
+
+                StairController thisStair = (StairController)_thisEntity;
 
                 switch (entity.GetEntityType2D())
                 {
                     case EntityType.BLOCK:
 
-                        if (!StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
+                        if (!StairRotatedInDirection(thisStair.GetTopEnter(), _referenceDirection))
                         {
                             break;
                         }
@@ -386,7 +313,7 @@ public class StairReferenceController : AbstractReferenceController
 
                     case EntityType.STAIR:
 
-                        if (!StairRotatedInDirection(_thisStairEntity.GetTopEnter(), _referenceDirection))
+                        if (!StairRotatedInDirection(thisStair.GetTopEnter(), _referenceDirection))
                         {
                             break;
                         }

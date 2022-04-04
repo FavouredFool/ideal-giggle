@@ -19,7 +19,9 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     protected List<EntityReference> _activeEntityReferences;
 
-    protected AbstractReferenceController _abstractReferenceController;
+    protected AbstractReferenceController3D _abstractReferenceController3D;
+
+    protected ReferenceController2D _referenceController2D;
 
     protected EntityCacheController _entityCacheController;
 
@@ -48,7 +50,8 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public void Start()
     {
-        _abstractReferenceController = GetComponent<AbstractReferenceController>();
+        _abstractReferenceController3D = GetComponent<AbstractReferenceController3D>();
+        _referenceController2D = GetComponent<ReferenceController2D>();
         _entityReferences3D = CalculateReferences3D();
         _activeEntityReferences = _entityReferences3D;
     }
@@ -56,12 +59,12 @@ public abstract class AbstractEntityController : MonoBehaviour
     public List<EntityReference> CalculateReferences3D()
     {
         _entityCache = _entityCacheController.CacheEntityReferences3D(_position);
-        return _abstractReferenceController.CalculateReferences3D(_entityCache, _position);
+        return _abstractReferenceController3D.CalculateReferences3D(_entityCache, _position);
     }
 
     public List<EntityReference> CalculateReferences2D(List<AbstractEntityController> entityList)
     { 
-        return _abstractReferenceController.CalculateReferences2D(entityList, _position);
+        return _referenceController2D.CalculateReferences2D(entityList, _position);
     }
 
     public void SetReferences(List<AbstractEntityController> entityList, PlaneController xPlane, PlaneController zPlane)
@@ -155,7 +158,6 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public void SetEntityType2D(EntityType entityType2D)
     {
-        
         _entityType2D = entityType2D;
     }
 

@@ -24,12 +24,9 @@ public class PlayerToFrontCalculator : MonoBehaviour
 
     public void MovePlayerToFront(bool relative)
     {
-        if (!ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (!_playerMovementController.GetGroundEntity().GetEntityType2D().Equals(_playerMovementController.GetEntityPositionRelation()))
         {
-            if (!_playerMovementController.GetGroundEntity().GetEntityType2D().Equals(_playerMovementController.GetEntityPositionRelation()))
-            {
-                return;
-            }
+            return;
         }
 
         _groundEntity = _playerMovementController.GetGroundEntity();
@@ -45,8 +42,6 @@ public class PlayerToFrontCalculator : MonoBehaviour
             entity = GetFrontEntityAbsolute(_groundEntity);
         }
 
-        
-
         _playerMovementController.MovePlayerToEntity(entity);
     }
 
@@ -61,7 +56,8 @@ public class PlayerToFrontCalculator : MonoBehaviour
                 return entity;
             }
 
-        } else if (entity.GetEntityType2D().Equals(EntityType.STAIR))
+        }
+        else if (entity.GetEntityType2D().Equals(EntityType.STAIR))
         {
             if (entityList.Any(e => e.GetEntityType2D().Equals(EntityType.BLOCK)))
             {

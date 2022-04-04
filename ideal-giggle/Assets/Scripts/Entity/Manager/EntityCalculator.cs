@@ -17,7 +17,24 @@ public class EntityCalculator : MonoBehaviour
         _entityManager = GetComponent<EntityManager>();
     }
 
-    public List<AbstractEntityController> Prune2DEntityList(PlaneController xPlane, PlaneController zPlane)
+    public List<AbstractEntityController> CalculateEntityList(PlaneController xPlane, PlaneController zPlane)
+    {
+        List<AbstractEntityController> entityList;
+        if (ViewDimension.Dimension.Equals(Dimension.THREE))
+        {
+            entityList = _entityManager.GetEntityList();
+            Set3DEntityTypes(entityList);
+        }
+        else
+        {
+            entityList = Calculate2DEntityList(xPlane, zPlane);
+            Calculate2DEntityType(entityList);
+        }
+
+        return entityList;
+    }
+
+    public List<AbstractEntityController> Calculate2DEntityList(PlaneController xPlane, PlaneController zPlane)
     {
         List<AbstractEntityController> pruned2DList = new List<AbstractEntityController>();
 
@@ -42,5 +59,52 @@ public class EntityCalculator : MonoBehaviour
         }
 
         return pruned2DList;
+    }
+
+    public void Calculate2DEntityType(List<AbstractEntityController> entityList)
+    {
+        foreach (AbstractEntityController entity in _entityManager.GetEntityList())
+        {
+            if (!entity.GetEntityType().Equals(EntityType.STAIR))
+            {
+                entity.SetEntityType2D(EntityType.BLOCK);
+                continue;
+            }
+
+            if (!entityList.Contains(entity))
+            {
+                entity.SetEntityType2D(EntityType.STAIR);
+                continue;
+            }
+
+            StairController stairEntity = (StairController)entity;
+
+            List<AbstractEntityController> depthList = GetEntityListFromPos2D(_entityManager.GetEntityList(), stairEntity.GetPosition());
+
+            if (depthList.Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
+            {
+                stairEntity.SetEntityType2D(EntityType.BLOCK);
+                continue;
+            }
+
+            if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetTopEnter(), GetViewDirection())))
+            {
+                stairEntity.SetEntityType2D(EntityType.BLOCK);
+                continue;
+            }
+
+            if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetBottomEnter(), GetViewDirection())))
+            {
+                stairEntity.SetEntityType2D(EntityType.BLOCK);
+                continue;
+            }
+
+            stairEntity.SetEntityType2D(EntityType.STAIR);
+        }
+    }
+
+    public void Set3DEntityTypes(List<AbstractEntityController> entityList)
+    {
+        entityList.ForEach(e => e.SetEntityType2D(e.GetEntityType()));
     }
 }

@@ -14,34 +14,21 @@ public class CameraInputController : MonoBehaviour
     private void Update()
     {
 
-        if (!InputValid())
-        {
-            return;
-        }
-
         if (Input.GetKeyDown(KeyCode.S))
         {
-            _camera.MoveCameraVertically(VerticalState.LOWER);
+            _camera.InterpretVerticalInput(VerticalState.LOWER);
         } else if (Input.GetKeyDown(KeyCode.W))
         {
-            _camera.MoveCameraVertically(VerticalState.UPPER);
+            _camera.InterpretVerticalInput(VerticalState.UPPER);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            _camera.MoveCameraHorizontally(45);
+            _camera.InterpretHorizontalInput(HorizontalDirection.LEFT);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            _camera.MoveCameraHorizontally(-45);
+            _camera.InterpretHorizontalInput(HorizontalDirection.RIGHT);
         }
     }
-
-
-    public bool InputValid()
-    {
-        return _camera.InputValid();
-    }
-
-
 
 }

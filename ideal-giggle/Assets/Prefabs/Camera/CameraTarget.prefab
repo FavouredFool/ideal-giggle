@@ -59,7 +59,7 @@ Camera:
   far clip plane: 30
   field of view: 60
   orthographic: 1
-  orthographic size: 7.5
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -127,3 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30f505468c288244aa191c2e0e229b0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _entityManager: {fileID: 0}
+  _playerMovementController: {fileID: 0}
+  _lockedHorizontalState: 0000000000000000
