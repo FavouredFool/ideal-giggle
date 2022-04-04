@@ -51,7 +51,6 @@ public abstract class AbstractEntityController : MonoBehaviour
     public void Start()
     {
         _abstractReferenceController3D = GetComponent<AbstractReferenceController3D>();
-        _referenceController2D = GetComponent<ReferenceController2D>();
         _entityReferences3D = CalculateReferences3D();
         _activeEntityReferences = _entityReferences3D;
     }
@@ -64,6 +63,17 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public List<EntityReference> CalculateReferences2D(List<AbstractEntityController> entityList)
     { 
+        if (GetEntityType2D().Equals(EntityType.BLOCK))
+        {
+            _referenceController2D = GetComponent<BlockReferenceController2D>();
+        } else if (GetEntityType2D().Equals(EntityType.STAIR))
+        {
+            _referenceController2D = GetComponent<StairReferenceController2D>();
+        } else
+        {
+            return new List<EntityReference> { null, null };
+        }
+
         return _referenceController2D.CalculateReferences2D(entityList, _position);
     }
 
