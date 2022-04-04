@@ -99,6 +99,18 @@ public class EntityCalculator : MonoBehaviour
                 continue;
             }
 
+            if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetBottomEnter(), stairEntity.GetTopEnter())))
+            {
+                stairEntity.SetEntityType2D(EntityType.INACCESSABLE);
+                continue;
+            }
+
+            if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetTopEnter(), stairEntity.GetBottomEnter())))
+            {
+                stairEntity.SetEntityType2D(EntityType.INACCESSABLE);
+                continue;
+            }
+
             stairEntity.SetEntityType2D(EntityType.STAIR);
         }
     }

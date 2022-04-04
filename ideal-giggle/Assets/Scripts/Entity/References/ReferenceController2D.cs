@@ -161,10 +161,6 @@ public class ReferenceController2D : AbstractReferenceController
                         break;
                 }
                 break;
-
-            case EntityType.NONE:
-                Debug.LogWarning("FEHLER");
-                break;
         }
     }
 
@@ -217,12 +213,7 @@ public class ReferenceController2D : AbstractReferenceController
 
                         SetReference(index, entity, ReferenceBehaviourType.BLOCK_DOWN);
                         break;
-
-                    default:
-                        Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
-                        break;
                 }
-
 
                 break;
 
@@ -252,24 +243,10 @@ public class ReferenceController2D : AbstractReferenceController
 
                         SetReference(index, entity, ReferenceBehaviourType.STAIR_BLOCK_UP);
                         break;
-
-                    case EntityType.STAIR:
-                        break;
-                    default:
-                        Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
-                        break;
                 }
 
                 break;
-
-
-            case EntityType.NONE:
-                Debug.LogWarning("FEHLER");
-                break;
         }
-
-
-
     }
 
     protected void EvaluateLowerRow2D(int index)
@@ -335,18 +312,7 @@ public class ReferenceController2D : AbstractReferenceController
 
                         SetReference(index, entity, ReferenceBehaviourType.STAIR_STAIR_DOWN);
                         break;
-
-                    default:
-                        Debug.LogWarning($"FEHLER: activeEntity.GetEntityType() darf nicht {entity.GetEntityType()} sein");
-                        break;
                 }
-
-
-                break;
-
-
-            case EntityType.NONE:
-                Debug.LogWarning("FEHLER");
                 break;
         }
 
