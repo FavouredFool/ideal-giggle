@@ -6,6 +6,7 @@ using static EntityHelper;
 using static CheckHelper;
 using static TWODHelper;
 using static ViewHelper;
+using static PlaneHelper;
 
 
 public class PlayerToFrontCalculator : MonoBehaviour
@@ -17,6 +18,12 @@ public class PlayerToFrontCalculator : MonoBehaviour
 
     [SerializeField]
     private EntityManager _entityManager;
+
+    [SerializeField]
+    private PlaneController _xPlane;
+
+    [SerializeField]
+    private PlaneController _zPlane;
 
     AbstractEntityController _groundEntity;
 
@@ -30,6 +37,12 @@ public class PlayerToFrontCalculator : MonoBehaviour
         }
 
         _groundEntity = _playerMovementController.GetGroundEntity();
+        PlaneController plane = GetViewPlane(_xPlane, _zPlane);
+
+        if (!PlayerInFrontOfPlane(_playerMovementController, plane))
+        {
+            return;
+        }
 
         AbstractEntityController entity;
 

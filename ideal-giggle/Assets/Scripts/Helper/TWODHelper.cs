@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static ViewHelper;
+using static PlaneHelper;
 
 public class TWODHelper : MonoBehaviour
 {
@@ -96,26 +97,7 @@ public class TWODHelper : MonoBehaviour
         return direction;
     }
 
-    public static float GetViewPlaneValue(PlaneController xPlane, PlaneController zPlane)
-    {
-        float activePlaneValue = -1;
 
-        switch (ViewDimension.Dimension)
-        {
-            case Dimension.TWO_X:
-                activePlaneValue = xPlane.transform.position.x;
-                break;
-            case Dimension.TWO_NX:
-                activePlaneValue = xPlane.transform.position.x;
-                break;
-            case Dimension.TWO_Z:
-                activePlaneValue = zPlane.transform.position.z;
-                break;
-            case Dimension.TWO_NZ:
-                activePlaneValue = zPlane.transform.position.z;
-                break;
-        }
 
-        return activePlaneValue;
-    }
+
 }

@@ -6,6 +6,7 @@ using static CheckHelper;
 using static ViewHelper;
 using static EntityHelper;
 using static TWODHelper;
+using static PlaneHelper;
 
 public class EntityCalculator : MonoBehaviour
 {
@@ -41,7 +42,6 @@ public class EntityCalculator : MonoBehaviour
         int width = _entityManager.GetLevelSize()[GetViewWidthIndex()];
         int height = _entityManager.GetLevelSize()[1];
         int depth = _entityManager.GetLevelSize()[GetViewDepthIndex()];
-        float activePlanePos = GetViewPlaneValue(xPlane, zPlane);
 
         for (int i = 0; i < height; i++)
         {
@@ -50,6 +50,11 @@ public class EntityCalculator : MonoBehaviour
                 AbstractEntityController entity = GetEntityInListFromPos(_entityManager.GetEntityList(), new Vector3(j, i, j));
                 
                 if (!entity)
+                {
+                    continue;
+                }
+
+                if (!EntityInFrontOfPlane(entity, xPlane, zPlane))
                 {
                     continue;
                 }

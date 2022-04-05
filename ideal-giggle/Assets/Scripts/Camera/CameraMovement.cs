@@ -5,6 +5,7 @@ using System.Linq;
 using static ViewHelper;
 using static EntityHelper;
 using static CheckHelper;
+using static PlaneHelper;
 
 
 public class CameraMovement : MonoBehaviour
@@ -88,6 +89,7 @@ public class CameraMovement : MonoBehaviour
 
     void UpdateView()
     {
+
         // Wenn aus 2D heraus geswapped wird
         if (!ViewDimension.Dimension.Equals(Dimension.THREE))
         {

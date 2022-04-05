@@ -367,7 +367,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &313369562
 Transform:
   m_ObjectHideFlags: 0
@@ -473,6 +473,14 @@ PrefabInstance:
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 5277545954369560392}
+    - target: {fileID: 2869177280133322052, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _xPlane
+      value: 
+      objectReference: {fileID: 1651160208}
+    - target: {fileID: 2869177280133322052, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _zPlane
+      value: 
+      objectReference: {fileID: 1081788700}
     - target: {fileID: 2869177280133322052, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: _entityManager
       value: 
@@ -1700,9 +1708,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 313369562}
     m_Modifications:
     - target: {fileID: 1081788700, guid: 6ff579f4de53fa04db83f835fc81e20e, type: 3}
+      propertyPath: _planeType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1081788700, guid: 6ff579f4de53fa04db83f835fc81e20e, type: 3}
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 5277545954369560392}
+    - target: {fileID: 1081788700, guid: 6ff579f4de53fa04db83f835fc81e20e, type: 3}
+      propertyPath: _playerMovement
+      value: 
+      objectReference: {fileID: 330510518}
     - target: {fileID: 5164367323269956941, guid: 6ff579f4de53fa04db83f835fc81e20e, type: 3}
       propertyPath: m_Name
       value: zPlane
@@ -1766,6 +1782,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityManager: {fileID: 0}
+  _playerMovement: {fileID: 0}
+  _planeType: 0
 --- !u!1001 &3217398117295208217
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1777,6 +1795,10 @@ PrefabInstance:
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 5277545954369560392}
+    - target: {fileID: 1651160208, guid: 5cd3ddf5c81d4db4ea54d65d2dff52ba, type: 3}
+      propertyPath: _playerMovement
+      value: 
+      objectReference: {fileID: 330510518}
     - target: {fileID: 7321694794623581972, guid: 5cd3ddf5c81d4db4ea54d65d2dff52ba, type: 3}
       propertyPath: m_Name
       value: xPlane
