@@ -46,6 +46,18 @@ public class PlaneHelper : MonoBehaviour
         }
     }
 
+    public static int GetPlaneCoordinateOtherIndex(PlaneController plane)
+    {
+        if (plane.GetPlaneType().Equals(PlaneType.XPLANE))
+        {
+            return 2;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     public static PlaneController GetViewPlane(PlaneController xPlane, PlaneController zPlane)
     {
         PlaneController activePlane = null;

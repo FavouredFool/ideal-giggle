@@ -17,6 +17,40 @@ public class PlaneController : MonoBehaviour
     [SerializeField]
     private PlaneType _planeType;
 
+    [SerializeField]
+    private float _planeWidth;
+
+    [SerializeField]
+    private float _startPos;
+
+    public void Start()
+    {
+        ResizeAndPlacePlane();
+    }
+
+    private void ResizeAndPlacePlane()
+    {
+        Vector3Int levelSize = _entityManager.GetLevelSize();
+        float planeSizeHeight = levelSize.y;
+        float planeSizeWidth = levelSize[GetPlaneCoordinateOtherIndex(this)];
+
+        Vector3 planeScale = Vector3.zero;
+        planeScale[GetPlaneCoordinateOtherIndex(this)] = planeSizeWidth;
+        planeScale.y = planeSizeHeight;
+        planeScale[GetPlaneCoordinateIndex(this)] = _planeWidth;
+
+        transform.localScale = planeScale;
+
+        Vector3 planePosition = Vector3.zero;
+        
+        planePosition[GetPlaneCoordinateOtherIndex(this)] = (levelSize[GetPlaneCoordinateOtherIndex(this)] -1) / 2f;
+        planePosition.y = (levelSize.y-1) / 2f;
+        planePosition[GetPlaneCoordinateIndex(this)] = _startPos;
+
+        transform.position = planePosition;
+    }
+
+
 
     public void MovePlane(Vector3 direction)
     {

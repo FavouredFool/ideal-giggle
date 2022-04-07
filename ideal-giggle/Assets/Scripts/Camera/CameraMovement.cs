@@ -23,41 +23,205 @@ public class CameraMovement : MonoBehaviour
 
     private Vector3 _pivot;
 
-    private VerticalState _verticalState;
+    private ViewState _viewState;
 
-    private HorizontalState _horizontalState;
+    private CameraAnimation _cameraAnimation;
+
+    
 
     private void Awake()
     {
-        ViewDimension.Dimension = Dimension.THREE;
+        ViewDimension.Dimension = Dimension.TWO_NZ;
     }
 
     private void Start()
     {
-        _verticalState = VerticalState.UPPER;
-        _horizontalState = HorizontalState.X_Z;
+        _cameraAnimation = GetComponent<CameraAnimation>();
 
-        Vector3 levelSize = _entityManager.GetLevelSize();
-        _pivot = new Vector3((levelSize.x - 1) / 2f, (levelSize.y - 1) / 2f, (levelSize.z - 1) / 2f);
+        _viewState = ViewState.NZ;
+
+        _pivot = _entityManager.GetPivot();
+
+        CalculateCameraPosition();
+        CalculateInitialViewState();
     }
 
+    public void CalculateCameraPosition()
+    {
 
-    public void InterpretVerticalInput(VerticalState desiredVerticalState)
+    }
+
+    public void CalculateInitialViewState()
+    {
+
+    }
+
+    public void InterpretInput(HorizontalDirection horizontalDirection, VerticalDirection verticalDirection)
     {
         if (!InputValid())
         {
             return;
         }
 
-        if (desiredVerticalState.Equals(VerticalState.UPPER) && !_verticalState.Equals(VerticalState.UPPER))
+        ViewState desiredViewState = CalculateViewStateFromDirections(horizontalDirection, verticalDirection);
+
+        int hDegrees = CalculateHorizontalDegreesRelativeToViewState(desiredViewState, horizontalDirection);
+        int vDegrees = CalculateVerticalDegreesRelativeToViewState(desiredViewState);
+
+        StartCoroutine(AnimateCamera(desiredViewState, hDegrees, vDegrees));
+    }
+
+    public IEnumerator AnimateCamera(ViewState desiredViewState, int hDegrees, int vDegrees)
+    {
+        yield return _cameraAnimation.AnimateCamera(_pivot, hDegrees, vDegrees, desiredViewState);
+
+        OnAnimationEnd(desiredViewState);
+    }
+
+    public void OnAnimationEnd(ViewState desiredViewState)
+    {
+        _viewState = desiredViewState;
+        UpdateView();
+    }
+
+    public int CalculateVerticalDegreesRelativeToViewState(ViewState desiredState)
+    {
+        bool viewStateEven = (int) _viewState % 2 == 0;
+        bool desiredStateEven = (int) desiredState % 2 == 0;
+
+        if (desiredStateEven == viewStateEven)
+        {
+            return 0;
+        }
+        else if (viewStateEven)
+        {
+            return +45;
+        }
+        else
+        {
+            return -45;
+        }
+        
+    }
+
+    public int CalculateHorizontalDegreesRelativeToViewState(ViewState desiredState, HorizontalDirection horizontalDirection)
+    {
+        int tempState = (int)_viewState;
+        int directionSign;
+
+        if (horizontalDirection.Equals(HorizontalDirection.LEFT))
+        {
+            directionSign = 1;
+        }
+        else
+        {
+            directionSign = -1;
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            if (tempState != (int)desiredState)
+            {
+                tempState += -directionSign;
+                tempState = ValidateTempState(tempState);
+            }
+            else
+            {
+                return i * directionSign * 45;
+            }
+        }
+
+        Debug.LogWarning("FEHLER");
+        return 0;
+    }
+
+    public int CalculateTempState(int tempState, int added)
+    {
+        int tempStateOriginal = tempState;
+
+        tempState += added;
+        tempState = ValidateTempState(tempState);
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (_lockedHorizontalState.Length != 8)
+            {
+                Debug.LogWarning("FEHLER: keine korrekten LockedStates definiert");
+            }
+
+            if (!_lockedHorizontalState[tempState])
+            {
+                return tempState;
+            }
+
+            tempState += (int) Mathf.Sign(added) * 2;
+            tempState = ValidateTempState(tempState);
+        }
+
+        return tempStateOriginal;
+    }
+
+    public int ValidateTempState(int tempState)
+    {
+        tempState %= 8;
+
+        if (tempState < 0)
+        {
+            tempState = 8 + tempState;
+        }
+
+        return tempState;
+    }
+
+
+    public ViewState CalculateViewStateFromDirections(HorizontalDirection horizontalDirection, VerticalDirection verticalDirection)
+    {
+        int tempState = (int)_viewState;
+        bool tempStateEven = tempState % 2 == 0;
+        int moveAmount;
+        int moveSign;
+
+        if (tempStateEven != verticalDirection.Equals(VerticalDirection.UPPER))
+        {
+            moveAmount = 2;
+        }
+        else
+        {
+            moveAmount = 1;
+        }
+
+        if (horizontalDirection.Equals(HorizontalDirection.LEFT))
+        {
+            moveSign = -1;
+        }
+        else
+        {
+            moveSign = +1;
+        }
+
+        tempState = CalculateTempState(tempState, moveSign * moveAmount);
+
+        return (ViewState)tempState;
+
+    }
+
+    /*
+    public void InterpretVerticalInput(VerticalDirection desiredVerticalState)
+    {
+        if (!InputValid())
+        {
+            return;
+        }
+
+        if (desiredVerticalState.Equals(VerticalDirection.UPPER) && !_verticalState.Equals(VerticalDirection.UPPER))
         {
             transform.RotateAround(_pivot, Vector3.Cross(transform.forward, Vector3.up), -45);
-            _verticalState = VerticalState.UPPER;
+            _verticalState = VerticalDirection.UPPER;
         }
-        else if (desiredVerticalState.Equals(VerticalState.LOWER) && !_verticalState.Equals(VerticalState.LOWER))
+        else if (desiredVerticalState.Equals(VerticalDirection.LOWER) && !_verticalState.Equals(VerticalDirection.LOWER))
         {
             transform.RotateAround(_pivot, Vector3.Cross(transform.forward, Vector3.up), 45);
-            _verticalState = VerticalState.LOWER;
+            _verticalState = VerticalDirection.LOWER;
         }
         else
         {
@@ -65,27 +229,11 @@ public class CameraMovement : MonoBehaviour
         }
 
         UpdateView();
+    
+
     }
-
-
-    public void InterpretHorizontalInput(HorizontalDirection direction)
-    {
-        if (!InputValid())
-        {
-            return;
-        }
-
-        HorizontalState desiredHorizontalState = CalculateHorizontalStateFromDirection(direction);
-
-        int degrees = CalculateDegreesRelativeToHorizontalState(desiredHorizontalState);
-        transform.RotateAround(_pivot, Vector3.up, degrees);
-
-        _horizontalState = desiredHorizontalState;
-
-        UpdateView();
-    }
-
-
+    */
+    
 
     void UpdateView()
     {
@@ -109,12 +257,7 @@ public class CameraMovement : MonoBehaviour
 
     void UpdateDimension()
     {
-        if (_verticalState.Equals(VerticalState.UPPER))
-        {
-            ViewDimension.Dimension = Dimension.THREE;
-        }
-        else
-        {
+
             if (transform.forward.V3Equal(Vector3.forward))
             {
                 ViewDimension.Dimension = Dimension.TWO_NZ;
@@ -135,12 +278,11 @@ public class CameraMovement : MonoBehaviour
             {
                 ViewDimension.Dimension = Dimension.THREE;
             }
-        }
+        
     }
 
     public bool InputValid()
     {
-        // DAS SOLLTE HIER EIGENTLICH NICHT BLEIBEN
         if (!ViewDimension.Dimension.Equals(Dimension.THREE))
         {
             if (_playerMovementController.GetGroundEntity().GetEntityType2D().Equals(EntityType.BLOCK))
@@ -162,67 +304,8 @@ public class CameraMovement : MonoBehaviour
         return true;
     }
 
-    public HorizontalState CalculateHorizontalStateFromDirection(HorizontalDirection direction)
+    public ViewState GetHorizontalState()
     {
-        int tempState = (int)_horizontalState;
-
-        for (int i = 0; i < 8; i++)
-        {
-            if (direction.Equals(HorizontalDirection.LEFT))
-            {
-                tempState--;
-                tempState %= 8;
-
-                if (tempState < 0)
-                {
-                    tempState = 8 + tempState;
-                }
-            }
-            else
-            {
-                tempState++;
-                tempState %= 8;
-
-                if (tempState < 0)
-                {
-                    tempState = 8 + tempState;
-                }
-            }
-
-            if (_lockedHorizontalState.Length < 8)
-            {
-                Debug.LogWarning("FEHLER: keine korrekten LockedStates definiert");
-            }
-
-            if (!_lockedHorizontalState[tempState])
-            {
-                return (HorizontalState)tempState;
-            }
-
-        }
-
-        Debug.LogWarning("FEHLER");
-        return _horizontalState;
-    }
-
-    public int CalculateDegreesRelativeToHorizontalState(HorizontalState desiredHorizontalState)
-    {
-        int tempState = (int)_horizontalState;
-
-        for (int i = 0; i < 8; i++)
-        {
-            if (tempState != (int)desiredHorizontalState)
-            {
-                tempState++;
-                tempState %= 8;
-            }
-            else
-            {
-                return i * -45;
-            }
-        }
-
-        Debug.LogWarning("FEHLER");
-        return 0;
+        return _viewState;
     }
 }

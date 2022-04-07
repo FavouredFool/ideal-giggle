@@ -93,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1356754070891164759}
   - component: {fileID: 1984108489073277441}
+  - component: {fileID: 1373141118}
   m_Layer: 0
   m_Name: CameraTarget
   m_TagString: Untagged
@@ -130,3 +131,15 @@ MonoBehaviour:
   _entityManager: {fileID: 0}
   _playerMovementController: {fileID: 0}
   _lockedHorizontalState: 0000000000000000
+--- !u!114 &1373141118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356754070891164756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4dcc5b3eb6f7d34a9ef80e58fa638ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

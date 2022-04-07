@@ -26,11 +26,14 @@ public class EntityManager : MonoBehaviour
     private List<AbstractEntityController> _entityList;
     private EntityCalculator _entityCalculator;
 
+    private Vector3 _pivot;
+
 
     public void Awake()
     {
         _entityList = new List<AbstractEntityController>(GetComponentsInChildren<AbstractEntityController>());
         _entityCalculator = GetComponent<EntityCalculator>();
+        _pivot = new Vector3((_levelSize.x - 1) / 2f, (_levelSize.y - 1) / 2f, (_levelSize.z - 1) / 2f);
     }
 
     public void Start()
@@ -93,6 +96,11 @@ public class EntityManager : MonoBehaviour
     public Vector3Int GetLevelSize()
     {
         return _levelSize;
+    }
+
+    public Vector3 GetPivot()
+    {
+        return _pivot;
     }
 }
 

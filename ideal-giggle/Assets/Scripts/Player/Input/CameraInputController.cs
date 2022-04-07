@@ -13,13 +13,13 @@ public class CameraInputController : MonoBehaviour
 
     private void Update()
     {
-
+        /*
         if (Input.GetKeyDown(KeyCode.S))
         {
-            _camera.InterpretVerticalInput(VerticalState.LOWER);
+            _camera.InterpretVerticalInput(VerticalDirection.LOWER);
         } else if (Input.GetKeyDown(KeyCode.W))
         {
-            _camera.InterpretVerticalInput(VerticalState.UPPER);
+            _camera.InterpretVerticalInput(VerticalDirection.UPPER);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
@@ -28,6 +28,24 @@ public class CameraInputController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.D))
         {
             _camera.InterpretHorizontalInput(HorizontalDirection.RIGHT);
+        }
+        */
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            _camera.InterpretInput(HorizontalDirection.LEFT, VerticalDirection.LOWER);
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            _camera.InterpretInput(HorizontalDirection.RIGHT, VerticalDirection.LOWER);
+        }
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            _camera.InterpretInput(HorizontalDirection.LEFT, VerticalDirection.UPPER);
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            _camera.InterpretInput(HorizontalDirection.RIGHT, VerticalDirection.UPPER);
         }
     }
 
