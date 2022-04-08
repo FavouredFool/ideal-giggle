@@ -21,9 +21,12 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private bool[] _lockedHorizontalState;
 
-    private Vector3 _pivot;
+    [SerializeField]
+    private ViewState _initialViewState;
 
     private ViewState _viewState;
+
+    private Vector3 _pivot;
 
     private CameraAnimation _cameraAnimation;
 
@@ -37,8 +40,7 @@ public class CameraMovement : MonoBehaviour
     private void Start()
     {
         _cameraAnimation = GetComponent<CameraAnimation>();
-
-        _viewState = ViewState.NZ;
+        _viewState = _initialViewState;
 
         _pivot = _entityManager.GetPivot();
 
