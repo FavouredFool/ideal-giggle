@@ -124,7 +124,7 @@ public class PlayerMovementController : MonoBehaviour
 
     public bool CalculateBlocked()
     {
-        if (!ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (!ActiveViewStateIsThreeD())
         {
             if (!_groundEntity.GetEntityType2D().Equals(_entityPositionRelation))
             {

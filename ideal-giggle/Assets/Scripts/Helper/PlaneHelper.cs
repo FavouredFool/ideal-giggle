@@ -62,14 +62,14 @@ public class PlaneHelper : MonoBehaviour
     {
         PlaneController activePlane = null;
 
-        switch (ViewDimension.Dimension)
+        switch (ActiveViewState)
         {
-            case Dimension.TWO_X:
-            case Dimension.TWO_NX:
+            case ViewState.X:
+            case ViewState.NX:
                 activePlane = xPlane;
                 break;
-            case Dimension.TWO_Z:
-            case Dimension.TWO_NZ:
+            case ViewState.Z:
+            case ViewState.NZ:
                 activePlane = zPlane;
                 break;
             default:

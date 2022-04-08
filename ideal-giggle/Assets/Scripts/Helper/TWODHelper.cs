@@ -9,18 +9,18 @@ public class TWODHelper : MonoBehaviour
     public static int GetViewWidthIndex()
     {
         int posWidthIndex = -1;
-        switch (ViewDimension.Dimension)
+        switch (ActiveViewState)
         {
-            case Dimension.TWO_X:
-            case Dimension.TWO_NX:
+            case ViewState.X:
+            case ViewState.NX:
                 posWidthIndex = 2;
                 break;
 
-            case Dimension.TWO_Z:
-            case Dimension.TWO_NZ:
+            case ViewState.Z:
+            case ViewState.NZ:
                 posWidthIndex = 0;
                 break;
-            case Dimension.THREE:
+            default:
                 Debug.Log("FEHLER");
                 break;
         }
@@ -30,21 +30,22 @@ public class TWODHelper : MonoBehaviour
 
     public static int GetViewDepthIndex()
     {
+        
         int posDepthIndex = -1;
-        switch (ViewDimension.Dimension)
+        switch (ActiveViewState)
         {
-            case Dimension.TWO_X:
-            case Dimension.TWO_NX:
+            case ViewState.X:
+            case ViewState.NX:
                 posDepthIndex = 0;
                 break;
 
-            case Dimension.TWO_Z:
-            case Dimension.TWO_NZ:
+            case ViewState.Z:
+            case ViewState.NZ:
                 posDepthIndex = 2;
                 break;
-            case Dimension.THREE:
+            default:
                 Debug.Log("FEHLER");
-                break;
+            break;
         }
 
         return posDepthIndex;
@@ -53,18 +54,18 @@ public class TWODHelper : MonoBehaviour
     public static int GetViewSign()
     {
         int sign = 0;
-        switch (ViewDimension.Dimension)
+        switch (ActiveViewState)
         {
-            case Dimension.TWO_X:
-            case Dimension.TWO_Z:
+            case ViewState.X:
+            case ViewState.Z:
                 sign = 1;
                 break;
 
-            case Dimension.TWO_NX:
-            case Dimension.TWO_NZ:
+            case ViewState.NX:
+            case ViewState.NZ:
                 sign = -1;
                 break;
-            case Dimension.THREE:
+            default:
                 Debug.Log("FEHLER");
                 break;
         }
@@ -72,30 +73,7 @@ public class TWODHelper : MonoBehaviour
         return sign;
     }
 
-    public static Vector3 GetViewDirection()
-    {
-        Vector3 direction = Vector3.zero;
-        switch (ViewDimension.Dimension)
-        {
-            case Dimension.TWO_X:
-                direction = Vector3.left;
-                break;
-            case Dimension.TWO_NX:
-                direction = Vector3.right;
-                break;
-            case Dimension.TWO_Z:
-                direction = Vector3.back;
-                break;
-            case Dimension.TWO_NZ:
-                direction = Vector3.forward;
-                break;
-            case Dimension.THREE:
-                Debug.Log("FEHLER");
-                break;
-        }
-
-        return direction;
-    }
+    
 
 
 

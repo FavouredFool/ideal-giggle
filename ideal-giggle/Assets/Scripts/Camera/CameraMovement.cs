@@ -6,6 +6,7 @@ using static ViewHelper;
 using static EntityHelper;
 using static CheckHelper;
 using static PlaneHelper;
+using static TWODHelper;
 
 
 public class CameraMovement : MonoBehaviour
@@ -24,39 +25,47 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private ViewState _initialViewState;
 
-    private ViewState _viewState;
+    [SerializeField]
+    private Camera _camera;
 
     private Vector3 _pivot;
 
     private CameraAnimation _cameraAnimation;
 
-    
-
-    private void Awake()
-    {
-        ViewDimension.Dimension = Dimension.TWO_NZ;
-    }
 
     private void Start()
     {
         _cameraAnimation = GetComponent<CameraAnimation>();
-        _viewState = _initialViewState;
+
+        ActiveViewState = _initialViewState;
 
         _pivot = _entityManager.GetPivot();
 
-        CalculateCameraPosition();
-        CalculateInitialViewState();
+        SetCamera();
+        
     }
 
-    public void CalculateCameraPosition()
+    public void SetCamera()
     {
+        Vector3 cameraPosition;
+        cameraPosition = _pivot + GetViewDirection() * 20;
+
+        Quaternion cameraRotation;
+        cameraRotation = Quaternion.LookRotation(-GetViewDirection());
+
+        transform.position = cameraPosition;
+        transform.rotation = cameraRotation;
+
+
+        // Calculate CameraSize:
+        Vector3 levelSize = _entityManager.GetLevelSize();
+        float size = Mathf.Max(Mathf.Max(levelSize.x, levelSize.y), levelSize.z);
+
+        _camera.orthographicSize = size / 2 + 4;
+
 
     }
 
-    public void CalculateInitialViewState()
-    {
-
-    }
 
     public void InterpretInput(HorizontalDirection horizontalDirection, VerticalDirection verticalDirection)
     {
@@ -82,13 +91,13 @@ public class CameraMovement : MonoBehaviour
 
     public void OnAnimationEnd(ViewState desiredViewState)
     {
-        _viewState = desiredViewState;
-        UpdateView();
+        
+        UpdateView(desiredViewState);
     }
 
     public int CalculateVerticalDegreesRelativeToViewState(ViewState desiredState)
     {
-        bool viewStateEven = (int) _viewState % 2 == 0;
+        bool viewStateEven = (int) ActiveViewState % 2 == 0;
         bool desiredStateEven = (int) desiredState % 2 == 0;
 
         if (desiredStateEven == viewStateEven)
@@ -108,7 +117,7 @@ public class CameraMovement : MonoBehaviour
 
     public int CalculateHorizontalDegreesRelativeToViewState(ViewState desiredState, HorizontalDirection horizontalDirection)
     {
-        int tempState = (int)_viewState;
+        int tempState = (int)ActiveViewState;
         int directionSign;
 
         if (horizontalDirection.Equals(HorizontalDirection.LEFT))
@@ -178,7 +187,7 @@ public class CameraMovement : MonoBehaviour
 
     public ViewState CalculateViewStateFromDirections(HorizontalDirection horizontalDirection, VerticalDirection verticalDirection)
     {
-        int tempState = (int)_viewState;
+        int tempState = (int)ActiveViewState;
         bool tempStateEven = tempState % 2 == 0;
         int moveAmount;
         int moveSign;
@@ -205,87 +214,30 @@ public class CameraMovement : MonoBehaviour
 
         return (ViewState)tempState;
 
-    }
+    }    
 
-    /*
-    public void InterpretVerticalInput(VerticalDirection desiredVerticalState)
+    void UpdateView(ViewState desiredViewState)
     {
-        if (!InputValid())
-        {
-            return;
-        }
-
-        if (desiredVerticalState.Equals(VerticalDirection.UPPER) && !_verticalState.Equals(VerticalDirection.UPPER))
-        {
-            transform.RotateAround(_pivot, Vector3.Cross(transform.forward, Vector3.up), -45);
-            _verticalState = VerticalDirection.UPPER;
-        }
-        else if (desiredVerticalState.Equals(VerticalDirection.LOWER) && !_verticalState.Equals(VerticalDirection.LOWER))
-        {
-            transform.RotateAround(_pivot, Vector3.Cross(transform.forward, Vector3.up), 45);
-            _verticalState = VerticalDirection.LOWER;
-        }
-        else
-        {
-            return;
-        }
-
-        UpdateView();
-    
-
-    }
-    */
-    
-
-    void UpdateView()
-    {
-
         // Wenn aus 2D heraus geswapped wird
-        if (!ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (!ActiveViewStateIsThreeD())
         {
             _playerMovementController.MovePlayerToFront(true);
         }
 
-        UpdateDimension();
+        ActiveViewState = desiredViewState;
         _entityManager.UpdateReferences();
 
         // Wenn in 2D herein geswapped wurde
-        if (!ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (!ActiveViewStateIsThreeD())
         {
             _playerMovementController.MovePlayerToFront(false);
         }
 
     }
 
-    void UpdateDimension()
-    {
-
-            if (transform.forward.V3Equal(Vector3.forward))
-            {
-                ViewDimension.Dimension = Dimension.TWO_NZ;
-            }
-            else if (transform.forward.V3Equal(Vector3.back))
-            {
-                ViewDimension.Dimension = Dimension.TWO_Z;
-            }
-            else if (transform.forward.V3Equal(Vector3.right))
-            {
-                ViewDimension.Dimension = Dimension.TWO_NX;
-            }
-            else if (transform.forward.V3Equal(Vector3.left))
-            {
-                ViewDimension.Dimension = Dimension.TWO_X;
-            }
-            else
-            {
-                ViewDimension.Dimension = Dimension.THREE;
-            }
-        
-    }
-
     public bool InputValid()
     {
-        if (!ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (!ActiveViewStateIsThreeD())
         {
             if (_playerMovementController.GetGroundEntity().GetEntityType2D().Equals(EntityType.BLOCK))
             {
@@ -304,10 +256,5 @@ public class CameraMovement : MonoBehaviour
         }
 
         return true;
-    }
-
-    public ViewState GetHorizontalState()
-    {
-        return _viewState;
     }
 }

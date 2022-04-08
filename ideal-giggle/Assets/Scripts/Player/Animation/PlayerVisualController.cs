@@ -27,7 +27,7 @@ public class PlayerVisualController : MonoBehaviour
         _playerMovement.SetGroundEntity(goalEntity);
         transform.position = startPosition + startEntity.GetVisualPosition();
 
-        if (ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (ActiveViewStateIsThreeD())
         {
             _playerMovement.SetEntityPositionRelation(_playerMovement.GetGroundEntity().GetEntityType());
         }
@@ -46,22 +46,22 @@ public class PlayerVisualController : MonoBehaviour
         int xDirection = (int)endPosition.x - (int)startPosition.x;
         int zDirection = (int)endPosition.z - (int)startPosition.z;
 
-        switch (ViewDimension.Dimension)
+        switch (ActiveViewState)
         {
-            case Dimension.THREE:
+            case ViewState.X:
+                direction = Vector3.forward * Mathf.Sign((int)endPosition.z - (int)startPosition.z);
+                break;
+            case ViewState.NX:
+                direction = Vector3.forward * Mathf.Sign((int)endPosition.z - (int)startPosition.z);
+                break;
+            case ViewState.Z:
+                direction = Vector3.right * Mathf.Sign((int)endPosition.x - (int)startPosition.x);
+                break;
+            case ViewState.NZ:
+                direction = Vector3.right * Mathf.Sign((int)endPosition.x - (int)startPosition.x);
+                break;
+            default:
                 direction = new Vector3(xDirection, 0, zDirection).normalized;
-                break;
-            case Dimension.TWO_X:
-                direction = Vector3.forward * Mathf.Sign((int)endPosition.z - (int)startPosition.z);
-                break;
-            case Dimension.TWO_NX:
-                direction = Vector3.forward * Mathf.Sign((int)endPosition.z - (int)startPosition.z);
-                break;
-            case Dimension.TWO_Z:
-                direction = Vector3.right * Mathf.Sign((int)endPosition.x - (int)startPosition.x);
-                break;
-            case Dimension.TWO_NZ:
-                direction = Vector3.right * Mathf.Sign((int)endPosition.x - (int)startPosition.x);
                 break;
         }
 

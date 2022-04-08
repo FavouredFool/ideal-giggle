@@ -21,7 +21,7 @@ public class EntityCalculator : MonoBehaviour
     public List<AbstractEntityController> CalculateEntityList(PlaneController xPlane, PlaneController zPlane)
     {
         List<AbstractEntityController> entityList;
-        if (ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (ActiveViewStateIsThreeD())
         {
             entityList = _entityManager.GetEntityList();
             Set3DEntityTypes(entityList);

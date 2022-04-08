@@ -18,14 +18,14 @@ public class CameraAnimation : MonoBehaviour
         _cameraMovement = GetComponent<CameraMovement>();
     }
 
-    public IEnumerator AnimateCamera(Vector3 pivot, int hDegrees, int vDegrees, ViewState desiredViewState)
+    public IEnumerator AnimateCamera(Vector3 pivot, int hDegrees, int vDegrees, ViewHelper.ViewState desiredViewState)
     {
         _pivot = pivot;
 
         yield return StartAnimation(desiredViewState, hDegrees, vDegrees);
     }
 
-    public IEnumerator StartAnimation(ViewState desiredViewState, int hDegrees, int vDegrees)
+    public IEnumerator StartAnimation(ViewHelper.ViewState desiredViewState, int hDegrees, int vDegrees)
     {
         yield return new WaitForSeconds(0.2f);
         transform.RotateAround(_pivot, Vector3.Cross(transform.forward, Vector3.up), -vDegrees);

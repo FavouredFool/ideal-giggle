@@ -62,33 +62,29 @@ public abstract class ReferenceController2D : AbstractReferenceController
     {
         Vector3 localReferenceDirection;
 
-        switch (index)
+        if (ActiveViewState.Equals(ViewState.NX) || ActiveViewState.Equals(ViewState.X))
         {
-            case 0:
-                if (ViewDimension.Dimension.Equals(Dimension.TWO_NX) || ViewDimension.Dimension.Equals(Dimension.TWO_X))
-                {
-                    localReferenceDirection = Vector3.forward;
-                }
-                else
-                {
-                    localReferenceDirection = Vector3.right;
-                }
-                break;
-            case 1:
-                if (ViewDimension.Dimension.Equals(Dimension.TWO_NX) || ViewDimension.Dimension.Equals(Dimension.TWO_X))
-                {
-                    localReferenceDirection = Vector3.back;
-                }
-                else
-                {
-                    localReferenceDirection = Vector3.left;
-                }
-                break;
-            default:
-                localReferenceDirection = Vector3.zero;
-                Debug.LogWarning($"FEHLER: referenceDirection darf niemals {localReferenceDirection} sein.");
-                break;
+            if (index == 0)
+            {
+                localReferenceDirection = Vector3.forward;
+            }
+            else
+            {
+                localReferenceDirection = Vector3.right;
+            }
         }
+        else
+        {
+            if (index == 0)
+            {
+                localReferenceDirection = Vector3.back;
+            }
+            else
+            {
+                localReferenceDirection = Vector3.left;
+            }
+        }
+
 
         return localReferenceDirection;
     }

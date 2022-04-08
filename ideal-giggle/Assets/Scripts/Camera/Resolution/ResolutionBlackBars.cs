@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ResolutionChanger : MonoBehaviour
+public class ResolutionBlackBars : MonoBehaviour
 {
     Camera thisCamera;
-    public Vector3 resolution = new Vector3(1920f, 1080f);
+    public Vector2 resolution = new Vector3(1920f, 1080f);
     void Update()
     {
         thisCamera = GetComponent<Camera>();

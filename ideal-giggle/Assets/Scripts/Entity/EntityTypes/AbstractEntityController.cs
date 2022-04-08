@@ -79,7 +79,7 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public void SetReferences(List<AbstractEntityController> entityList, PlaneController xPlane, PlaneController zPlane)
     {
-        if (ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (ActiveViewStateIsThreeD())
         {
             _activeEntityReferences = _entityReferences3D;
         } else
@@ -129,7 +129,7 @@ public abstract class AbstractEntityController : MonoBehaviour
 
     public Vector3 GetVisualPosition()
     {
-        if (ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (ActiveViewStateIsThreeD())
         {
             return _visualPosition;
         } else

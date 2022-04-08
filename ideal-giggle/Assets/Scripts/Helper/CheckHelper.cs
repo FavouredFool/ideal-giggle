@@ -14,7 +14,7 @@ public class CheckHelper : MonoBehaviour
 
     public static bool EntityExistsInList(List<AbstractEntityController> list, Vector3 checkPosition)
     {
-        if (ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (ActiveViewStateIsThreeD())
         {
             return list.Any(e => EntityExists3D(e, checkPosition));
         }
@@ -26,7 +26,7 @@ public class CheckHelper : MonoBehaviour
 
     public static AbstractEntityController GetEntityInListFromPos(List<AbstractEntityController> list, Vector3 checkPosition)
     {
-        if (ViewDimension.Dimension.Equals(Dimension.THREE))
+        if (ActiveViewStateIsThreeD())
         {
             return list.Where(entity => EntityExists3D(entity, checkPosition)).FirstOrDefault();
         } else
