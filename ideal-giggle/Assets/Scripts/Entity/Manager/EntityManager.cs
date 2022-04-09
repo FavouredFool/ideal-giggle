@@ -6,6 +6,7 @@ using static ViewHelper;
 using static EntityHelper;
 using static TWODHelper;
 using static CheckHelper;
+using static PlaneHelper;
 
 public class EntityManager : MonoBehaviour
 {
@@ -47,8 +48,6 @@ public class EntityManager : MonoBehaviour
         List<AbstractEntityController> entityList;
 
         entityList = _entityCalculator.CalculateEntityList(_xPlane, _zPlane);
-
-        //entityList.Where(e => e.GetEntityType().Equals(EntityType.STAIR)).Cast<StairController>().ToList().ForEach(s => Debug.Log($"STAIR: {s}, 2DEntityType: {s.GetEntityType2D()}"));
 
         foreach (AbstractEntityController entity in entityList)
         {

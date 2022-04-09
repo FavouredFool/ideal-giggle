@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using static TWODHelper;
 using static ViewHelper;
+using static PlaneHelper;
 
 public class CheckHelper : MonoBehaviour
 {
@@ -48,10 +49,23 @@ public class CheckHelper : MonoBehaviour
             entityList.Reverse();
         }
 
-        //Debug.Log("HERE: " + entityList.FirstOrDefault());
+        return entityList;
+    }
+
+    public static List<AbstractEntityController> GetEntityListFromPos2DIncludingPlaneGuard(List<AbstractEntityController> list, Vector3 checkPosition, PlaneController plane)
+    {
+        List<AbstractEntityController> entityList;
+        entityList = list.Where(entity => EntityInFrontOfPlane(entity, plane)).Where(entity => EntityExists2D(entity, checkPosition)).OrderBy(e => e.GetPosition()[GetViewDepthIndex()]).ToList();
+
+        if (GetViewSign() > 0)
+        {
+            entityList.Reverse();
+        }
 
         return entityList;
     }
+
+
 
     protected static bool EntityExists3D(AbstractEntityController entity, Vector3 checkPosition)
     {

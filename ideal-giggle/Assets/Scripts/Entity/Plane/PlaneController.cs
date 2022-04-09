@@ -55,23 +55,15 @@ public class PlaneController : MonoBehaviour
 
 
 
-    public void MovePlane(Vector3 direction)
+    public void MovePlane(Vector3 desiredPosition)
     {
-        Vector3 desiredPosition = transform.position + direction;
-
-        if (!MovementValid(desiredPosition))
-        {
-            return;
-        }
-        
-
         transform.localPosition = desiredPosition;
         _entityManager.UpdateColor();
         _entityManager.UpdateReferences();
 
     }
 
-    protected bool MovementValid(Vector3 desiredPosition)
+    public bool MovementValid(Vector3 desiredPosition)
     {
         bool lowGuard = desiredPosition[GetPlaneCoordinateIndex(this)] < -0.5f;
         bool highGuard = desiredPosition[GetPlaneCoordinateIndex(this)] > _entityManager.GetLevelSize()[GetPlaneCoordinateIndex(this)] - 0.5f;
@@ -96,6 +88,11 @@ public class PlaneController : MonoBehaviour
     public PlaneType GetPlaneType()
     {
         return _planeType;
+    }
+
+    public float GetStartPos()
+    {
+        return _startPos;
     }
 
 }

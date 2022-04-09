@@ -13,7 +13,7 @@ public class EntityCalculator : MonoBehaviour
 
     EntityManager _entityManager;
 
-    private void Start()
+    private void Awake()
     {
         _entityManager = GetComponent<EntityManager>();
     }
@@ -28,17 +28,17 @@ public class EntityCalculator : MonoBehaviour
         }
         else
         {
-            entityList = Calculate2DEntityList(xPlane, zPlane);
-            Calculate2DEntityType(entityList);
+            PlaneController plane = GetViewPlane(xPlane, zPlane);
+            entityList = Calculate2DEntityList(plane);
+            Calculate2DEntityType(entityList, plane);
         }
 
         return entityList;
     }
 
-    public List<AbstractEntityController> Calculate2DEntityList(PlaneController xPlane, PlaneController zPlane)
+    public List<AbstractEntityController> Calculate2DEntityList(PlaneController plane)
     {
         List<AbstractEntityController> pruned2DList = new List<AbstractEntityController>();
-
         int width = _entityManager.GetLevelSize()[GetViewWidthIndex()];
         int height = _entityManager.GetLevelSize()[1];
         int depth = _entityManager.GetLevelSize()[GetViewDepthIndex()];
@@ -54,7 +54,7 @@ public class EntityCalculator : MonoBehaviour
                     continue;
                 }
 
-                if (!EntityInFrontOfPlane(entity, xPlane, zPlane))
+                if (!EntityInFrontOfPlane(entity, plane))
                 {
                     continue;
                 }
@@ -66,7 +66,7 @@ public class EntityCalculator : MonoBehaviour
         return pruned2DList;
     }
 
-    public void Calculate2DEntityType(List<AbstractEntityController> entityList)
+    public void Calculate2DEntityType(List<AbstractEntityController> entityList, PlaneController plane)
     {
         foreach (AbstractEntityController entity in _entityManager.GetEntityList())
         {
@@ -84,22 +84,25 @@ public class EntityCalculator : MonoBehaviour
 
             StairController stairEntity = (StairController)entity;
 
-            List<AbstractEntityController> depthList = GetEntityListFromPos2D(_entityManager.GetEntityList(), stairEntity.GetPosition());
+            List<AbstractEntityController> depthList = GetEntityListFromPos2DIncludingPlaneGuard(_entityManager.GetEntityList(), stairEntity.GetPosition(), plane);
 
             if (depthList.Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
             {
+                Debug.Log("AA");
                 stairEntity.SetEntityType2D(EntityType.BLOCK);
                 continue;
             }
 
             if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetTopEnter(), GetViewDirection())))
             {
+                Debug.Log("AA");
                 stairEntity.SetEntityType2D(EntityType.BLOCK);
                 continue;
             }
 
             if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetBottomEnter(), GetViewDirection())))
             {
+                Debug.Log("AA"); Debug.Log("AA");
                 stairEntity.SetEntityType2D(EntityType.BLOCK);
                 continue;
             }

@@ -10,10 +10,8 @@ public class PlaneHelper : MonoBehaviour
 
     public enum PlaneType {  XPLANE, ZPLANE }
     
-    public static bool EntityInFrontOfPlane(AbstractEntityController entity, PlaneController xPlane, PlaneController zPlane)
+    public static bool EntityInFrontOfPlane(AbstractEntityController entity, PlaneController viewPlane)
     {
-        PlaneController viewPlane = GetViewPlane(xPlane, zPlane);
-
         if (viewPlane.transform.position[GetPlaneCoordinateIndex(viewPlane)] * GetViewSign() > entity.GetPosition()[GetViewDepthIndex()] * GetViewSign())
         {
             return false;
@@ -78,6 +76,33 @@ public class PlaneHelper : MonoBehaviour
         }
 
         return activePlane;
+    }
+
+    public static int GetSliderRotation()
+    {
+
+        switch (ActiveViewState)
+        {
+            case ViewState.X:
+                return 0;
+            case ViewState.NZ:
+                return 90;
+            case ViewState.NX:
+                return 180;
+            case ViewState.Z:
+                return 270;
+
+            case ViewState.X_NZ:
+                return 45;
+            case ViewState.NZ_NX:
+                return 135;
+            case ViewState.NX_Z:
+                return 225;
+            case ViewState.Z_X:
+                return 315;
+        }
+
+        return -1;
     }
 
 }

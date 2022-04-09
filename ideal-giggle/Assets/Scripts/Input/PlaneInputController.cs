@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlaneInputController : MonoBehaviour
 {
+    /*
     [Header("Dependencies")]
     [SerializeField]
     private PlaneController _xPlane;
@@ -29,4 +30,5 @@ public class PlaneInputController : MonoBehaviour
             _xPlane.MovePlane(Vector3.right);
         }
     }
+    */
 }

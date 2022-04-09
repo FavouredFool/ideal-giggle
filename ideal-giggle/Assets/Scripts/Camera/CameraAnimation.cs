@@ -27,7 +27,7 @@ public class CameraAnimation : MonoBehaviour
 
     public IEnumerator StartAnimation(ViewHelper.ViewState desiredViewState, int hDegrees, int vDegrees)
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return null;
         transform.RotateAround(_pivot, Vector3.Cross(transform.forward, Vector3.up), -vDegrees);
         transform.RotateAround(_pivot, Vector3.up, hDegrees);
     }

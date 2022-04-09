@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using static ViewHelper;
 using static EntityHelper;
+using static PlaneHelper;
 
 public class PlayerMovementController : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class PlayerMovementController : MonoBehaviour
 
     [SerializeField]
     private EntityManager _entityManager;
+
+    [SerializeField]
+    private PlaneController _xPlane;
+
+    [SerializeField]
+    private PlaneController _zPlane;
 
 
     private PlayerVisualController _visualController;
@@ -46,11 +53,7 @@ public class PlayerMovementController : MonoBehaviour
 
     public void Update()
     {
-        
-        if (CalculateBlocked())
-        {
-            return;
-        }
+        CalculateBlocked();
 
         if (_groundEntity.Equals(_endEntity))
         {
@@ -63,6 +66,11 @@ public class PlayerMovementController : MonoBehaviour
         }
 
         if (_pathCalculating || _playerMovementPath == null)
+        {
+            return;
+        }
+
+        if (_isBlocked)
         {
             return;
         }
@@ -132,7 +140,14 @@ public class PlayerMovementController : MonoBehaviour
                 _isBlocked = true;
                 return _isBlocked;
             }
+
+            if (!PlayerInFrontOfPlane(this, GetViewPlane(_xPlane, _zPlane)))
+            {
+                _isBlocked = true;
+                return _isBlocked;
+            }
         }
+
         _isBlocked = false;
         return _isBlocked;
     }
