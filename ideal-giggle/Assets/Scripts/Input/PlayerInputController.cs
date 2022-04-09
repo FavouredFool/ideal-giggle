@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlayerInputController : MonoBehaviour
 {
     [Header("Dependencies")]
-    [SerializeField]
-    private EntityManager _entityManager;
 
     [SerializeField]
     private PlayerMovementController _playerMovement;
@@ -25,12 +23,8 @@ public class PlayerInputController : MonoBehaviour
 
             hit = CoordinateHelper.DetermineGridCoordinate(hit);
 
-            AbstractEntityController hitEntity = _entityManager.GetEntityFromCoordiantes(hit);
-            if (!hitEntity)
-            {
-                throw new System.Exception();
-            }
-            _playerMovement.SetEndEntity(hitEntity);
+            _playerMovement.InterpretHitInput(hit);
+            
         }
     }
 

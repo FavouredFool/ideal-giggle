@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 5164367323269956941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4, y: 4, z: 2}
-  m_LocalScale: {x: 5, y: 5, z: 0.1}
+  m_LocalScale: {x: 0, y: 0, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -95,3 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityManager: {fileID: 0}
+  _playerMovement: {fileID: 0}
+  _planeType: 1
+  _startPos: 0.5
+  _planeWidth: 0.01

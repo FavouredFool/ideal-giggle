@@ -9,30 +9,12 @@ public class PlayerPathCalculator : MonoBehaviour
     [SerializeField]
     private EntityManager _entityManager;
 
-    [Header("Materials")]
-    [SerializeField]
-    private Material pathFinalMaterial;
-
-    [SerializeField]
-    private Material pathCheckMaterial;
-
-    [SerializeField]
-    private Material pathCheckedMaterial;
-
-    private Material defaultMaterial;
-
 
     AbstractEntityController _startEntity;
     AbstractEntityController _endEntity;
 
     List<AbstractEntityController> _toSearchList;
     List<AbstractEntityController> _processedList;
-
-
-    public void Start()
-    {
-        defaultMaterial = _entityManager.GetEntityMaterial();
-    }
 
 
     public IEnumerator CalculatePathAstar(AbstractEntityController startEntity, AbstractEntityController endEntity)
@@ -87,10 +69,8 @@ public class PlayerPathCalculator : MonoBehaviour
                 {
                     CalculateIfEntityIsAddedToToSearch(current, neighbor.GetReferenceEntity());
                 }
-                
             }
         }
-        
     }
 
 

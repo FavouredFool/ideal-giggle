@@ -8,12 +8,12 @@ using static EntityHelper;
 public class PlayerMovementController : MonoBehaviour
 {
     [Header("Dependencies")]
-    [SerializeField]
-    private PlayerVisualController _visualController;
 
     [SerializeField]
     private EntityManager _entityManager;
 
+
+    private PlayerVisualController _visualController;
     private PlayerStepCalculator _stepCalculator;
     private PlayerPathCalculator _pathCalculator;
     private PlayerToFrontCalculator _playerToFrontCalculator;
@@ -36,6 +36,7 @@ public class PlayerMovementController : MonoBehaviour
 
     public void Start()
     {
+        _visualController = GetComponentInChildren<PlayerVisualController>();
         _stepCalculator = GetComponent<PlayerStepCalculator>();
         _pathCalculator = GetComponent<PlayerPathCalculator>();
         _playerToFrontCalculator = GetComponent<PlayerToFrontCalculator>();
@@ -134,6 +135,18 @@ public class PlayerMovementController : MonoBehaviour
         }
         _isBlocked = false;
         return _isBlocked;
+    }
+
+    public void InterpretHitInput(Vector3 hit)
+    {
+        AbstractEntityController hitEntity = _entityManager.GetEntityFromCoordiantes(hit);
+
+        if (!hitEntity)
+        {
+            throw new Exception();
+        }
+
+        SetEndEntity(hitEntity);
     }
 
     public void SetIsMoving(bool isMoving)

@@ -13,9 +13,7 @@ public class PlayerToFrontCalculator : MonoBehaviour
 {
 
     [Header("Dependencies")]
-    [SerializeField]
-    private PlayerMovementController _playerMovementController;
-
+    
     [SerializeField]
     private EntityManager _entityManager;
 
@@ -25,9 +23,15 @@ public class PlayerToFrontCalculator : MonoBehaviour
     [SerializeField]
     private PlaneController _zPlane;
 
+
     AbstractEntityController _groundEntity;
+    private PlayerMovementController _playerMovementController;
 
 
+    public void Start()
+    {
+        _playerMovementController = GetComponent<PlayerMovementController>();
+    }
 
     public void MovePlayerToFront(bool relative)
     {

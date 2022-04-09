@@ -19,23 +19,23 @@ public class CameraMovement : MonoBehaviour
     [SerializeField]
     private PlayerMovementController _playerMovementController;
 
-    [SerializeField]
-    private bool[] _lockedHorizontalState;
-
+    [Header("Camera Configurations")]
     [SerializeField]
     private ViewState _initialViewState;
 
     [SerializeField]
+    private bool[] _lockedHorizontalState;
+
+
     private Camera _camera;
-
     private Vector3 _pivot;
-
     private CameraAnimation _cameraAnimation;
 
 
     private void Start()
     {
         _cameraAnimation = GetComponent<CameraAnimation>();
+        _camera = GetComponentInChildren<Camera>();
 
         ActiveViewState = _initialViewState;
 

@@ -4,14 +4,14 @@ using static ViewHelper;
 
 public class PlayerVisualController : MonoBehaviour
 {
-    [Header("Dependencies")]
-    [SerializeField]
     private PlayerMovementController _playerMovement;
 
-    [SerializeField]
-    private CameraMovement _cameraMovement;
-
     private Step _step;
+
+    public void Start()
+    {
+        _playerMovement = transform.parent.GetComponent<PlayerMovementController>();
+    }
 
     public void MoveStep(Step step)
     {

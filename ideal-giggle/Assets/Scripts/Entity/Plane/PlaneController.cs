@@ -14,14 +14,17 @@ public class PlaneController : MonoBehaviour
     [SerializeField]
     private PlayerMovementController _playerMovement;
 
+    [Header("Plane Configurations")]
     [SerializeField]
     private PlaneType _planeType;
 
     [SerializeField]
-    private float _planeWidth;
+    private float _startPos;
 
     [SerializeField]
-    private float _startPos;
+    private float _planeWidth;
+
+    
 
     public void Start()
     {
@@ -31,8 +34,8 @@ public class PlaneController : MonoBehaviour
     private void ResizeAndPlacePlane()
     {
         Vector3Int levelSize = _entityManager.GetLevelSize();
-        float planeSizeHeight = levelSize.y;
-        float planeSizeWidth = levelSize[GetPlaneCoordinateOtherIndex(this)];
+        float planeSizeHeight = levelSize.y + 1;
+        float planeSizeWidth = levelSize[GetPlaneCoordinateOtherIndex(this)] + 1f;
 
         Vector3 planeScale = Vector3.zero;
         planeScale[GetPlaneCoordinateOtherIndex(this)] = planeSizeWidth;
@@ -43,7 +46,7 @@ public class PlaneController : MonoBehaviour
 
         Vector3 planePosition = Vector3.zero;
         
-        planePosition[GetPlaneCoordinateOtherIndex(this)] = (levelSize[GetPlaneCoordinateOtherIndex(this)] -1) / 2f;
+        planePosition[GetPlaneCoordinateOtherIndex(this)] = (levelSize[GetPlaneCoordinateOtherIndex(this)] - 1f) / 2f;
         planePosition.y = (levelSize.y-1) / 2f;
         planePosition[GetPlaneCoordinateIndex(this)] = _startPos;
 

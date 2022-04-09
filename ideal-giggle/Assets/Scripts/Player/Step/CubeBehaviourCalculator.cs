@@ -4,10 +4,12 @@ using static ReferenceHelper;
 
 public class CubeBehaviourCalculator : MonoBehaviour
 {
-
-    [Header("Dependencies")]
-    [SerializeField]
     private PlayerVisualController _playerVisual;
+
+    public void Start()
+    {
+        _playerVisual = GetComponentInChildren<PlayerVisualController>();
+    }
 
     public AbstractCubeBehaviour CalculateCubeBehaviour(AbstractEntityController activeEntity, AbstractEntityController stepGoalEntity)
     {
