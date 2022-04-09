@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using static ReferenceHelper;
 using static ViewHelper;
 using static EntityHelper;
@@ -70,14 +71,14 @@ public abstract class ReferenceController2D : AbstractReferenceController
             }
             else
             {
-                localReferenceDirection = Vector3.right;
+                localReferenceDirection = Vector3.back;
             }
         }
         else
         {
             if (index == 0)
             {
-                localReferenceDirection = Vector3.back;
+                localReferenceDirection = Vector3.right;
             }
             else
             {

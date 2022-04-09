@@ -8,7 +8,7 @@ public class ViewHelper : MonoBehaviour
 
     public enum HorizontalDirection { RIGHT, LEFT };
 
-    public enum ViewState { X, X_Z, Z, Z_NX, NX, NX_NZ, NZ, NZ_X}
+    public enum ViewState { X, X_NZ, NZ, NZ_NX, NX, NX_Z, Z, Z_X }
 
     public static ViewState ActiveViewState;
 
@@ -43,17 +43,17 @@ public class ViewHelper : MonoBehaviour
                 break;
 
             // 3D
-            case ViewState.X_Z:
-                direction = (Quaternion.Euler(0,45,0) * (Vector3.left + Vector3.up)).normalized;
-                break;
-            case ViewState.Z_NX:
-                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.back + Vector3.up)).normalized;
-                break;
-            case ViewState.NZ_X:
+            case ViewState.Z_X:
                 direction = (Quaternion.Euler(0, 45, 0) * (Vector3.forward + Vector3.up)).normalized;
                 break;
-            case ViewState.NX_NZ:
+            case ViewState.NX_Z:
+                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.left + Vector3.up)).normalized;
+                break;
+            case ViewState.X_NZ:
                 direction = (Quaternion.Euler(0, 45, 0) * (Vector3.right + Vector3.up)).normalized;
+                break;
+            case ViewState.NZ_NX:
+                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.back + Vector3.up)).normalized;
                 break;
             default:
                 Debug.Log("FEHLER");

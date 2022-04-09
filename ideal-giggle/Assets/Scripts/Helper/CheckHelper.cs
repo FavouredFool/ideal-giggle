@@ -29,7 +29,8 @@ public class CheckHelper : MonoBehaviour
         if (ActiveViewStateIsThreeD())
         {
             return list.Where(entity => EntityExists3D(entity, checkPosition)).FirstOrDefault();
-        } else
+        }
+        else
         {
             return GetEntityListFromPos2D(list, checkPosition).FirstOrDefault();
         }
@@ -37,13 +38,17 @@ public class CheckHelper : MonoBehaviour
 
     public static List<AbstractEntityController> GetEntityListFromPos2D(List<AbstractEntityController> list, Vector3 checkPosition)
     {
+        
         List<AbstractEntityController> entityList;
         entityList = list.Where(entity => EntityExists2D(entity, checkPosition)).OrderBy(e => e.GetPosition()[GetViewDepthIndex()]).ToList();
+       
 
         if (GetViewSign() > 0)
         {
             entityList.Reverse();
         }
+
+        //Debug.Log("HERE: " + entityList.FirstOrDefault());
 
         return entityList;
     }

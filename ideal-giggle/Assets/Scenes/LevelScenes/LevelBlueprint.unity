@@ -2775,6 +2775,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5277545954369560392}
     - target: {fileID: 1984108489073277441, guid: db36de872f0627a479c5c572a0029b96, type: 3}
+      propertyPath: _initialViewState
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984108489073277441, guid: db36de872f0627a479c5c572a0029b96, type: 3}
       propertyPath: _playerMovementController
       value: 
       objectReference: {fileID: 330510518}
@@ -2988,6 +2992,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 313369562}
     m_Modifications:
     - target: {fileID: 1081788700, guid: 6ff579f4de53fa04db83f835fc81e20e, type: 3}
+      propertyPath: _startPos
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1081788700, guid: 6ff579f4de53fa04db83f835fc81e20e, type: 3}
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 5277545954369560392}
@@ -3052,6 +3060,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 313369562}
     m_Modifications:
+    - target: {fileID: 1651160208, guid: 5cd3ddf5c81d4db4ea54d65d2dff52ba, type: 3}
+      propertyPath: _startPos
+      value: -0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1651160208, guid: 5cd3ddf5c81d4db4ea54d65d2dff52ba, type: 3}
       propertyPath: _entityManager
       value: 

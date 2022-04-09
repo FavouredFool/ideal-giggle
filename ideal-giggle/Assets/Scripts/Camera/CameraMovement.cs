@@ -133,7 +133,7 @@ public class CameraMovement : MonoBehaviour
         {
             if (tempState != (int)desiredState)
             {
-                tempState += -directionSign;
+                tempState += directionSign;
                 tempState = ValidateTempState(tempState);
             }
             else
@@ -152,6 +152,7 @@ public class CameraMovement : MonoBehaviour
 
         tempState += added;
         tempState = ValidateTempState(tempState);
+        
 
         for (int i = 0; i < 4; i++)
         {
@@ -203,11 +204,11 @@ public class CameraMovement : MonoBehaviour
 
         if (horizontalDirection.Equals(HorizontalDirection.LEFT))
         {
-            moveSign = -1;
+            moveSign = +1;
         }
         else
         {
-            moveSign = +1;
+            moveSign = -1;
         }
 
         tempState = CalculateTempState(tempState, moveSign * moveAmount);

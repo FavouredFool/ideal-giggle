@@ -50,9 +50,9 @@ public class EntityManager : MonoBehaviour
 
         //entityList.Where(e => e.GetEntityType().Equals(EntityType.STAIR)).Cast<StairController>().ToList().ForEach(s => Debug.Log($"STAIR: {s}, 2DEntityType: {s.GetEntityType2D()}"));
 
-        foreach (AbstractEntityController entity in GetEntityList())
+        foreach (AbstractEntityController entity in entityList)
         {
-            entity.SetReferences(entityList, _xPlane, _zPlane);
+            entity.SetReferences(entityList);
         }
     }
     

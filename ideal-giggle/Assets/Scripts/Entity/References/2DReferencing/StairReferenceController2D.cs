@@ -119,7 +119,6 @@ public class StairReferenceController2D : ReferenceController2D
                     break;
                 }
 
-
                 SetReference(index, entity, ReferenceBehaviourType.STAIR_BLOCK_DOWN);
                 break;
 
