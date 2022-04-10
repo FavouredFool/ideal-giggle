@@ -14,6 +14,9 @@ public class PlaneSlider : MonoBehaviour
     [SerializeField]
     private EntityManager _entityManager;
 
+    [SerializeField]
+    private CameraMovement _cameraMovement;
+
     private Slider _slider;
 
     private float oldSliderValue;
@@ -24,6 +27,8 @@ public class PlaneSlider : MonoBehaviour
 
         _slider.maxValue = _entityManager.GetLevelSize()[GetPlaneCoordinateIndex(_affectedPlane)];
         _slider.value = _affectedPlane.GetStartPos() + 0.5f;
+
+        
     }
 
 
@@ -31,14 +36,18 @@ public class PlaneSlider : MonoBehaviour
     {
         oldSliderValue = _slider.value;
 
-        float rotation = GetSliderRotation();
+        RotateSliderRelativeToCamera();
 
+        //float rotation = GetSliderRotation();
+
+        /*
         if (_affectedPlane.GetPlaneType().Equals(PlaneType.XPLANE))
         {
             rotation -= 90;
         }
+        */
 
-        _slider.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, rotation));
+        //_slider.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, rotation));
     }
 
     public void UpdateSlider(float sliderValue)
@@ -55,6 +64,23 @@ public class PlaneSlider : MonoBehaviour
             _slider.value = oldSliderValue;
         }
         
+    }
+
+    public void RotateSliderRelativeToCamera()
+    {
+        Vector3 referenceDirection;
+        if (_affectedPlane.GetPlaneType().Equals(PlaneType.XPLANE))
+        {
+            referenceDirection = Vector3.forward;
+        } else
+        {
+            referenceDirection = Vector3.left;
+        }
+
+        Vector3 cameraDirection = new Vector3(_cameraMovement.transform.forward.x, 0, _cameraMovement.transform.forward.z);
+
+        float angle = Vector3.SignedAngle(referenceDirection, cameraDirection, Vector3.up);
+        _slider.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
     
 
