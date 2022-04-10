@@ -3090,6 +3090,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1373141118, guid: db36de872f0627a479c5c572a0029b96, type: 3}
+      propertyPath: _speed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1356754070868157346, guid: db36de872f0627a479c5c572a0029b96, type: 3}
       propertyPath: orthographic size
       value: 6
@@ -3721,6 +3725,7 @@ MonoBehaviour:
   _entityMaterial: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
   _xPlane: {fileID: 1651160208}
   _zPlane: {fileID: 1081788700}
+  _playerMovementController: {fileID: 0}
   _levelSize: {x: 6, y: 6, z: 6}
 --- !u!1 &5277545954369560398
 GameObject:

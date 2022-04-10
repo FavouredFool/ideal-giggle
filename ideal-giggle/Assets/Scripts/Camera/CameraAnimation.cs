@@ -53,13 +53,14 @@ public class CameraAnimation : MonoBehaviour
             Vector3 positionWithSlerpedRotation = slerpedRotationForGoalPosition * startPosition;
             transform.localPosition = positionWithSlerpedRotation;
 
-            Quaternion slerpedRotation = Quaternion.Slerp(startRotation, goalRotation, t);
-            transform.localRotation = slerpedRotation;
+            //Quaternion slerpedRotation = Quaternion.Slerp(startRotation, goalRotation, t);
+            //transform.localRotation = slerpedRotation;
+            transform.localRotation = Quaternion.LookRotation(-positionWithSlerpedRotation);
             yield return null;
         }
 
-        transform.localPosition = newPosition;
-        transform.localRotation = Quaternion.LookRotation(-newPosition.normalized);
+        //transform.localPosition = newPosition;
+        //transform.localRotation = Quaternion.LookRotation(-newPosition.normalized);
         
 
     }
