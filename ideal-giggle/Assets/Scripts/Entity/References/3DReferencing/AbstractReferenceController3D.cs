@@ -14,6 +14,8 @@ public abstract class AbstractReferenceController3D : AbstractReferenceControlle
         _entityReferences = new List<EntityReference> { null, null, null, null };
         _position = position;
 
+        
+
         for (int i = 0; i < 4; i++)
         {
             _referenceDirection = SwitchReferenceDirection3D(i);
@@ -38,7 +40,9 @@ public abstract class AbstractReferenceController3D : AbstractReferenceControlle
             }
 
             _entityReferences[i] = null;
+            
         }
+
 
         return _entityReferences;
     }

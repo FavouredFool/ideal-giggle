@@ -20,6 +20,9 @@ public class EntityManager : MonoBehaviour
     [SerializeField]
     private PlaneController _zPlane;
 
+    [SerializeField]
+    private PlayerMovementController _playerMovementController;
+
     [Header("Dimensions")]
     [SerializeField]
     private Vector3Int _levelSize;
@@ -43,6 +46,25 @@ public class EntityManager : MonoBehaviour
     }
 
 
+    public void UpdateReferencePipeline(ViewState desiredViewState)
+    {
+        // Wenn aus 2D heraus geswapped wird
+        if (!ActiveViewStateIsThreeD())
+        {
+            _playerMovementController.MovePlayerToFront(true);
+        }
+
+        ActiveViewState = desiredViewState;
+        UpdateColor();
+        UpdateReferences();
+
+        // Wenn in 2D herein geswapped wurde
+        if (!ActiveViewStateIsThreeD())
+        {
+            _playerMovementController.MovePlayerToFront(false);
+        }
+    }
+
     public void UpdateReferences()
     {
         List<AbstractEntityController> entityList;
@@ -53,6 +75,25 @@ public class EntityManager : MonoBehaviour
         {
             entity.SetReferences(entityList);
         }
+    }
+
+    public bool InputValid()
+    {
+        if (!ActiveViewStateIsThreeD())
+        {
+            if (_playerMovementController.GetGroundEntity().GetEntityType2D().Equals(EntityType.BLOCK))
+            {
+                if (_playerMovementController.GetEntityPositionRelation().Equals(EntityType.BLOCK))
+                {
+                    if (!(GetEntityListFromPos2D(GetEntityList(), _playerMovementController.GetGroundEntity().GetPosition()).Any(e => e.GetEntityType().Equals(EntityType.BLOCK))))
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
     
     

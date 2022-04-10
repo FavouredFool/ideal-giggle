@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static PlaneHelper;
 using static TWODHelper;
+using static ViewHelper;
 
 public class PlaneController : MonoBehaviour
 {
@@ -58,9 +59,7 @@ public class PlaneController : MonoBehaviour
     public void MovePlane(Vector3 desiredPosition)
     {
         transform.localPosition = desiredPosition;
-        _entityManager.UpdateColor();
-        _entityManager.UpdateReferences();
-
+        _entityManager.UpdateReferencePipeline(ActiveViewState);
     }
 
     public bool MovementValid(Vector3 desiredPosition)

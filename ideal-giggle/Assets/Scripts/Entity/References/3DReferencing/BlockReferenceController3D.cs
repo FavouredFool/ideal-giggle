@@ -5,6 +5,7 @@ using static EntityHelper;
 using static ReferenceHelper;
 using static CheckHelper;
 using static TWODHelper;
+using static ViewHelper;
 
 public class BlockReferenceController3D : AbstractReferenceController3D
 {

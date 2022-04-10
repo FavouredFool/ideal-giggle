@@ -31,13 +31,15 @@ public class CameraMovement : MonoBehaviour
     private Vector3 _pivot;
     private CameraAnimation _cameraAnimation;
 
+    public void Awake()
+    {
+        ActiveViewState = _initialViewState;
+    }
 
     private void Start()
     {
         _cameraAnimation = GetComponent<CameraAnimation>();
         _camera = GetComponentInChildren<Camera>();
-
-        ActiveViewState = _initialViewState;
 
         _pivot = _entityManager.GetPivot();
 
@@ -69,7 +71,7 @@ public class CameraMovement : MonoBehaviour
 
     public void InterpretInput(HorizontalDirection horizontalDirection, VerticalDirection verticalDirection)
     {
-        if (!InputValid())
+        if (!_entityManager.InputValid())
         {
             return;
         }
@@ -91,8 +93,7 @@ public class CameraMovement : MonoBehaviour
 
     public void OnAnimationEnd(ViewState desiredViewState)
     {
-        
-        UpdateView(desiredViewState);
+        _entityManager.UpdateReferencePipeline(desiredViewState);
     }
 
     public int CalculateVerticalDegreesRelativeToViewState(ViewState desiredState)
@@ -217,45 +218,4 @@ public class CameraMovement : MonoBehaviour
 
     }    
 
-    void UpdateView(ViewState desiredViewState)
-    {
-        // Wenn aus 2D heraus geswapped wird
-        if (!ActiveViewStateIsThreeD())
-        {
-            _playerMovementController.MovePlayerToFront(true);
-        }
-
-        ActiveViewState = desiredViewState;
-        _entityManager.UpdateReferences();
-
-        // Wenn in 2D herein geswapped wurde
-        if (!ActiveViewStateIsThreeD())
-        {
-            _playerMovementController.MovePlayerToFront(false);
-        }
-
-    }
-
-    public bool InputValid()
-    {
-        if (!ActiveViewStateIsThreeD())
-        {
-            if (_playerMovementController.GetGroundEntity().GetEntityType2D().Equals(EntityType.BLOCK))
-            {
-                if (_playerMovementController.GetEntityPositionRelation().Equals(EntityType.BLOCK))
-                {
-                    if (GetEntityListFromPos2D(_entityManager.GetEntityList(), _playerMovementController.GetGroundEntity().GetPosition()).Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
 }

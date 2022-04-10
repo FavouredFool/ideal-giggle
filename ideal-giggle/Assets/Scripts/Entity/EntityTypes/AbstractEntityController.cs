@@ -8,27 +8,19 @@ using static ViewHelper;
 public abstract class AbstractEntityController : MonoBehaviour
 {
     protected EntityType _entityType;
-
     protected EntityType _entityType2D;
 
     protected List<AbstractEntityController> _entityCache;
-
     protected List<AbstractEntityController> _entityReferences2D = new List<AbstractEntityController> { null, null, null, null };
-
     protected List<EntityReference> _entityReferences3D = new List<EntityReference> { null, null, null, null };
-
     protected List<EntityReference> _activeEntityReferences;
-
     protected AbstractReferenceController3D _abstractReferenceController3D;
-
     protected ReferenceController2D _referenceController2D;
-
     protected EntityCacheController _entityCacheController;
 
     protected ColorCalculator _colorCalculator;
 
     protected Vector3 _position;
-
     protected Vector3 _visualPosition;
 
     // PathfinderStuff:
@@ -51,6 +43,7 @@ public abstract class AbstractEntityController : MonoBehaviour
     public void Start()
     {
         _abstractReferenceController3D = GetComponent<AbstractReferenceController3D>();
+        Debug.Log(ActiveViewState);
         _entityReferences3D = CalculateReferences3D();
         _activeEntityReferences = _entityReferences3D;
     }
