@@ -81,12 +81,12 @@ public class CameraMovement : MonoBehaviour
         int hDegrees = CalculateHorizontalDegreesRelativeToViewState(desiredViewState, horizontalDirection);
         int vDegrees = CalculateVerticalDegreesRelativeToViewState(desiredViewState);
 
-        StartCoroutine(AnimateCamera(desiredViewState, hDegrees, vDegrees));
+        StartCoroutine(AnimateCamera(desiredViewState));
     }
 
-    public IEnumerator AnimateCamera(ViewState desiredViewState, int hDegrees, int vDegrees)
+    public IEnumerator AnimateCamera(ViewState desiredViewState)
     {
-        yield return _cameraAnimation.AnimateCamera(_pivot, hDegrees, vDegrees, desiredViewState);
+        yield return _cameraAnimation.AnimateCamera(_pivot, desiredViewState);
 
         OnAnimationEnd(desiredViewState);
     }

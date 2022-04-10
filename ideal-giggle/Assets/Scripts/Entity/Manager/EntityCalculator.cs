@@ -88,21 +88,18 @@ public class EntityCalculator : MonoBehaviour
 
             if (depthList.Any(e => e.GetEntityType().Equals(EntityType.BLOCK)))
             {
-                Debug.Log("AA");
                 stairEntity.SetEntityType2D(EntityType.BLOCK);
                 continue;
             }
 
             if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetTopEnter(), GetViewDirectionNormalized(ActiveViewState))))
             {
-                Debug.Log("AA");
                 stairEntity.SetEntityType2D(EntityType.BLOCK);
                 continue;
             }
 
             if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetBottomEnter(), GetViewDirectionNormalized(ActiveViewState))))
             {
-                Debug.Log("AA"); Debug.Log("AA");
                 stairEntity.SetEntityType2D(EntityType.BLOCK);
                 continue;
             }

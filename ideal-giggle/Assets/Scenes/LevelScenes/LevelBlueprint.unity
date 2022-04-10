@@ -822,6 +822,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -4579840251287570326, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _xPlane
+      value: 
+      objectReference: {fileID: 1651160208}
+    - target: {fileID: -4579840251287570326, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
+      propertyPath: _zPlane
+      value: 
+      objectReference: {fileID: 1081788700}
+    - target: {fileID: -4579840251287570326, guid: f3c3d995adf71cd4e9369f504b541cf2, type: 3}
       propertyPath: _entityManager
       value: 
       objectReference: {fileID: 5277545954369560392}
@@ -3725,7 +3733,7 @@ MonoBehaviour:
   _entityMaterial: {fileID: 2100000, guid: e724dbb0d34d9a44bb5c560053cdaaae, type: 2}
   _xPlane: {fileID: 1651160208}
   _zPlane: {fileID: 1081788700}
-  _playerMovementController: {fileID: 0}
+  _playerMovementController: {fileID: 330510518}
   _levelSize: {x: 6, y: 6, z: 6}
 --- !u!1 &5277545954369560398
 GameObject:

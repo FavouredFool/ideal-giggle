@@ -23,7 +23,6 @@ public class PlaneHelper : MonoBehaviour
 
     public static bool PlayerInFrontOfPlane(PlayerMovementController player, PlaneController plane)
     {
-
         if (plane.transform.position[GetPlaneCoordinateIndex(plane)] * GetViewSign() > player.transform.position[GetViewDepthIndex()] * GetViewSign())
         {
             return false;

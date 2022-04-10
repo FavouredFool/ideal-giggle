@@ -41,6 +41,7 @@ public class PlayerToFrontCalculator : MonoBehaviour
         }
 
         _groundEntity = _playerMovementController.GetGroundEntity();
+        Debug.Log(ActiveViewState);
         PlaneController plane = GetViewPlane(_xPlane, _zPlane);
 
         if (!PlayerInFrontOfPlane(_playerMovementController, plane))
