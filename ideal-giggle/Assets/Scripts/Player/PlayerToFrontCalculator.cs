@@ -107,12 +107,12 @@ public class PlayerToFrontCalculator : MonoBehaviour
             }
             else
             {
-                if (entityList.Cast<StairController>().Any(stair => StairRotatedInDirection(stair.GetBottomEnter(), GetViewDirection())))
+                if (entityList.Cast<StairController>().Any(stair => StairRotatedInDirection(stair.GetBottomEnter(), GetViewDirectionNormalized(ActiveViewState))))
                 {
                     return entity;
                 }
 
-                if (entityList.Cast<StairController>().Any(stair => StairRotatedInDirection(stair.GetTopEnter(), GetViewDirection())))
+                if (entityList.Cast<StairController>().Any(stair => StairRotatedInDirection(stair.GetTopEnter(), GetViewDirectionNormalized(ActiveViewState))))
                 {
                     return entity;
                 }

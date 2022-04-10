@@ -93,14 +93,14 @@ public class EntityCalculator : MonoBehaviour
                 continue;
             }
 
-            if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetTopEnter(), GetViewDirection())))
+            if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetTopEnter(), GetViewDirectionNormalized(ActiveViewState))))
             {
                 Debug.Log("AA");
                 stairEntity.SetEntityType2D(EntityType.BLOCK);
                 continue;
             }
 
-            if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetBottomEnter(), GetViewDirection())))
+            if (depthList.Cast<StairController>().Any(s => StairRotatedInDirection(s.GetBottomEnter(), GetViewDirectionNormalized(ActiveViewState))))
             {
                 Debug.Log("AA"); Debug.Log("AA");
                 stairEntity.SetEntityType2D(EntityType.BLOCK);

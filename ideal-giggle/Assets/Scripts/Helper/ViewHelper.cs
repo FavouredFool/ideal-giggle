@@ -23,10 +23,10 @@ public class ViewHelper : MonoBehaviour
         return false;
     }
 
-    public static Vector3 GetViewDirection()
+    public static Vector3 GetViewDirectionNormalized(ViewState desiredViewState)
     {
         Vector3 direction = Vector3.zero;
-        switch (ActiveViewState)
+        switch (desiredViewState)
         {
             // 2D
             case ViewState.X:
@@ -44,16 +44,16 @@ public class ViewHelper : MonoBehaviour
 
             // 3D
             case ViewState.Z_X:
-                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.forward + Vector3.up)).normalized;
+                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.back + Vector3.down)).normalized;
                 break;
             case ViewState.NX_Z:
-                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.left + Vector3.up)).normalized;
+                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.right + Vector3.down)).normalized;
                 break;
             case ViewState.X_NZ:
-                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.right + Vector3.up)).normalized;
+                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.left + Vector3.down)).normalized;
                 break;
             case ViewState.NZ_NX:
-                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.back + Vector3.up)).normalized;
+                direction = (Quaternion.Euler(0, 45, 0) * (Vector3.forward + Vector3.down)).normalized;
                 break;
             default:
                 Debug.Log("FEHLER");

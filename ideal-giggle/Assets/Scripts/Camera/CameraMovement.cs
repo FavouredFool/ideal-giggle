@@ -50,10 +50,10 @@ public class CameraMovement : MonoBehaviour
     public void SetCamera()
     {
         Vector3 cameraPosition;
-        cameraPosition = _pivot + GetViewDirection() * 20;
+        cameraPosition = _pivot - GetViewDirectionNormalized(ActiveViewState) * 20;
 
         Quaternion cameraRotation;
-        cameraRotation = Quaternion.LookRotation(-GetViewDirection());
+        cameraRotation = Quaternion.LookRotation(GetViewDirectionNormalized(ActiveViewState));
 
         transform.position = cameraPosition;
         transform.rotation = cameraRotation;

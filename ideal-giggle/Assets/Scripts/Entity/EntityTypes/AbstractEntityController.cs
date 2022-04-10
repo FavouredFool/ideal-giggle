@@ -43,7 +43,6 @@ public abstract class AbstractEntityController : MonoBehaviour
     public void Start()
     {
         _abstractReferenceController3D = GetComponent<AbstractReferenceController3D>();
-        Debug.Log(ActiveViewState);
         _entityReferences3D = CalculateReferences3D();
         _activeEntityReferences = _entityReferences3D;
     }
