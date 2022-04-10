@@ -31,6 +31,8 @@ public class CameraMovement : MonoBehaviour
     private Vector3 _pivot;
     private CameraAnimation _cameraAnimation;
 
+    private bool _isRotating;
+
     public void Awake()
     {
         ActiveViewState = _initialViewState;
@@ -64,10 +66,7 @@ public class CameraMovement : MonoBehaviour
         float size = Mathf.Max(Mathf.Max(levelSize.x, levelSize.y), levelSize.z);
 
         _camera.orthographicSize = size / 2 + 4;
-
-
     }
-
 
     public void InterpretInput(HorizontalDirection horizontalDirection, VerticalDirection verticalDirection)
     {
@@ -76,11 +75,14 @@ public class CameraMovement : MonoBehaviour
             return;
         }
 
+        if (_isRotating)
+        {
+            return;
+        }
+
         ViewState desiredViewState = CalculateViewStateFromDirections(horizontalDirection, verticalDirection);
 
-        int hDegrees = CalculateHorizontalDegreesRelativeToViewState(desiredViewState, horizontalDirection);
-        int vDegrees = CalculateVerticalDegreesRelativeToViewState(desiredViewState);
-
+        _isRotating = true;
         StartCoroutine(AnimateCamera(desiredViewState));
     }
 
@@ -88,63 +90,13 @@ public class CameraMovement : MonoBehaviour
     {
         yield return _cameraAnimation.AnimateCamera(_pivot, desiredViewState);
 
+        _isRotating = false;
         OnAnimationEnd(desiredViewState);
     }
 
     public void OnAnimationEnd(ViewState desiredViewState)
     {
         _entityManager.UpdateReferencePipeline(desiredViewState);
-    }
-
-    public int CalculateVerticalDegreesRelativeToViewState(ViewState desiredState)
-    {
-        bool viewStateEven = (int) ActiveViewState % 2 == 0;
-        bool desiredStateEven = (int) desiredState % 2 == 0;
-
-        if (desiredStateEven == viewStateEven)
-        {
-            return 0;
-        }
-        else if (viewStateEven)
-        {
-            return +45;
-        }
-        else
-        {
-            return -45;
-        }
-        
-    }
-
-    public int CalculateHorizontalDegreesRelativeToViewState(ViewState desiredState, HorizontalDirection horizontalDirection)
-    {
-        int tempState = (int)ActiveViewState;
-        int directionSign;
-
-        if (horizontalDirection.Equals(HorizontalDirection.LEFT))
-        {
-            directionSign = 1;
-        }
-        else
-        {
-            directionSign = -1;
-        }
-
-        for (int i = 0; i < 8; i++)
-        {
-            if (tempState != (int)desiredState)
-            {
-                tempState += directionSign;
-                tempState = ValidateTempState(tempState);
-            }
-            else
-            {
-                return i * directionSign * 45;
-            }
-        }
-
-        Debug.LogWarning("FEHLER");
-        return 0;
     }
 
     public int CalculateTempState(int tempState, int added)

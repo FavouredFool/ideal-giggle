@@ -27,11 +27,11 @@ public class CameraAnimation : MonoBehaviour
 
     public IEnumerator StartAnimation(ViewState desiredViewState)
     {
-        Vector3 startPosition = transform.localPosition;
-        Vector3 startPositionNormalized = startPosition.normalized;
+        Vector3 startPosition = transform.localPosition - _pivot;
+        Vector3 startDirectionNormalized = startPosition.normalized;
         
         Vector3 viewDirection = GetViewDirectionNormalized(desiredViewState);
-        Quaternion rotationForGoalPosition = Quaternion.FromToRotation(startPositionNormalized.normalized - Vector3.zero, -viewDirection);
+        Quaternion rotationForGoalPosition = Quaternion.FromToRotation(startDirectionNormalized.normalized, -viewDirection);
 
         float t = 0;
         while (t < 1)
@@ -41,7 +41,7 @@ public class CameraAnimation : MonoBehaviour
             Quaternion slerpedRotationForGoalPosition = Quaternion.Slerp(Quaternion.identity, rotationForGoalPosition, t);
             Vector3 positionWithSlerpedRotation = slerpedRotationForGoalPosition * startPosition;
 
-            transform.localPosition = positionWithSlerpedRotation;
+            transform.localPosition = positionWithSlerpedRotation + _pivot;
             transform.localRotation = Quaternion.LookRotation(-positionWithSlerpedRotation);
 
             yield return null;
